@@ -1,0 +1,5 @@
+Place your demos here.
+
+Note, Unity has no single project file you can double click and open (like an Xcode project). A project is opened by opening the top level directory of your project.
+
+So just place your top level directory here.
