@@ -61,7 +61,6 @@
      <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TiltInput.cs" />
      <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TouchPad.cs" />
      <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\VirtualInput.cs" />
-     <Compile Include="Assets\Standard Assets\Utility\ActivateTrigger.cs" />
      <Compile Include="Assets\Standard Assets\Utility\CurveControlledBob.cs" />
      <Compile Include="Assets\Standard Assets\Utility\FOVKick.cs" />
      <Compile Include="Assets\Standard Assets\Utility\LerpControlledBob.cs" />

@@ -27,9 +27,8 @@ public class FirstPersonInteractor : MonoBehaviour
 	}
 
 	void OnGUI() {
-		float size = interactionAvaliable ? 10 : 200;
-		Rect pos = new Rect (Screen.width/2, Screen.height/2, size, size);
-		GUI.Box (pos, "");
+		Rect pos = new Rect (Screen.width/2, Screen.height/2, interactionAvaliable ? 150 : 10, interactionAvaliable ? 25 : 10);
+		GUI.Box (pos, "Press F to Interact");
 	}
 
 	void Interact () {

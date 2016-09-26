@@ -48,6 +48,7 @@
      <Compile Include="Assets\Script\FirstPersonInteractor.cs" />
      <Compile Include="Assets\Script\Interactable.cs" />
      <Compile Include="Assets\Script\ToggleEnabledInteraction.cs" />
+     <Compile Include="Assets\Script\TriggeredInteractor.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
