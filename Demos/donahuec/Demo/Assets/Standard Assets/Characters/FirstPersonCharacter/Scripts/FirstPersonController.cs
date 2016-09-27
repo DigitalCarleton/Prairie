@@ -255,5 +255,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
         }
+
+		private void OnTriggerEnter(Collider Other)
+		{
+			if (Other.gameObject.CompareTag ("final")) 
+			{
+				Other.gameObject.SetActive (false);
+				var particles = GameObject.Find ("Particles");
+				if (particles != null) 
+				{
+					particles.SetActive (true);
+				}
+			}
+				
+		}
+			
     }
 }
