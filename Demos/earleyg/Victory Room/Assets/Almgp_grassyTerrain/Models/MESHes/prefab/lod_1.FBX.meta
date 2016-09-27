@@ -1,0 +1,169 @@
+fileFormatVersion: 2
+guid: fac1ae9995069f34984f5ce8186590b0
+timeCreated: 1460398218
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: TerrainMesh
+    100004: TerrainMesh002
+    100006: TerrainMesh003
+    100008: TerrainMesh004
+    100010: TerrainMesh005
+    100012: TerrainMesh006
+    100014: TerrainMesh007
+    100016: TerrainMesh008
+    100018: TerrainMesh009
+    100020: TerrainMesh010
+    100022: TerrainMesh011
+    100024: TerrainMesh012
+    100026: TerrainMesh013
+    100028: TerrainMesh014
+    100030: TerrainMesh015
+    100032: TerrainMesh016
+    400000: //RootNode
+    400002: TerrainMesh
+    400004: TerrainMesh002
+    400006: TerrainMesh003
+    400008: TerrainMesh004
+    400010: TerrainMesh005
+    400012: TerrainMesh006
+    400014: TerrainMesh007
+    400016: TerrainMesh008
+    400018: TerrainMesh009
+    400020: TerrainMesh010
+    400022: TerrainMesh011
+    400024: TerrainMesh012
+    400026: TerrainMesh013
+    400028: TerrainMesh014
+    400030: TerrainMesh015
+    400032: TerrainMesh016
+    2300000: TerrainMesh
+    2300002: TerrainMesh002
+    2300004: TerrainMesh003
+    2300006: TerrainMesh004
+    2300008: TerrainMesh005
+    2300010: TerrainMesh006
+    2300012: TerrainMesh007
+    2300014: TerrainMesh008
+    2300016: TerrainMesh009
+    2300018: TerrainMesh010
+    2300020: TerrainMesh011
+    2300022: TerrainMesh012
+    2300024: TerrainMesh013
+    2300026: TerrainMesh014
+    2300028: TerrainMesh015
+    2300030: TerrainMesh016
+    3300000: TerrainMesh
+    3300002: TerrainMesh002
+    3300004: TerrainMesh003
+    3300006: TerrainMesh004
+    3300008: TerrainMesh005
+    3300010: TerrainMesh006
+    3300012: TerrainMesh007
+    3300014: TerrainMesh008
+    3300016: TerrainMesh009
+    3300018: TerrainMesh010
+    3300020: TerrainMesh011
+    3300022: TerrainMesh012
+    3300024: TerrainMesh013
+    3300026: TerrainMesh014
+    3300028: TerrainMesh015
+    3300030: TerrainMesh016
+    4300000: TerrainMesh
+    4300002: TerrainMesh002
+    4300004: TerrainMesh003
+    4300006: TerrainMesh004
+    4300008: TerrainMesh005
+    4300010: TerrainMesh006
+    4300012: TerrainMesh007
+    4300014: TerrainMesh008
+    4300016: TerrainMesh009
+    4300018: TerrainMesh010
+    4300020: TerrainMesh011
+    4300022: TerrainMesh012
+    4300024: TerrainMesh013
+    4300026: TerrainMesh014
+    4300028: TerrainMesh015
+    4300030: TerrainMesh016
+    6400000: TerrainMesh
+    6400002: TerrainMesh002
+    6400004: TerrainMesh003
+    6400006: TerrainMesh004
+    6400008: TerrainMesh005
+    6400010: TerrainMesh006
+    6400012: TerrainMesh007
+    6400014: TerrainMesh008
+    6400016: TerrainMesh009
+    6400018: TerrainMesh010
+    6400020: TerrainMesh011
+    6400022: TerrainMesh012
+    6400024: TerrainMesh013
+    6400026: TerrainMesh014
+    6400028: TerrainMesh015
+    6400030: TerrainMesh016
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 50
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
