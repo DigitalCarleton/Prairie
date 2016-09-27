@@ -12,15 +12,15 @@ sysinfo.txt
 # ============================================= #
 [Ee]xported[Oo]bj/
 .vs/
-/*.userprefs
-/*.csproj
-/*.pidb
-/*.suo
-/*.sln*
-/*.user
-/*.unityproj
-/*.booproj
-/.idea*/
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln*
+*.user
+*.unityproj
+*.booproj
+.idea*/
 Assembly-CSharp-Editor-firstpass-vs.csproj
 Assembly-CSharp-Editor-firstpass.csproj
 Assembly-CSharp-Editor-firstpass.pidb
