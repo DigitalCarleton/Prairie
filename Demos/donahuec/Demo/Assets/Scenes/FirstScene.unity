@@ -256,7 +256,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100860, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_Name
-      value: House_Wall_1A2 (6)
+      value: Wall3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
@@ -409,7 +409,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100860, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_Name
-      value: House_Wall_1A2 (4)
+      value: Wall1
       objectReference: {fileID: 0}
     - target: {fileID: 468538, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -497,6 +497,10 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 0.25000036
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 95e6b7b446da7084aa86c9e70311a334, type: 2}
+      propertyPath: m_Name
+      value: Roof2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 95e6b7b446da7084aa86c9e70311a334, type: 2}
   m_IsPrefabParent: 0
@@ -541,7 +545,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100860, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_Name
-      value: House_Wall_1A2 (5)
+      value: Wall2
       objectReference: {fileID: 0}
     - target: {fileID: 468538, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -575,11 +579,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 450058, guid: 1911a0454604e1a44bc897758e48a582, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0.3786396
+      value: 0.56
       objectReference: {fileID: 0}
     - target: {fileID: 450058, guid: 1911a0454604e1a44bc897758e48a582, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.82707024
+      value: 0.87
       objectReference: {fileID: 0}
     - target: {fileID: 450058, guid: 1911a0454604e1a44bc897758e48a582, type: 2}
       propertyPath: m_LocalPosition.z
@@ -613,6 +617,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 140050, guid: 1911a0454604e1a44bc897758e48a582, type: 2}
+      propertyPath: m_Name
+      value: Roof1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1911a0454604e1a44bc897758e48a582, type: 2}
   m_IsPrefabParent: 0
@@ -633,7 +641,7 @@ GameObject:
   - 23: {fileID: 1339027630}
   - 114: {fileID: 1339027634}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: TriggerCube
   m_TagString: final
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -761,7 +769,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100860, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_Name
-      value: House_Wall_1A2 (7)
+      value: Wall4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
@@ -813,6 +821,10 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 100860, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
+      propertyPath: m_Name
+      value: Wall7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
   m_IsPrefabParent: 0
@@ -857,7 +869,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100860, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_Name
-      value: House_Wall_1A2 (1)
+      value: Wall6
       objectReference: {fileID: 0}
     - target: {fileID: 468538, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -945,6 +957,10 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 190614, guid: 7f535bcda367d69429a923f6ee15d419, type: 2}
+      propertyPath: m_Name
+      value: Door
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7f535bcda367d69429a923f6ee15d419, type: 2}
   m_IsPrefabParent: 0
@@ -997,7 +1013,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100860, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_Name
-      value: House_Wall_1A2 (2)
+      value: Wall8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
@@ -1043,7 +1059,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100860, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_Name
-      value: House_Wall_1A2 (8)
+      value: Wall5
       objectReference: {fileID: 0}
     - target: {fileID: 468538, guid: faa5c0de257092c4eabb33ab09273eba, type: 2}
       propertyPath: m_LocalEulerAnglesHint.x
