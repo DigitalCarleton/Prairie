@@ -56,8 +56,8 @@ ehthumbs.db
 [Tt]humbs.db
 [Dd]esktop.ini
 
-# ============ #
+# ================ #
 # Project-specific #
-# ============ #
-*.Standard Assets/
-*.Ignored/
+# ================ #
+[Ii]gnored/
+Standard\ Assets/
