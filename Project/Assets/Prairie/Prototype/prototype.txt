@@ -1,0 +1,2 @@
+# Prototype
+Sandboxing, internal tests, workbed for new ideas, proofs of concept, etc.
