@@ -55,3 +55,9 @@ Assembly-UnityScript.unityProj
 ehthumbs.db
 [Tt]humbs.db
 [Dd]esktop.ini
+
+# ================ #
+# Project-specific #
+# ================ #
+[Ii]gnored/
+Standard\ Assets/

@@ -1,0 +1,2 @@
+# Editor
+This folder is for Unity editor extensions.

@@ -1,0 +1,2 @@
+# Framework
+Our shipped code and bundled assets. Excluding "Editor/", which goes at the top level.
