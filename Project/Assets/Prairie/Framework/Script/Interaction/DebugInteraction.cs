@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DebugInteraction : Interaction 
 {
-	public override void Interact () 
+	protected override void PerformAction () 
 	{
 		Debug.Log ("Interacted with " + this.gameObject.name);
 	}

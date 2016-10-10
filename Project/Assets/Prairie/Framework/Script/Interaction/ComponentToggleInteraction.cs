@@ -5,7 +5,7 @@ public class ComponentToggleInteraction : Interaction
 {
 	public Behaviour target;
 
-	public override void Interact ()
+	protected override void PerformAction ()
 	{
 		if (target != null)
 		{
