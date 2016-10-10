@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class FirstPersonInteractor : MonoBehaviour
 {
@@ -7,10 +7,10 @@ public class FirstPersonInteractor : MonoBehaviour
 
 	private Camera viewpoint;
 
-	private Interaction[] avaliableInteractions;
+	private List<Interaction> avaliableInteractions;
 	private bool interactionAvaliable
 	{
-		get { return avaliableInteractions.Length > 0; }
+		get { return avaliableInteractions.Count > 0; }
 	}
 
 
@@ -51,14 +51,13 @@ public class FirstPersonInteractor : MonoBehaviour
 	{
 		if (interactionAvaliable)
 		{
-			for (int i = 0; i<avaliableInteractions.Length; i++)
-			{
-				avaliableInteractions[i].Interact();
+			foreach (Interaction target in avaliableInteractions) {
+				target.Interact ();
 			}
 		}
 	}
 
-	private Interaction[] GetAvaliableInteractions ()
+	private List<Interaction> GetAvaliableInteractions ()
 	{
 		// perform a raycast from the main camera to an object in front of it
 		// the object must have a collider to be hit, and an `Interaction` to be added
@@ -72,13 +71,17 @@ public class FirstPersonInteractor : MonoBehaviour
 		if (Physics.Raycast (origin, fwd, out hit, interactionRange))
 		{
 			GameObject obj = hit.transform.gameObject;
-			Interaction[] interactions = obj.GetComponents<Interaction> ();
-			return interactions;
+			var enabledInteractions = new List<Interaction> ();
+			foreach (Interaction i in obj.GetComponents<Interaction> ()) {
+				if (i.enabled) {
+					enabledInteractions.Add (i);
+				}
+			}
+			return enabledInteractions;
 		}
 		else
 		{
-			Interaction[] emptyList = new Interaction[0];
-			return emptyList;
+			return new List<Interaction> ();	// no interactions, empty list
 		}
 	}
 }
