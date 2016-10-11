@@ -1,12 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Interaction : MonoBehaviour
+public abstract class Interaction : MonoBehaviour
 {
 	public string prompt;
+	public bool repeatable = true;
 
-	public virtual void Interact () {
-		Debug.Log ("Abstract Interaction");
+	public void Interact ()
+	{
+		if (this.enabled) {
+			PerformAction ();					// run the interaction
+			if (!repeatable) {
+				this.enabled = false;	// prevent future interactions
+			}
+		}
 	}
+
+	protected abstract void PerformAction ();
 
 }
