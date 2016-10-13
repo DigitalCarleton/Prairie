@@ -4,7 +4,7 @@ using System.Collections;
 public class AnnotationInteraction : Interaction
 {
     private bool active = false;
-    public GameObject controller;
+    private GameObject controller;
     public string text;
 
     private GUIContent content;
