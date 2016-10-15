@@ -6,6 +6,7 @@ public class PlayAudioInteraction : Interaction
     public AudioClip audioClip;
     //we have a publi audio source so that the user can import their own
     public AudioSource audioSource;
+    private bool playing; //toggles clip
 
     /// <summary>
     /// Plays an audio clip when the player interacts with an object
@@ -19,7 +20,19 @@ public class PlayAudioInteraction : Interaction
         }
 
         audioSource.clip = audioClip;
-        audioSource.Play();
+        
+        //allows us to stop the clip while it is playing
+        if (playing)
+        {
+            audioSource.Stop();
+            playing = false;
+            
+        } else
+        {
+            audioSource.Play();
+            playing = true;
+        }
+        
         
         
     }

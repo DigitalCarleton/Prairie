@@ -32,8 +32,8 @@ public class AnnotationInteraction : Interaction
         
         //Want to change this in case user changes the name of FPSController
         //find better way of disabling movement
-        GameObject.Find("FPSController").GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
-        GameObject.Find("FPSController").GetComponent<FirstPersonInteractor>().enabled = false;
+        trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
+        trigger.GetComponent<FirstPersonInteractor>().enabled = false;
     }
 
     void OnGUI()
@@ -42,9 +42,9 @@ public class AnnotationInteraction : Interaction
         {
 
             // Make a background box
-            
-            GUI.backgroundColor = Color.black;
-            GUI.Box(new Rect(Screen.width / 4, 10, Screen.width / 2, Screen.height - 20), content, style);
+
+            GUI.skin.box.wordWrap = true;
+            GUI.Box(new Rect(Screen.width / 4, 10, Screen.width / 2, Screen.height - 20), content);
             
             
         }
@@ -56,8 +56,8 @@ public class AnnotationInteraction : Interaction
         if (Input.GetKey(KeyCode.Escape))
         {
             active = false;
-            GameObject.Find("FPSController").GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
-            GameObject.Find("FPSController").GetComponent<FirstPersonInteractor>().enabled = true;
+            trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
+            trigger.GetComponent<FirstPersonInteractor>().enabled = true;
         }
 
     }
