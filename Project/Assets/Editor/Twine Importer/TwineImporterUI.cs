@@ -47,7 +47,7 @@ public class TwineImporterUI : EditorWindow {
 			prompt = targetFile.name;
 		}
 		if (GUILayout.Button (prompt)) {
-			var fullPath = EditorUtility.OpenFilePanel ("Select File", "Assets/", "json");
+			var fullPath = EditorUtility.OpenFilePanel ("Select File", "Assets", "json");
 
 			// obnoxiously, the OpenFilePanel returns a full file path,
 			// and Unity will only play nice with a relative one so we must convert
@@ -55,7 +55,7 @@ public class TwineImporterUI : EditorWindow {
 			var relativePath = GetRelativePath (fullPath, projectDirectory);
 
 			// double check we'll have access to this file
-			if (relativePath.StartsWith ("Assets/")) {
+			if (relativePath.StartsWith ("Assets/") || relativePath.StartsWith ("Assets\\")) {	// checks both Mac Path and PC Path types
 				this.targetFile = AssetDatabase.LoadAssetAtPath<TextAsset> (relativePath);
 			} else {
 				EditorUtility.DisplayDialog ("Can't Load Asset", "The file must be stored as part of your Unity project's assets.", "OK");
