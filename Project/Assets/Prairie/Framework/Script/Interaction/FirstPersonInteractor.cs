@@ -52,7 +52,7 @@ public class FirstPersonInteractor : MonoBehaviour
 		if (interactionAvaliable)
 		{
 			foreach (Interaction target in avaliableInteractions) {
-				target.Interact ();
+				target.Interact (gameObject);
 			}
 		}
 	}
