@@ -71,7 +71,7 @@ public class TwineImporterUI : EditorWindow {
 		GUILayout.FlexibleSpace ();
 
 		// button to send to importer
-		GUI.enabled = (this.targetFile != null);
+		GUI.enabled = true;//(this.targetFile != null);
 		if (GUILayout.Button ("Import")) {
 			SendToImporter (this.targetFile);
 			this.Close ();
@@ -105,7 +105,7 @@ public class TwineImporterUI : EditorWindow {
 		// 	TwineImporter.Import (file);
 		// ==========================================
 
-		Debug.Log ("Importing "+file.name+"...");
+		//Debug.Log ("Importing "+file.name+"...");
 
 		// TODO: Read in the JSON string from a .json file loaded into the importer!
 		// Hardcoded for now:

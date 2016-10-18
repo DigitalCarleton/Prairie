@@ -31,7 +31,7 @@ public class TwineJsonParser {
 			GameObject tempObj = GameObject.CreatePrimitive (PrimitiveType.Cube);
 			tempObj.name = obj_name;
 			PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab);
-			//emptyObj = GameObject.AddComponent(NodeInfo);
+			emptyObj = GameObject.AddComponent(NodeInfo);
 			#endif
 		}
 
