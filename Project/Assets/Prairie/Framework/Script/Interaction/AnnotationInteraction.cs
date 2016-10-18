@@ -3,62 +3,100 @@ using System.Collections;
 
 public class AnnotationInteraction : Interaction
 {
-    private bool active = false;
-    private GameObject controller;
-    public string text;
+    private bool Active = false;
+    [Multiline]
+    public string Text;
+    public Texture[] Images;
 
-    private GUIContent content;
-    private GUIStyle style;
+    private GUIContent Content;
+    private GUIStyle Style;
+    private Rect Rectangle;
+    private Vector2 ScrollPosition;
+
+    private readonly float BOX_X = Screen.width / 4;
+    private readonly float BOX_Y = 10;
+    private readonly float BOX_WIDTH = Screen.width / 2;
+    private readonly float BOX_HEIGHT = Screen.height - 20;
 
     void Start()
     {
-        content = new GUIContent(text);
-        style = new GUIStyle();
-        style.wordWrap = true;
-        style.normal.textColor = Color.white;
-        style.normal.background = Texture2D.blackTexture;
-        style.normal.background.height = Screen.width - 20;
-        style.normal.background.width = Screen.width / 2;
-        style.richText = true;
-
-
-
-
+        Content = new GUIContent(Text);
+        ScrollPosition = new Vector2(0, 0);
+        Rectangle = new Rect(BOX_X, BOX_Y, BOX_WIDTH, BOX_HEIGHT);
+        //setting up style for text
+        Style = new GUIStyle();
+        Style.wordWrap = true;
+        Style.richText = true;
+        Style.normal.textColor = Color.white;
+        Style.padding.bottom = 15;
+        Style.padding.top = 15;
     }
 
     protected override void PerformAction()
     {
-        active = true;
-        
-        //Want to change this in case user changes the name of FPSController
-        //find better way of disabling movement
+        Active = true;
+        //freeze the player when annotation is open
         trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
         trigger.GetComponent<FirstPersonInteractor>().enabled = false;
     }
 
     void OnGUI()
     {
-        if (active)
+        if (Active)
         {
+            //Allow the player to see and move the cursor (so they can scroll)
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
 
-            // Make a background box
+            //hacky way to increase the opacity of the background
+            //you would think this would be simple
+            //it isn't simple
+            GUI.Box(Rectangle, Texture2D.blackTexture);
+            GUI.Box(Rectangle, Texture2D.blackTexture);
+            GUI.Box(Rectangle, Texture2D.blackTexture);
 
-            GUI.skin.box.wordWrap = true;
-            GUI.Box(new Rect(Screen.width / 4, 10, Screen.width / 2, Screen.height - 20), content);
-            
-            
+            GUI.BeginGroup(new Rect(BOX_X + 10, BOX_Y, BOX_WIDTH, BOX_HEIGHT));
+            ScrollPosition = GUILayout.BeginScrollView(ScrollPosition, GUILayout.Width(BOX_WIDTH - 10),
+                GUILayout.Height(BOX_HEIGHT));
+
+            if (Images.Length > 0)
+            {
+                for (int i = 0; i < Images.Length; i++)
+                {
+                    Texture image = Images[i];
+
+                    if (image.width > BOX_WIDTH - 40)
+                    {
+                        //resize image if it is wider than the scrollbox
+                        float newHeight = ((BOX_WIDTH - 40) / image.width) * ((float)image.height);
+                        GUILayout.Label(new GUIContent(image), GUILayout.Width(BOX_WIDTH - 40), GUILayout.Height(newHeight));
+                    } else
+                    {
+                        GUILayout.Label(new GUIContent(image));
+                    }
+
+                }
+            }
+
+            GUILayout.Label(Content, Style, GUILayout.MaxWidth(BOX_WIDTH - 40));
+            GUILayout.EndScrollView();
+            GUI.EndGroup();
         }
-        
     }
+
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Escape))
+        if (Active)
         {
-            active = false;
-            trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
-            trigger.GetComponent<FirstPersonInteractor>().enabled = true;
+            if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.Escape))
+            {
+                Active = false;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
+                trigger.GetComponent<FirstPersonInteractor>().enabled = true;
+            }
         }
-
     }
 }
