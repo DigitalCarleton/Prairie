@@ -58,12 +58,12 @@ public class TwineJsonParser {
 		#endif
 	}
 
-	public static ArrayList serialize (JSONNode node) {
+	public static string[] serialize (JSONNode node) {
 		Debug.Log (node.Count);
-		ArrayList nodeList = new ArrayList ();
+		string[] nodeList = new string[node.Count];
 		for (int i = 0; i < node.Count; i++) {
 			Debug.Log (node [i].ToString());
-			nodeList.Add (node [i].ToString());
+			nodeList[i] = (node [i].ToString());
 		}
 		return nodeList;
 	}
