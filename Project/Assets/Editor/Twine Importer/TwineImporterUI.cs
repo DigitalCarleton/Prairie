@@ -22,7 +22,7 @@ public class TwineImporterUI : EditorWindow {
 		TextAsset selectedFile = null;
 		if (Selection.activeObject != null) {
 			var filePath = AssetDatabase.GetAssetPath (Selection.activeObject);
-			if (Path.GetExtension (filePath) == "html") {
+			if (Path.GetExtension (filePath).Contains ("json")) {
 				selectedFile = (TextAsset) Selection.activeObject;
 			}
 		}
@@ -47,7 +47,7 @@ public class TwineImporterUI : EditorWindow {
 			prompt = targetFile.name;
 		}
 		if (GUILayout.Button (prompt)) {
-			var fullPath = EditorUtility.OpenFilePanel ("Select File", "Assets/", "html");
+			var fullPath = EditorUtility.OpenFilePanel ("Select File", "Assets/", "json");
 
 			// obnoxiously, the OpenFilePanel returns a full file path,
 			// and Unity will only play nice with a relative one so we must convert
