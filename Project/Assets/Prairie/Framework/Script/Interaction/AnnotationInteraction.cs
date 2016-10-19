@@ -36,8 +36,7 @@ public class AnnotationInteraction : Interaction
     {
         Active = true;
         //freeze the player when annotation is open
-        trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
-        trigger.GetComponent<FirstPersonInteractor>().enabled = false;
+        TogglePlayer();
     }
 
     void OnGUI()
@@ -94,8 +93,7 @@ public class AnnotationInteraction : Interaction
                 Active = false;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
-                trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
-                trigger.GetComponent<FirstPersonInteractor>().enabled = true;
+                TogglePlayer();
             }
         }
     }

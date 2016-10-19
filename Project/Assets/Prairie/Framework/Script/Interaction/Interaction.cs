@@ -20,4 +20,13 @@ public abstract class Interaction : MonoBehaviour
 
 	protected abstract void PerformAction ();
 
+    protected void TogglePlayer()
+    {
+        bool controllerEnabled = trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled;
+        bool interactorEnabled = trigger.GetComponent<FirstPersonInteractor>().enabled;
+
+        trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = !controllerEnabled;
+        trigger.GetComponent<FirstPersonInteractor>().enabled = !interactorEnabled;
+    }
+
 }
