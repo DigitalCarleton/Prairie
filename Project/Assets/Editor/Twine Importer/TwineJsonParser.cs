@@ -33,26 +33,38 @@ public class TwineJsonParser {
 		foreach (JSONNode storyNode in parsedArray) {
 			//Debug.Log ("Node ID: " + storyNode[NodeIdKey]);
 			//Debug.Log ("Node name: " + storyNode[NodeNameKey]);
-			#if UNITY_EDITOR
-			Object emptyObj;
-			string obj_name = storyNode[NodeNameKey];
-			string fileLocation = "Assets/Ignored/" + obj_name + ".prefab";
-			emptyObj = PrefabUtility.CreateEmptyPrefab(fileLocation);
-
-			GameObject tempObj = GameObject.CreatePrimitive (PrimitiveType.Cube);
-			tempObj.name = obj_name;
-			tempObj.AddComponent<NodeInfo> ();
-			var data = tempObj.GetComponent<NodeInfo> ();
-			data.pid = storyNode[NodeIdKey];
-			data.name = storyNode[NodeNameKey];
-			//data.tags = storyNode["tags"].AsArray.;
-			data.content = storyNode["content"];
-			//data.childrenNames = storyNode["childrenNames"];
-			PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab);
-			#endif
+			makePrefab(storyNode);
 		}
 
 	}
 
+	public static void makePrefab (JSONNode storyNode) {
+		#if UNITY_EDITOR
+		Object emptyObj;
+		string obj_name = storyNode[NodeNameKey];
+		string fileLocation = "Assets/Ignored/" + obj_name + ".prefab";
+		emptyObj = PrefabUtility.CreateEmptyPrefab(fileLocation);
 
+		GameObject tempObj = GameObject.CreatePrimitive (PrimitiveType.Cube);
+		tempObj.name = obj_name;
+		tempObj.AddComponent<NodeInfo> ();
+		var data = tempObj.GetComponent<NodeInfo> ();
+		data.pid = storyNode["pid"];
+		data.name = storyNode["name"];
+		data.tags = serialize (storyNode["tags"]);
+		data.content = storyNode["content"];
+		data.childrenNames = serialize (storyNode["childrenNames"]);
+		PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab);
+		#endif
+	}
+
+	public static ArrayList serialize (JSONNode node) {
+		Debug.Log (node.Count);
+		ArrayList nodeList = new ArrayList ();
+		for (int i = 0; i < node.Count; i++) {
+			Debug.Log (node [i].ToString());
+			nodeList.Add (node [i].ToString());
+		}
+		return nodeList;
+	}
 }
