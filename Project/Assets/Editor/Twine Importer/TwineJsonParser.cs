@@ -71,10 +71,11 @@ public class TwineJsonParser {
 			string nodeString = node [i].ToString();
 			if (parseChildren) {
 				Debug.Log (nodeString);
-				int stringLength = nodeString.Length - 6;
-				nodeString = nodeString.Substring (3, stringLength);
+				int stringLength = nodeString.Length - 4;
+				nodeString = nodeString.Substring (2, stringLength);
 				Debug.Log (nodeString);
 			}
+			nodeString = nodeString.Substring (1, nodeString.Length - 2);
 			nodeList[i] = (nodeString);
 		}
 		return nodeList;
