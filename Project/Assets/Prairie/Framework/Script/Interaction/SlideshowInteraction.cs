@@ -16,7 +16,6 @@ public class SlideshowInteraction : Interaction
         content = new GUIContent(slides[currentSlide]);
 
         style = new GUIStyle();
-        //style.normal.background = Texture2D.blackTexture;
         style.normal.background.height = Screen.height;
         style.normal.background.width = Screen.width;
     }
@@ -25,7 +24,7 @@ public class SlideshowInteraction : Interaction
     {
         currentSlide = 0;
         active = true;
-        // Disable player movement/interactor upon interacting
+        // Disable player movement/interactor upon interacting w/ cube
         GameObject.Find("Player").GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController>().enabled = false;
         GameObject.Find("Player").GetComponent<FirstPersonInteractor>().enabled = false;
     }
@@ -34,9 +33,10 @@ public class SlideshowInteraction : Interaction
     {
         if (active)
         {
-            // "Blank" camera and display image only
-            GameObject.Find("MainCamera").GetComponent<Camera>().enabled = false;
-            GameObject.Find("Camera").GetComponent<Camera>().enabled = true;
+            // Darken the background and display image
+            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), Texture2D.blackTexture);
+            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), Texture2D.blackTexture);
+            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), Texture2D.blackTexture);
 
             GUI.Box(new Rect(Screen.width / 2 - content.image.width / 2,
             Screen.height / 2 - content.image.height / 2, content.image.width,
@@ -76,8 +76,7 @@ public class SlideshowInteraction : Interaction
         {
             // Upon ESC, exit from GUI and reenable player control
             active = false;
-            GameObject.Find("Camera").GetComponent<Camera>().enabled = false;
-            GameObject.Find("MainCamera").GetComponent<Camera>().enabled = true;
+            currentSlide = 0;
             GameObject.Find("Player").GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController>().enabled = true;
             GameObject.Find("Player").GetComponent<FirstPersonInteractor>().enabled = true;
         }
