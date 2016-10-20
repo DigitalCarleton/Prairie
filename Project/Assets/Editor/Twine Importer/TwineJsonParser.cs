@@ -34,7 +34,7 @@ public class TwineJsonParser {
 		foreach (JSONNode storyNode in parsedArray) {
 			//Debug.Log ("Node ID: " + storyNode[NodeIdKey]);
 			//Debug.Log ("Node name: " + storyNode[NodeNameKey]);
-			Object prefabNode = makePrefab(storyNode);
+			Object prefabNode = MakePrefab(storyNode);
 			prefabNodes [0] = prefabNode;
 		}
 		//foreach (Object node in prefabNodes) {
@@ -42,7 +42,7 @@ public class TwineJsonParser {
 		//}
 	}
 
-	public static Object makePrefab (JSONNode storyNode) {
+	public static Object MakePrefab (JSONNode storyNode) {
 		#if UNITY_EDITOR
 		Object emptyObj;
 		string obj_name = storyNode[NodeNameKey];
@@ -55,15 +55,15 @@ public class TwineJsonParser {
 		var data = tempObj.GetComponent<NodeInfo> ();
 		data.pid = storyNode["pid"];
 		data.name = storyNode["name"];
-		data.tags = serialize (storyNode["tags"], false);
+		data.tags = Serialize (storyNode["tags"], false);
 		data.content = storyNode["content"];
-		data.childrenNames = serialize (storyNode["childrenNames"], true);
+		data.childrenNames = Serialize (storyNode["childrenNames"], true);
 		PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab);
 		return emptyObj;
 		#endif
 	}
 
-	public static string[] serialize (JSONNode node, bool parseChildren) {
+	public static string[] Serialize (JSONNode node, bool parseChildren) {
 		//Debug.Log (node.Count);
 		string[] nodeList = new string[node.Count];
 		for (int i = 0; i < node.Count; i++) {
