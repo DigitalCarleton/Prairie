@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using SimpleJSON;
 
 #if UNITY_EDITOR
@@ -37,9 +38,20 @@ public class TwineJsonParser {
 			Object prefabNode = MakePrefab(storyNode);
 			prefabNodes [0] = prefabNode;
 		}
-		//foreach (Object node in prefabNodes) {
+		// make dictionary
+		Dictionary<string, Object> objDict = new Dictionary<string, Object>();
+		foreach (Object node in prefabNodes) {
+			objDict.Add (node.name, node);
+		}
 
-		//}
+		// findChildren(array, dictionary)
+	}
+
+	public static void FindChildren (Object[] nodes, Dictionary<string, Object> objDict) {
+		foreach (Object node in nodes) {
+			string[] children = node.getComponent<NodeInfo> ();
+			//foreach (string child in )
+		}
 	}
 
 	public static Object MakePrefab (JSONNode storyNode) {
