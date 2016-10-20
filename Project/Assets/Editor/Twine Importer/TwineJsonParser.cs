@@ -27,18 +27,22 @@ public class TwineJsonParser {
 	public static void ReadJson (string jsonString) {
 		JSONNode parsedJson = JSON.Parse(jsonString);
 		JSONArray parsedArray = parsedJson.AsArray;
-		Debug.Log (parsedJson);
+		Object[] prefabNodes = new Object[parsedArray.Count];
 
 		// Demo code, printing the ID and name of each node:
+		int count = 0;
 		foreach (JSONNode storyNode in parsedArray) {
 			//Debug.Log ("Node ID: " + storyNode[NodeIdKey]);
 			//Debug.Log ("Node name: " + storyNode[NodeNameKey]);
-			makePrefab(storyNode);
+			Object prefabNode = makePrefab(storyNode);
+			prefabNodes [0] = prefabNode;
 		}
+		//foreach (Object node in prefabNodes) {
 
+		//}
 	}
 
-	public static void makePrefab (JSONNode storyNode) {
+	public static Object makePrefab (JSONNode storyNode) {
 		#if UNITY_EDITOR
 		Object emptyObj;
 		string obj_name = storyNode[NodeNameKey];
@@ -51,19 +55,27 @@ public class TwineJsonParser {
 		var data = tempObj.GetComponent<NodeInfo> ();
 		data.pid = storyNode["pid"];
 		data.name = storyNode["name"];
-		data.tags = serialize (storyNode["tags"]);
+		data.tags = serialize (storyNode["tags"], false);
 		data.content = storyNode["content"];
-		data.childrenNames = serialize (storyNode["childrenNames"]);
+		data.childrenNames = serialize (storyNode["childrenNames"], true);
 		PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab);
+		return emptyObj;
 		#endif
 	}
 
-	public static string[] serialize (JSONNode node) {
-		Debug.Log (node.Count);
+	public static string[] serialize (JSONNode node, bool parseChildren) {
+		//Debug.Log (node.Count);
 		string[] nodeList = new string[node.Count];
 		for (int i = 0; i < node.Count; i++) {
-			Debug.Log (node [i].ToString());
-			nodeList[i] = (node [i].ToString());
+			//Debug.Log (node [i].ToString());
+			string nodeString = node [i].ToString();
+			if (parseChildren) {
+				Debug.Log (nodeString);
+				int stringLength = nodeString.Length - 6;
+				nodeString = nodeString.Substring (3, stringLength);
+				Debug.Log (nodeString);
+			}
+			nodeList[i] = (nodeString);
 		}
 		return nodeList;
 	}
