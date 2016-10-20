@@ -36,13 +36,13 @@ public class AnnotationInteraction : Interaction
     {
         Active = true;
         //freeze the player when annotation is open
-        TogglePlayer();
     }
 
     void OnGUI()
     {
         if (Active)
         {
+            SetPlayerFrozen(true);
             //Allow the player to see and move the cursor (so they can scroll)
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -93,7 +93,7 @@ public class AnnotationInteraction : Interaction
                 Active = false;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
-                TogglePlayer();
+                SetPlayerFrozen(false);
             }
         }
     }
