@@ -10,8 +10,8 @@ using UnityEditor;
 public class TwineJsonParser {
 
 	// Keys for JSON:
-	private readonly static string NodeIdKey = "pid";
-	private readonly static string NodeNameKey = "name";
+	//private readonly static string NodeIdKey = "pid";
+	//private readonly static string NodeNameKey = "name";
 
 	/// <summary>
 	/// Imports the provided file in full to the current project
@@ -28,36 +28,36 @@ public class TwineJsonParser {
 	public static void ReadJson (string jsonString) {
 		JSONNode parsedJson = JSON.Parse(jsonString);
 		JSONArray parsedArray = parsedJson.AsArray;
-		Object[] prefabNodes = new Object[parsedArray.Count];
+		GameObject[] prefabNodes = new GameObject[parsedArray.Count];
 
 		// Demo code, printing the ID and name of each node:
 		int count = 0;
 		foreach (JSONNode storyNode in parsedArray) {
 			//Debug.Log ("Node ID: " + storyNode[NodeIdKey]);
 			//Debug.Log ("Node name: " + storyNode[NodeNameKey]);
-			Object prefabNode = MakePrefab(storyNode);
+			GameObject prefabNode = MakePrefab(storyNode);
 			prefabNodes [0] = prefabNode;
 		}
 		// make dictionary
-		Dictionary<string, Object> objDict = new Dictionary<string, Object>();
-		foreach (Object node in prefabNodes) {
-			objDict.Add (node.name, node);
+		Dictionary<string, GameObject> objDict = new Dictionary<string, GameObject>();
+		foreach (GameObject node in prefabNodes) {
+			//objDict.Add (node.name, node);
 		}
 
 		// findChildren(array, dictionary)
 	}
 
-	public static void FindChildren (Object[] nodes, Dictionary<string, Object> objDict) {
-		foreach (Object node in nodes) {
-			string[] children = node.getComponent<NodeInfo> ();
+	public static void FindChildren (GameObject[] nodes, Dictionary<string, GameObject> objDict) {
+		foreach (GameObject node in nodes) {
+			//string[] children = node.getComponent<NodeInfo> ();
 			//foreach (string child in )
 		}
 	}
 
-	public static Object MakePrefab (JSONNode storyNode) {
+	public static GameObject MakePrefab (JSONNode storyNode) {
 		#if UNITY_EDITOR
 		Object emptyObj;
-		string obj_name = storyNode[NodeNameKey];
+		string obj_name = storyNode["name"];
 		string fileLocation = "Assets/Ignored/" + obj_name + ".prefab";
 		emptyObj = PrefabUtility.CreateEmptyPrefab(fileLocation);
 
@@ -71,7 +71,7 @@ public class TwineJsonParser {
 		data.content = storyNode["content"];
 		data.childrenNames = Serialize (storyNode["childrenNames"], true);
 		PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab);
-		return emptyObj;
+		return emptyObj as GameObject;
 		#endif
 	}
 

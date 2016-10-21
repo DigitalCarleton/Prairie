@@ -8,4 +8,5 @@ public class NodeInfo : MonoBehaviour {
 	public string[] tags;
 	public string content;
 	public string[] childrenNames;
+	public GameObject[] children;
 }
