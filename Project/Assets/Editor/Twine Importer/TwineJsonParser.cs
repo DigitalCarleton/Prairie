@@ -36,21 +36,31 @@ public class TwineJsonParser {
 			//Debug.Log ("Node ID: " + storyNode[NodeIdKey]);
 			//Debug.Log ("Node name: " + storyNode[NodeNameKey]);
 			GameObject prefabNode = MakePrefab(storyNode);
-			prefabNodes [0] = prefabNode;
+			//Debug.Log (prefabNode);
+			prefabNodes [count] = prefabNode;
+			++count;
 		}
 		// make dictionary
 		Dictionary<string, GameObject> objDict = new Dictionary<string, GameObject>();
 		foreach (GameObject node in prefabNodes) {
-			//objDict.Add (node.name, node);
+			//Debug.Log (node.name);
+			//Debug.Log (node);
+			objDict.Add (node.name, node);
 		}
+		FindChildren (prefabNodes, objDict);
 
 		// findChildren(array, dictionary)
 	}
 
 	public static void FindChildren (GameObject[] nodes, Dictionary<string, GameObject> objDict) {
 		foreach (GameObject node in nodes) {
-			//string[] children = node.getComponent<NodeInfo> ();
-			//foreach (string child in )
+			string[] children = node.GetComponent<NodeInfo> ().childrenNames;
+			node.GetComponent <NodeInfo> ().children = new GameObject[children.Length];
+			int count = 0;
+			foreach (string child in children) {
+				node.GetComponent <NodeInfo> ().children[count] = objDict[child];
+				++count;
+			}
 		}
 	}
 
@@ -70,8 +80,7 @@ public class TwineJsonParser {
 		data.tags = Serialize (storyNode["tags"], false);
 		data.content = storyNode["content"];
 		data.childrenNames = Serialize (storyNode["childrenNames"], true);
-		PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab);
-		return emptyObj as GameObject;
+		return PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab) as GameObject;
 		#endif
 	}
 
@@ -82,10 +91,10 @@ public class TwineJsonParser {
 			//Debug.Log (node [i].ToString());
 			string nodeString = node [i].ToString();
 			if (parseChildren) {
-				Debug.Log (nodeString);
+				//Debug.Log (nodeString);
 				int stringLength = nodeString.Length - 4;
 				nodeString = nodeString.Substring (2, stringLength);
-				Debug.Log (nodeString);
+				//Debug.Log (nodeString);
 			}
 			nodeString = nodeString.Substring (1, nodeString.Length - 2);
 			nodeList[i] = (nodeString);
