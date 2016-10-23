@@ -78,7 +78,7 @@ public class TwineJsonParser {
 		data.pid = storyNode["pid"];
 		data.name = storyNode["name"];
 		data.tags = Serialize (storyNode["tags"], false);
-		data.content = storyNode["content"];
+		data.content = StripChildren (storyNode["content"]);
 		data.childrenNames = Serialize (storyNode["childrenNames"], true);
 		return PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab) as GameObject;
 		#endif
@@ -100,5 +100,10 @@ public class TwineJsonParser {
 			nodeList[i] = (nodeString);
 		}
 		return nodeList;
+	}
+
+	public static string StripChildren (string content) {
+		string[] substrings = content.Split ('[');
+		return substrings[0];
 	}
 }
