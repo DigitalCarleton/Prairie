@@ -20,10 +20,4 @@ public abstract class Interaction : MonoBehaviour
 
 	protected abstract void PerformAction ();
 
-    protected void SetPlayerFrozen(bool isFrozen)
-    {
-        trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = !isFrozen;
-        trigger.GetComponent<FirstPersonInteractor>().enabled = !isFrozen;
-    }
-
 }

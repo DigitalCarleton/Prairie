@@ -35,14 +35,15 @@ public class AnnotationInteraction : Interaction
     protected override void PerformAction()
     {
         Active = true;
-        //freeze the player when annotation is open
+
+		if (trigger.GetComponent<FirstPersonInteractor> () != null)
+			trigger.GetComponent<FirstPersonInteractor> ()?.SetIsFrozen (true);
     }
 
     void OnGUI()
     {
         if (Active)
         {
-            SetPlayerFrozen(true);
             //Allow the player to see and move the cursor (so they can scroll)
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -93,7 +94,9 @@ public class AnnotationInteraction : Interaction
                 Active = false;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
-                SetPlayerFrozen(false);
+                
+				if (trigger.GetComponent<FirstPersonInteractor> () != null)
+					trigger.GetComponent<FirstPersonInteractor> ()?.SetIsFrozen (false);
             }
         }
     }
