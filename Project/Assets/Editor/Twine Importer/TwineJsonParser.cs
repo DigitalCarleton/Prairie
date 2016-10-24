@@ -32,10 +32,12 @@ public class TwineJsonParser {
 
 		// Demo code, printing the ID and name of each node:
 		int count = 0;
+		// create empty game object
+		GameObject parent = new GameObject("Story");
 		foreach (JSONNode storyNode in parsedArray) {
 			//Debug.Log ("Node ID: " + storyNode[NodeIdKey]);
 			//Debug.Log ("Node name: " + storyNode[NodeNameKey]);
-			GameObject prefabNode = MakePrefab(storyNode);
+			GameObject prefabNode = MakeGameObjectFromStory(parent, storyNode);
 			//Debug.Log (prefabNode);
 			prefabNodes [count] = prefabNode;
 			++count;
@@ -48,6 +50,9 @@ public class TwineJsonParser {
 			objDict.Add (node.name, node);
 		}
 		FindChildren (prefabNodes, objDict);
+
+		PrefabUtility.CreatePrefab ("Assets/Ignored/Story.prefab", parent);
+		GameObject.DestroyImmediate (parent);
 
 		// findChildren(array, dictionary)
 	}
@@ -64,15 +69,10 @@ public class TwineJsonParser {
 		}
 	}
 
-	public static GameObject MakePrefab (JSONNode storyNode) {
+	public static GameObject MakeGameObjectFromStory (GameObject parent, JSONNode storyNode) {
 		#if UNITY_EDITOR
-		Object emptyObj;
-		string obj_name = storyNode["name"];
-		string fileLocation = "Assets/Ignored/" + obj_name + ".prefab";
-		emptyObj = PrefabUtility.CreateEmptyPrefab(fileLocation);
 
-		GameObject tempObj = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		tempObj.name = obj_name;
+		GameObject tempObj = new GameObject(storyNode["name"]);
 		tempObj.AddComponent<NodeInfo> ();
 		var data = tempObj.GetComponent<NodeInfo> ();
 		data.pid = storyNode["pid"];
@@ -80,7 +80,11 @@ public class TwineJsonParser {
 		data.tags = Serialize (storyNode["tags"], false);
 		data.content = StripChildren (storyNode["content"]);
 		data.childrenNames = Serialize (storyNode["childrenNames"], true);
-		return PrefabUtility.ReplacePrefab(tempObj, emptyObj, ReplacePrefabOptions.ConnectToPrefab) as GameObject;
+		//Object.Destroy (tempObj.GetComponent <BoxCollider> ());
+		//Object.Destroy (tempObj.GetComponent <MeshRenderer> ());
+		tempObj.transform.SetParent (parent.transform);
+		return tempObj;
+
 		#endif
 	}
 
