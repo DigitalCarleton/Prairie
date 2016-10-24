@@ -3,11 +3,14 @@ using System.Collections;
 
 public class AnnotationInteraction : Interaction
 {
-    private bool Active = false;
+    
+    public bool UseTextFile = false;
+    public TextAsset TextFile;
     [Multiline]
     public string Text;
     public Texture[] Images;
 
+    private bool Active = false;
     private GUIContent Content;
     private GUIStyle Style;
     private Rect Rectangle;
@@ -20,7 +23,14 @@ public class AnnotationInteraction : Interaction
 
     void Start()
     {
-        Content = new GUIContent(Text);
+        if (UseTextFile == true && TextFile != null)
+        {
+            Content = new GUIContent(TextFile.text);
+        } else
+        {
+            Content = new GUIContent(Text);
+        }
+        
         ScrollPosition = new Vector2(0, 0);
         Rectangle = new Rect(BOX_X, BOX_Y, BOX_WIDTH, BOX_HEIGHT);
         //setting up style for text
@@ -37,7 +47,7 @@ public class AnnotationInteraction : Interaction
         Active = true;
 
 		if (trigger.GetComponent<FirstPersonInteractor> () != null)
-			trigger.GetComponent<FirstPersonInteractor> ()?.SetIsFrozen (true);
+			trigger.GetComponent<FirstPersonInteractor> ().SetIsFrozen (true);
     }
 
     void OnGUI()
@@ -72,7 +82,11 @@ public class AnnotationInteraction : Interaction
                         GUILayout.Label(new GUIContent(image), GUILayout.Width(BOX_WIDTH - 40), GUILayout.Height(newHeight));
                     } else
                     {
+                        GUILayout.BeginHorizontal();
+                        GUILayout.FlexibleSpace();
                         GUILayout.Label(new GUIContent(image));
+                        GUILayout.FlexibleSpace();
+                        GUILayout.EndHorizontal();    
                     }
 
                 }
@@ -96,7 +110,7 @@ public class AnnotationInteraction : Interaction
                 Cursor.lockState = CursorLockMode.Locked;
                 
 				if (trigger.GetComponent<FirstPersonInteractor> () != null)
-					trigger.GetComponent<FirstPersonInteractor> ()?.SetIsFrozen (false);
+					trigger.GetComponent<FirstPersonInteractor> ().SetIsFrozen (false);
             }
         }
     }
