@@ -28,35 +28,32 @@ public class TwineJsonParser {
 	public static void ReadJson (string jsonString) {
 		JSONNode parsedJson = JSON.Parse(jsonString);
 		JSONArray parsedArray = parsedJson.AsArray;
-		GameObject[] prefabNodes = new GameObject[parsedArray.Count];
-
-		// Demo code, printing the ID and name of each node:
+		GameObject[] twineNodes = new GameObject[parsedArray.Count];
+		
 		int count = 0;
-		// create empty game object
+		// create parent game object
 		GameObject parent = new GameObject("Story");
+		// make GameObject nodes out of every twine/json node
 		foreach (JSONNode storyNode in parsedArray) {
-			//Debug.Log ("Node ID: " + storyNode[NodeIdKey]);
-			//Debug.Log ("Node name: " + storyNode[NodeNameKey]);
-			GameObject prefabNode = MakeGameObjectFromStory(parent, storyNode);
-			//Debug.Log (prefabNode);
-			prefabNodes [count] = prefabNode;
+			GameObject twineNode = MakeGameObjectFromStory (parent, storyNode);
+			twineNodes [count] = twineNode;
 			++count;
 		}
 		// make dictionary
 		Dictionary<string, GameObject> objDict = new Dictionary<string, GameObject>();
-		foreach (GameObject node in prefabNodes) {
-			//Debug.Log (node.name);
-			//Debug.Log (node);
+		// add things to dictionary
+		foreach (GameObject node in twineNodes) {
 			objDict.Add (node.name, node);
 		}
-		FindChildren (prefabNodes, objDict);
-
+		FindChildren (twineNodes, objDict);
+		// create the large prefab, and kill the GameObject that is not a prefab
 		PrefabUtility.CreatePrefab ("Assets/Ignored/Story.prefab", parent);
 		GameObject.DestroyImmediate (parent);
-
-		// findChildren(array, dictionary)
 	}
 
+	// Finds the children of each of the gameObjects from the other gameObjects
+	// Iterates through the list of nodes, gets an array of children, and assigns
+	// gameObject children to the node that match the names of the array of children
 	public static void FindChildren (GameObject[] nodes, Dictionary<string, GameObject> objDict) {
 		foreach (GameObject node in nodes) {
 			string[] children = node.GetComponent<NodeInfo> ().childrenNames;
@@ -69,6 +66,7 @@ public class TwineJsonParser {
 		}
 	}
 
+	// takes the twine/json node, and turns it into a game object with all the relevant data
 	public static GameObject MakeGameObjectFromStory (GameObject parent, JSONNode storyNode) {
 		#if UNITY_EDITOR
 
@@ -80,25 +78,24 @@ public class TwineJsonParser {
 		data.tags = Serialize (storyNode["tags"], false);
 		data.content = StripChildren (storyNode["content"]);
 		data.childrenNames = Serialize (storyNode["childrenNames"], true);
-		//Object.Destroy (tempObj.GetComponent <BoxCollider> ());
-		//Object.Destroy (tempObj.GetComponent <MeshRenderer> ());
 		tempObj.transform.SetParent (parent.transform);
 		return tempObj;
 
 		#endif
 	}
 
+	// takes a string list of strings from the json, and makes it an array of
+	// strings, where each string is distinct from the other instead of all
+	// one giant thing
+	// boolean is because the children need more of their string sliced off
+	// than the tags
 	public static string[] Serialize (JSONNode node, bool parseChildren) {
-		//Debug.Log (node.Count);
 		string[] nodeList = new string[node.Count];
 		for (int i = 0; i < node.Count; i++) {
-			//Debug.Log (node [i].ToString());
 			string nodeString = node [i].ToString();
 			if (parseChildren) {
-				//Debug.Log (nodeString);
 				int stringLength = nodeString.Length - 4;
 				nodeString = nodeString.Substring (2, stringLength);
-				//Debug.Log (nodeString);
 			}
 			nodeString = nodeString.Substring (1, nodeString.Length - 2);
 			nodeList[i] = (nodeString);
@@ -106,6 +103,8 @@ public class TwineJsonParser {
 		return nodeList;
 	}
 
+	// strips the list of children off of the content,
+	// because we really only want the content
 	public static string StripChildren (string content) {
 		string[] substrings = content.Split ('[');
 		return substrings[0];
