@@ -5,7 +5,9 @@ public abstract class Interaction : MonoBehaviour
 {
 	public string prompt;
 	public bool repeatable = true;
-    protected GameObject trigger;
+
+	[HideInInspector]
+    public GameObject trigger;
 
 	public void Interact (GameObject obj)
 	{
