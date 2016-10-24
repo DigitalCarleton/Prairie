@@ -72,6 +72,11 @@ public class FirstPersonInteractor : MonoBehaviour
 
 		if (Physics.Raycast (origin, fwd, out hit, interactionRange))
 		{
+			if (hit.collider.isTrigger) {
+				// ignore non-physical colliders, such as trigger areas
+				return new List<Interaction> ();
+			}
+
 			GameObject obj = hit.transform.gameObject;
 			var enabledInteractions = new List<Interaction> ();
 			foreach (Interaction i in obj.GetComponents<Interaction> ()) {
