@@ -92,17 +92,4 @@ public class FirstPersonInteractor : MonoBehaviour
 		}
 	}
 
-	// ====== Utility Functions ========
-
-	/// <summary>
-	/// Sets the player state to be locked if true, free to move if untrue.
-	/// </summary>
-	/// <param name="isFrozen">If <c>true</c>, the player can not move.</param>
-	public void SetIsFrozen(bool isFrozen)
-	{
-		this.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = !isFrozen;
-		this.enabled = !isFrozen;
-	}
-
-
 }
