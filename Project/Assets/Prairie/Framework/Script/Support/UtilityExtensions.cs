@@ -52,3 +52,33 @@ public static class GameObjectExtensions {
 	}
 
 }
+
+public static class TransformExtensions {
+
+	/// <summary>
+	/// Rotates this transform relative to the main camera.
+	/// </summary>
+	/// <param name="leftRightRotate">The speed at which to rotate against the horizontal axis.</param>
+	/// <param name="upDownRotate">The speed at which to rotate against the vertical axis.</param>
+	public static void RotateRelativeToCamera(this Transform t, float leftRightRotate, float upDownRotate) {
+
+		float sensitivity = .25f;
+		//Get Main camera in Use.
+		Camera cam = Camera.main;
+		//Gets the world vector space for cameras up vector 
+		Vector3 relativeUp = cam.transform.TransformDirection(Vector3.up);
+		//Gets world vector for space cameras right vector
+		Vector3 relativeRight = cam.transform.TransformDirection(Vector3.right);
+
+		//Turns relativeUp vector from world to objects local space
+		Vector3 objectRelativeUp = t.InverseTransformDirection(relativeUp);
+		//Turns relativeRight vector from world to object local space
+		Vector3 objectRelaviveRight = t.InverseTransformDirection(relativeRight);
+
+		var rotateBy = Quaternion.AngleAxis(leftRightRotate / t.localScale.x * sensitivity, objectRelativeUp)
+			* Quaternion.AngleAxis(-upDownRotate / t.localScale.x  * sensitivity, objectRelaviveRight);
+
+		t.localRotation *= rotateBy;
+	}
+
+}
