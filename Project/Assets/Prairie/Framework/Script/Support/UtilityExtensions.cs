@@ -7,7 +7,16 @@ public static class PlayerExtensions {
 	/// </summary>
 	/// <param name="isFrozen">If <c>true</c>, the player can not move.</param>
 	public static void SetIsFrozen(this FirstPersonInteractor player, bool isFrozen) {
-		player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = !isFrozen;
+		var playerCompTypeA = player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>();
+
+		var playerCompTypeB = player.GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController>();
+
+		if (playerCompTypeA != null)
+			playerCompTypeA.enabled = !isFrozen;
+
+		if (playerCompTypeB != null)
+			playerCompTypeB.enabled = !isFrozen;
+
 		player.enabled = !isFrozen;
 	}
 
