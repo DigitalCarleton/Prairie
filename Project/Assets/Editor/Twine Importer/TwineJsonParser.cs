@@ -9,10 +9,6 @@ using UnityEditor;
 
 public class TwineJsonParser {
 
-	// Keys for JSON:
-	//private readonly static string NodeIdKey = "pid";
-	//private readonly static string NodeNameKey = "name";
-
 	/// <summary>
 	/// Imports the provided file in full to the current project
 	/// </summary>
@@ -35,7 +31,7 @@ public class TwineJsonParser {
 		GameObject parent = new GameObject("Story");
 		// make GameObject nodes out of every twine/json node
 		foreach (JSONNode storyNode in parsedArray) {
-			GameObject twineNode = MakeGameObjectFromStory (parent, storyNode);
+			GameObject twineNode = MakeGameObjectFromStoryNode (parent, storyNode);
 			twineNodes [count] = twineNode;
 			++count;
 		}
@@ -45,34 +41,43 @@ public class TwineJsonParser {
 		foreach (GameObject node in twineNodes) {
 			objDict.Add (node.name, node);
 		}
-		FindChildren (twineNodes, objDict);
+		MatchChildren (twineNodes, objDict);
 		// create the large prefab, and kill the GameObject that is not a prefab
 		PrefabUtility.CreatePrefab ("Assets/Ignored/Story.prefab", parent);
 		GameObject.DestroyImmediate (parent);
 	}
-
-	// Finds the children of each of the gameObjects from the other gameObjects
-	// Iterates through the list of nodes, gets an array of children, and assigns
-	// gameObject children to the node that match the names of the array of children
-	public static void FindChildren (GameObject[] nodes, Dictionary<string, GameObject> objDict) {
+		
+	/// <summary>
+	/// Finds the children of each of the gameObjects from the other gameObjects
+	/// Iterates through the list of nodes, gets an array of children, and assigns
+	/// gameObject children to the node that match the names ofthe array of children
+	/// </summary>
+	/// <param name="nodes">Array of nodes</param>
+	/// <param name="objDict">Dictionary of nodes, with key of node name</param>
+	public static void MatchChildren (GameObject[] nodes, Dictionary<string, GameObject> objDict) {
 		foreach (GameObject node in nodes) {
-			string[] children = node.GetComponent<NodeInfo> ().childrenNames;
-			node.GetComponent <NodeInfo> ().children = new GameObject[children.Length];
+			string[] children = node.GetComponent<TwineNode> ().childrenNames;
+			node.GetComponent <TwineNode> ().children = new GameObject[children.Length];
 			int count = 0;
 			foreach (string child in children) {
-				node.GetComponent <NodeInfo> ().children[count] = objDict[child];
+				node.GetComponent <TwineNode> ().children[count] = objDict[child];
 				++count;
 			}
 		}
 	}
-
-	// takes the twine/json node, and turns it into a game object with all the relevant data
-	public static GameObject MakeGameObjectFromStory (GameObject parent, JSONNode storyNode) {
+		
+	/// <summary>
+	/// Takes the twine/JSON node, and turns it into a game object with all the relevant data
+	/// </summary>
+	/// <returns>GameObject of single node</returns>
+	/// <param name="parent">Parent.</param>
+	/// <param name="storyNode">JSON story node.</param>
+	public static GameObject MakeGameObjectFromStoryNode (GameObject parent, JSONNode storyNode) {
 		#if UNITY_EDITOR
 
 		GameObject tempObj = new GameObject(storyNode["name"]);
-		tempObj.AddComponent<NodeInfo> ();
-		var data = tempObj.GetComponent<NodeInfo> ();
+		tempObj.AddComponent<TwineNode> ();
+		var data = tempObj.GetComponent<TwineNode> ();
 		data.pid = storyNode["pid"];
 		data.name = storyNode["name"];
 		data.tags = Serialize (storyNode["tags"], false);
@@ -83,12 +88,17 @@ public class TwineJsonParser {
 
 		#endif
 	}
-
-	// takes a string list of strings from the json, and makes it an array of
-	// strings, where each string is distinct from the other instead of all
-	// one giant thing
-	// boolean is because the children need more of their string sliced off
-	// than the tags
+		
+	/// <summary>
+	/// Takes a string list of strings from the JSON, and makes it an array of
+	/// strings, where each string is distinct from the other instead of one
+	/// giant string
+	/// Boolean allows children to have more sliced off of each string than tags
+	/// The 4 within the if statement is to slice off the brackets around the children: [[children]]
+	/// The 2 comes because we want to slice the brackets off of the tag: [tag]
+	/// </summary>
+	/// <param name="node">the JSONNode, which just holds the tag or childrenNames content</param>
+	/// <param name="parseChildren">If set to <c>true</c>, slice more off the ends of child names</param>
 	public static string[] Serialize (JSONNode node, bool parseChildren) {
 		string[] nodeList = new string[node.Count];
 		for (int i = 0; i < node.Count; i++) {
@@ -102,9 +112,13 @@ public class TwineJsonParser {
 		}
 		return nodeList;
 	}
-
-	// strips the list of children off of the content,
-	// because we really only want the content
+		
+	/// <summary>
+	/// Strips the list of children off the content,
+	/// because we really only want the content
+	/// </summary>
+	/// <returns>The content without children atached</returns>
+	/// <param name="content">Content with children attached</param>
 	public static string StripChildren (string content) {
 		string[] substrings = content.Split ('[');
 		return substrings[0];
