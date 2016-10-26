@@ -7,8 +7,6 @@ public class TumbleInteraction : Interaction
 	/// Allows user to rotate object.
 	/// </summary>
 	public bool pickedUp = false;
-	private Vector3 facing;
-	private Vector3 localX;
 
 	// When the user interacts with object, they invoke the ability to 
 	// tumble the object with the I, J, K and L keys. Interacting
@@ -18,9 +16,6 @@ public class TumbleInteraction : Interaction
 	{
 		if (pickedUp)
 		{
-
-			facing = trigger.GetComponent<FirstPersonInteractor> ().getViewpoint ().transform.position - transform.position;
-			localX = Vector3.Cross (facing, transform.up);
 
 			if (Input.GetKey (KeyCode.L)) // right
 			{
@@ -41,10 +36,6 @@ public class TumbleInteraction : Interaction
 				transform.RotateRelativeToCamera (0, -10);
 				//transform.Rotate(Vector3.left * rotateSpeed, Space.World);
 				//transform.RotateAround(transform.position, localX, -100 * Time.deltaTime);
-			}
-			else if (Input.GetKey (KeyCode.B))
-			{
-				transform.rotation = Quaternion.LookRotation(localX);
 			}
 			else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.Escape))
 			{
