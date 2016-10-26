@@ -45,9 +45,7 @@ public class AnnotationInteraction : Interaction
     protected override void PerformAction()
     {
         Active = true;
-
-		if (trigger.GetComponent<FirstPersonInteractor> () != null)
-			trigger.GetComponent<FirstPersonInteractor> ().SetIsFrozen (true);
+		this.SetPlayerIsFrozen (true);
     }
 
     void OnGUI()
@@ -109,8 +107,7 @@ public class AnnotationInteraction : Interaction
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 
-				if (trigger.GetComponent<FirstPersonInteractor> () != null)
-					trigger.GetComponent<FirstPersonInteractor> ().SetIsFrozen (false);
+				this.SetPlayerIsFrozen (false);
             }
         }
     }

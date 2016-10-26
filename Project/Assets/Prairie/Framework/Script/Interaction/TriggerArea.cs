@@ -8,21 +8,18 @@ public class TriggerArea : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 
+		// ensure we're being triggered by a player
 		var playerInteractor = other.gameObject.GetComponent<FirstPersonInteractor> ();
 		if (playerInteractor == null) {
 			return;
 		}
 
-		// Trigger all the Interactions on this object...
-		foreach (Interaction action in this.GetComponents<Interaction>()) {
-			action.Interact (playerInteractor.gameObject);
-		}
+		// Trigger all the Interactions on this object
+		this.gameObject.InteractAll (playerInteractor.gameObject);
 
-		// Trigger all the Interactions on our additional targets...
-		foreach (GameObject t in additionalTargets) {
-			foreach (Interaction action in t.GetComponents<Interaction>()) {
-				action.Interact(playerInteractor.gameObject);
-			}
+		// Trigger all the Interactions on our additional targets
+		foreach (GameObject target in additionalTargets) {
+			target.InteractAll (playerInteractor.gameObject);
 		}
 	}
     
