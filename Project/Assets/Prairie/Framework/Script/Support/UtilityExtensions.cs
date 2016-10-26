@@ -61,7 +61,10 @@ public static class TransformExtensions {
 	/// <param name="leftRightRotate">The speed at which to rotate against the horizontal axis.</param>
 	/// <param name="upDownRotate">The speed at which to rotate against the vertical axis.</param>
 	public static void RotateRelativeToCamera(this Transform t, float leftRightRotate, float upDownRotate) {
-
+		
+		// Code adapted from:
+		// http://answers.unity3d.com/questions/299126/how-to-rotate-relative-to-camera-angleposition.html
+		
 		float sensitivity = .25f;
 		//Get Main camera in Use.
 		Camera cam = Camera.main;
