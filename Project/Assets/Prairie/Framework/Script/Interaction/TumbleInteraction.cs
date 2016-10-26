@@ -28,14 +28,10 @@ public class TumbleInteraction : Interaction
 			else if (Input.GetKey (KeyCode.K)) // down
 			{
 				transform.RotateRelativeToCamera (0, 10);
-				//transform.Rotate(Vector3.right * rotateSpeed, Space.Self);
-				//transform.RotateAround(transform.position, localX, 100 * Time.deltaTime);
 			}
 			else if (Input.GetKey (KeyCode.I)) // up
 			{
 				transform.RotateRelativeToCamera (0, -10);
-				//transform.Rotate(Vector3.left * rotateSpeed, Space.World);
-				//transform.RotateAround(transform.position, localX, -100 * Time.deltaTime);
 			}
 			else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.Escape))
 			{
