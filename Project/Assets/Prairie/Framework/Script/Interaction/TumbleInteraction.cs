@@ -6,40 +6,41 @@ public class TumbleInteraction : Interaction
 	/// <summary>
 	/// Allows user to rotate object.
 	/// </summary>
-	float rotateSpeed = 2f;
 	public bool pickedUp = false;
+	private Vector3 facing;
+	private Vector3 localX;
 
 	// When the user interacts with object, they invoke the ability to 
 	// tumble the object with the I, J, K and L keys. Interacting
 	// with the object again revokes this ability.
-	protected override void PerformAction() {
-		pickedUp = true;
-		if (trigger.GetComponent<FirstPersonInteractor> () != null)
-			trigger.GetComponent<FirstPersonInteractor> ().SetIsFrozen (true);
-	}
-		 
+
 	protected void Update()
 	{
 		if (pickedUp)
 		{
-			Vector3 facing = trigger.GetComponent<FirstPersonInteractor> ().getViewpoint ().transform.position - transform.position;
-			Vector3 localX = Vector3.Cross (facing, transform.up);
-			if (Input.GetKey (KeyCode.L)) // left
+
+			facing = trigger.GetComponent<FirstPersonInteractor> ().getViewpoint ().transform.position - transform.position;
+			localX = Vector3.Cross (facing, transform.up);
+
+			if (Input.GetKey (KeyCode.L)) // right
 			{
-				transform.Rotate(Vector3.down * rotateSpeed, Space.World);
+				transform.RotateRelativeToCamera (-10, 0);
 			}
-			else if (Input.GetKey (KeyCode.J)) // right
+			else if (Input.GetKey (KeyCode.J)) // left
 			{
-				transform.Rotate(Vector3.up * rotateSpeed, Space.World);
+				transform.RotateRelativeToCamera (10, 0);
 			}
 			else if (Input.GetKey (KeyCode.K)) // down
 			{
-				//transform.Rotate(Vector3.right * rotateSpeed, Space.World);
-				transform.RotateAround(transform.position, localX * rotateSpeed, 100 * Time.deltaTime);
+				transform.RotateRelativeToCamera (0, 10);
+				//transform.Rotate(Vector3.right * rotateSpeed, Space.Self);
+				//transform.RotateAround(transform.position, localX, 100 * Time.deltaTime);
 			}
 			else if (Input.GetKey (KeyCode.I)) // up
 			{
-				transform.Rotate(Vector3.left * rotateSpeed, Space.World);
+				transform.RotateRelativeToCamera (0, -10);
+				//transform.Rotate(Vector3.left * rotateSpeed, Space.World);
+				//transform.RotateAround(transform.position, localX, -100 * Time.deltaTime);
 			}
 			else if (Input.GetKey (KeyCode.B))
 			{
@@ -52,5 +53,11 @@ public class TumbleInteraction : Interaction
 				pickedUp = false;
 			}
 		}
+	}
+
+	protected override void PerformAction() {
+		pickedUp = true;
+		if (trigger.GetComponent<FirstPersonInteractor> () != null)
+			trigger.GetComponent<FirstPersonInteractor> ().SetIsFrozen (true);
 	}
 }
