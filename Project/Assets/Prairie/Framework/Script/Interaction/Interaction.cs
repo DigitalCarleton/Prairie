@@ -5,7 +5,9 @@ public abstract class Interaction : MonoBehaviour
 {
 	public string prompt;
 	public bool repeatable = true;
-    protected GameObject trigger;
+
+	[HideInInspector]
+    public GameObject trigger;
 
 	public void Interact (GameObject obj)
 	{
@@ -19,11 +21,5 @@ public abstract class Interaction : MonoBehaviour
 	}
 
 	protected abstract void PerformAction ();
-
-    protected void SetPlayerFrozen(bool isFrozen)
-    {
-        trigger.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = !isFrozen;
-        trigger.GetComponent<FirstPersonInteractor>().enabled = !isFrozen;
-    }
 
 }
