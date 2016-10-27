@@ -34,9 +34,11 @@ public class FirstPersonInteractor : MonoBehaviour
 		if (interactionAvaliable)
 		{
 			// Draw a GUI with the interaction
-			var frame = new Rect (Screen.width / 2, Screen.height / 2, 150, 25);
+			var frame = new Rect (Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
 			var firstInteractionPrompt = avaliableInteractions [0].prompt;
-			GUI.Box (frame, "Press F to " + firstInteractionPrompt);
+            GUI.BeginGroup(frame);
+			GUILayout.Box ("Press F to " + firstInteractionPrompt);
+            GUI.EndGroup();
 		}
 		else 
 		{
@@ -52,7 +54,7 @@ public class FirstPersonInteractor : MonoBehaviour
 		if (interactionAvaliable)
 		{
 			foreach (Interaction target in avaliableInteractions) {
-				target.Interact ();
+				target.Interact (gameObject);
 			}
 		}
 	}
@@ -70,6 +72,11 @@ public class FirstPersonInteractor : MonoBehaviour
 
 		if (Physics.Raycast (origin, fwd, out hit, interactionRange))
 		{
+			if (hit.collider.isTrigger) {
+				// ignore non-physical colliders, such as trigger areas
+				return new List<Interaction> ();
+			}
+
 			GameObject obj = hit.transform.gameObject;
 			var enabledInteractions = new List<Interaction> ();
 			foreach (Interaction i in obj.GetComponents<Interaction> ()) {
@@ -84,4 +91,5 @@ public class FirstPersonInteractor : MonoBehaviour
 			return new List<Interaction> ();	// no interactions, empty list
 		}
 	}
+
 }

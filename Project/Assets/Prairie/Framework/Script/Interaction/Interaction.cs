@@ -6,8 +6,12 @@ public abstract class Interaction : MonoBehaviour
 	public string prompt;
 	public bool repeatable = true;
 
-	public void Interact ()
+	[HideInInspector]
+    public GameObject trigger;
+
+	public void Interact (GameObject obj)
 	{
+        trigger = obj;
 		if (this.enabled) {
 			PerformAction ();					// run the interaction
 			if (!repeatable) {
