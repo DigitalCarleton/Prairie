@@ -3,82 +3,100 @@ using System.Collections;
 
 public class SlideshowInteraction : Interaction
 {
-    public Texture2D[] slides = new Texture2D[7];
-    private int currentSlide;
-    private bool active = false;
+	private bool Active = false;
 
-    private GUIContent content;
-    private GUIStyle style;
+	public Texture2D[] Slides;
+    public int CurrentSlide;
+
+    private Rect Shading;
 
     void Start()
     {
-        // Insert pictures into GUI
-        content = new GUIContent(slides[currentSlide]);
-
-        style = new GUIStyle();
-        style.normal.background.height = Screen.height;
-        style.normal.background.width = Screen.width;
+		// Screen-sized panel used for shading when slideshow is displayed.
+        Shading = new Rect(0, 0, Screen.width, Screen.height);
     }
 
     protected override void PerformAction()
     {
-        currentSlide = 0;
-        active = true;
-        // Disable player movement/interactor upon interacting w/ cube
-        GameObject.Find("Player").GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController>().enabled = false;
-        GameObject.Find("Player").GetComponent<FirstPersonInteractor>().enabled = false;
+		Active = true;
+
+		// Start at beginning of slideshow upon interaction
+		CurrentSlide = 0;
+
+        // Disable player movement/interactor upon interaction
+		this.SetPlayerIsFrozen (true);
     }
 
+	/// <summary>
+	/// Displays GUI in which an interactive slideshow is displayed against a darkened play screen.
+	/// </summary>
     void OnGUI()
     {
-        if (active)
+        if (Active)
         {
-            // Darken the background and display image
-            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), Texture2D.blackTexture);
-            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), Texture2D.blackTexture);
-            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), Texture2D.blackTexture);
+			// Darken the background (hacky method)
+            GUI.Box(Shading, Texture2D.blackTexture);
+            GUI.Box(Shading, Texture2D.blackTexture);
+            GUI.Box(Shading, Texture2D.blackTexture);
 
-            GUI.Box(new Rect(Screen.width / 2 - content.image.width / 2,
-            Screen.height / 2 - content.image.height / 2, content.image.width,
-            content.image.height), content, style);
+			// Padding to ensure that slide is centered.
+			GUILayout.BeginArea (Shading);
+			GUILayout.FlexibleSpace();
+			GUILayout.BeginHorizontal();
+			GUILayout.FlexibleSpace();
+
+			// Slide (image) display.  If image is too large (i.e. width or height islarger than the play screen),
+			// halve the image dimensions before displaying.  Else display the image as is.
+			if (Slides.Length > 0) 
+			{
+				Texture slide = Slides [CurrentSlide];
+				if (slide.width >= Screen.width || slide.height >= Screen.height) {
+					float newWidth = (float)slide.width / 2;
+					float newHeight = (float)slide.height / 2;
+					GUILayout.Label (new GUIContent (slide), GUILayout.Width (newWidth), GUILayout.Height (newHeight));		
+				} else 
+				{
+					GUILayout.Label (new GUIContent (slide));
+				}
+			}
+
+			// Padding to ensure that slide is centered.
+			GUILayout.FlexibleSpace();
+			GUILayout.EndHorizontal();
+			GUILayout.FlexibleSpace();
+			GUILayout.EndArea ();
         }
     }
-
+		
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            // Advance w/ --> or D; loop back to start when on last image
-            if (currentSlide < slides.Length - 1)
+            // Advance w/ right arrow or D key; loop back to first image when on last image
+            if (CurrentSlide < Slides.Length - 1)
             {
-                currentSlide++;
-                content.image = slides[currentSlide];
+                CurrentSlide++;
             } else
             {
-                currentSlide = 0;
-                content.image = slides[currentSlide];
+                CurrentSlide = 0;
             }
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            // Retreat w/ <-- or A; loop back to last image when on first
-            if (currentSlide > 0)
+            // Retreat w/ left arrow or A key; loop back to last image when on first image
+            if (CurrentSlide > 0)
             {
-                currentSlide--;
-                content.image = slides[currentSlide];
+                CurrentSlide--;
             } else
             {
-                currentSlide = slides.Length - 1;
-                content.image = slides[currentSlide];
+                CurrentSlide = Slides.Length - 1;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.Escape))
         {
             // Upon ESC, exit from GUI and reenable player control
-            active = false;
-            currentSlide = 0;
-            GameObject.Find("Player").GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController>().enabled = true;
-            GameObject.Find("Player").GetComponent<FirstPersonInteractor>().enabled = true;
+            Active = false;
+			this.SetPlayerIsFrozen (false);
         }
     }
 }
