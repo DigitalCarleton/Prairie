@@ -3,13 +3,13 @@ using System.Collections;
 
 public class ComponentToggleInteraction : Interaction 
 {
-	public Behaviour target;
+	public Behaviour[] target;
 
 	protected override void PerformAction ()
 	{
-		if (target != null)
+		for (int i = 0; i < target.Length; i++)
 		{
-			target.enabled = !target.enabled;
+			target[i].enabled = !target[i].enabled;
 		}
 	}
 }
