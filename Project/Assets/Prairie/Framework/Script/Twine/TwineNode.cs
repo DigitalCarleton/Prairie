@@ -3,13 +3,13 @@ using System.Collections;
 
 public class TwineNode : MonoBehaviour {
 
+	[HideInInspector]
 	public string pid;
 	public string name;
 	public string[] tags;
 	public string content;
 	public string[] childrenNames;
 	public GameObject[] children;
-	
 	public GameObject[] triggeredObjects;
 
 	// use the unity 'enabled' thing to keep track of whether
