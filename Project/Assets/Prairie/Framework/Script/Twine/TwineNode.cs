@@ -10,7 +10,7 @@ public class TwineNode : MonoBehaviour {
 	public string content;
 	public string[] childrenNames;
 	public GameObject[] children;
-	public GameObject[] triggeredObjects;
+	public GameObject[] objectsToTrigger;
 
 	// use the unity 'enabled' thing to keep track of whether
 	// a twine node is triggerable or not
