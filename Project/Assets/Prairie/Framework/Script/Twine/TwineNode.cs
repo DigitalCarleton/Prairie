@@ -10,19 +10,11 @@ public class TwineNode : MonoBehaviour {
 	public string content;
 	public string[] childrenNames;
 	public GameObject[] children;
-	public GameObject[] objectsToTrigger;
 
-	// use the unity 'enabled' thing to keep track of whether
-	// a twine node is triggerable or not
-	// the below doesn't do anything, but was a pseudocode-ish
-	// attempt at iterating through the triggeredObjects to trigger them
-	/*
-	public static void TriggerNode() {
-		for (int i = 0; i < triggeredObjects.Length; i++) {
-			triggeredObjects[i].GetComponent <Interaction> ();
-		}
-	} */
-
+	/// <summary>
+	/// Trigger the interactions associated with this Twine Node.
+	/// </summary>
+	/// <param name="interactor"> The interactor acting on this Twine Node, typically a player. </param>
 	public void StartInteractions(GameObject interactor) {
 		foreach (GameObject gameObject in objectsToTrigger) {
 			gameObject.InteractAll(interactor);
