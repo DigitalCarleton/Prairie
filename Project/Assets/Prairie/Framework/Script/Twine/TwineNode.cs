@@ -3,6 +3,8 @@ using System.Collections;
 
 public class TwineNode : MonoBehaviour {
 
+	public GameObject[] objectsToTrigger;
+
 	[HideInInspector]
 	public string pid;
 	public new string name;
