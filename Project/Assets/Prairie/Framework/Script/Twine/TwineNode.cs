@@ -5,7 +5,7 @@ public class TwineNode : MonoBehaviour {
 
 	[HideInInspector]
 	public string pid;
-	public string name;
+	public new string name;
 	public string[] tags;
 	public string content;
 	public string[] childrenNames;
@@ -22,4 +22,10 @@ public class TwineNode : MonoBehaviour {
 			triggeredObjects[i].GetComponent <Interaction> ();
 		}
 	} */
+
+	public void StartInteractions(GameObject interactor) {
+		foreach (GameObject gameObject in objectsToTrigger) {
+			gameObject.InteractAll(interactor);
+		}
+	}
 }
