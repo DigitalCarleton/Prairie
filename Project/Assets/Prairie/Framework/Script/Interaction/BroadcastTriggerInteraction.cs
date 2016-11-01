@@ -12,7 +12,7 @@ public class BroadcastTriggerInteraction : Interaction
 
 		foreach (BroadcastListener listener in allListeners)
 		{
-			if (listener.eventName == this.eventName)
+			if (string.Equals(listener.eventName, this.eventName, System.StringComparison.CurrentCultureIgnoreCase))
 			{
 				listener.OnEventFires (this.trigger);
 			}
