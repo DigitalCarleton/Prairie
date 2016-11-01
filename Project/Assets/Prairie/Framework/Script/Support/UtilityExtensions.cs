@@ -29,9 +29,11 @@ public static class InteractionExtensions {
 	/// </summary>
 	/// <param name="isFrozen">If <c>true</c>, the player can not move.</param>
 	public static void SetPlayerIsFrozen(this Interaction i, bool isFrozen) {
-		if (i.trigger != null) {
-			var player = i.trigger.GetComponent<FirstPersonInteractor> ();
-			if (player != null) {
+		if (i.rootInteractor != null) 
+		{
+			FirstPersonInteractor player = i.rootInteractor.GetComponent<FirstPersonInteractor> ();
+			if (player != null) 
+			{
 				player.SetIsFrozen(isFrozen);
 			}
 		}

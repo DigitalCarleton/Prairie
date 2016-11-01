@@ -8,7 +8,7 @@ public class TriggerInteraction : Interaction{
 	protected override void PerformAction()
     {
         foreach (GameObject target in triggeredObjects) {
-            target.InteractAll(this.trigger);
+            target.InteractAll(this.rootInteractor);
         }
     }
 }

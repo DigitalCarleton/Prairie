@@ -7,11 +7,11 @@ public abstract class Interaction : MonoBehaviour
 	public bool repeatable = true;
 
 	[HideInInspector]
-    public GameObject trigger;
+    public GameObject rootInteractor;
 
-	public void Interact (GameObject obj)
+	public void Interact (GameObject interactor)
 	{
-        trigger = obj;
+        this.rootInteractor = interactor;
 		if (this.enabled) {
 			PerformAction ();					// run the interaction
 			if (!repeatable) {
