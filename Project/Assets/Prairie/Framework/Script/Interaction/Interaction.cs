@@ -9,12 +9,18 @@ public abstract class Interaction : MonoBehaviour
 	[HideInInspector]
     public GameObject trigger;
 
-	public void Interact (GameObject obj)
+	/// <summary>
+	/// Trigger behavoir of this interaction.
+	/// </summary>
+	/// <param name="interactor">The game object which is the root invoker of this action. Typically a player character.</param>
+	public void Interact (GameObject interactor)
 	{
-        trigger = obj;
-		if (this.enabled) {
-			PerformAction ();					// run the interaction
-			if (!repeatable) {
+        this.trigger = interactor;
+		if (this.enabled)
+		{
+			this.PerformAction ();					// run the interaction
+			if (!repeatable)
+			{
 				this.enabled = false;	// prevent future interactions
 			}
 		}
