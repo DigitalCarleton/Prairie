@@ -28,7 +28,7 @@ Variable, parameter, field, and property names use _lowerCamelCase_. Constant na
 
 Define variables alongside their type. Do not use the `var` keyword.
 
-	GameObject pivotTarget = GameObject.Find(“door”);
+	GameObject pivotTarget = GameObject.Find (“door”);
 	for (int i=0; i < ATTEMPT_COUNT; i++)
 	{
 		// …
@@ -48,9 +48,9 @@ A call to a method should have a space character separate the name of the method
 ## Class Names
 Name a class with clarity in what it does, or what data it represents.
 
-If a class derives from an abstract class (such as `Interaction`), use the abstract class as a prefix (`SlideshowInteraction`).
+If a class derives from an abstract class (such as `Interaction`), use the abstract class as a suffix (`SlideshowInteraction`).
 
-Runtime script classes can often use verbs in their name (such as `TumbleInteraction`).
+Runtime script classes can often use verbs in their name (such as `TumbleInteraction`) but should refrain from verb phrases (such as `StartTumblingInteraction`).
 
 Static classes defined solely for their static extension methods should have the suffix “Extensions” and a prefix which defines what they class they extend.
 
