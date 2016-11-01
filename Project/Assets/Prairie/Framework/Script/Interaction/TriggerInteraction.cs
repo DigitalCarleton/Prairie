@@ -10,7 +10,7 @@ public class TriggerInteraction : Interaction
     {
         foreach (GameObject target in triggeredObjects)
         {
-            target.InteractAll(this.trigger);
+            target.InteractAll(this.rootInteractor);
         }
     }
 }
