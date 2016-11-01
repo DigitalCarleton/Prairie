@@ -1,6 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// When an instance of `BroadcastTriggerInteraction` is interacted with,
+/// all GameObjects with a `BroadcastListener` are queried.
+/// If the `eventName` of the `BroadcastTriggerInteraction` and `BroadcastListener` match,
+/// then all the interactions on the GameObject associated with the `BroadcastListener` are fired.
+/// </summary>
 public class BroadcastTriggerInteraction : Interaction
 {
 
@@ -14,7 +20,7 @@ public class BroadcastTriggerInteraction : Interaction
 		{
 			if (string.Equals(listener.eventName, this.eventName, System.StringComparison.CurrentCultureIgnoreCase))
 			{
-				listener.OnEventFires (this.trigger);
+				listener.gameObject.InteractAll (this.trigger);
 			}
 		}
 	}
