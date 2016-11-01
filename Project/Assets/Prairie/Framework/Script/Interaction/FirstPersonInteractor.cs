@@ -80,7 +80,7 @@ public class FirstPersonInteractor : MonoBehaviour
 			}
 
 			GameObject obj = hit.transform.gameObject;
-			List enabledInteractions = new List<Interaction> ();
+			List<Interaction> enabledInteractions = new List<Interaction> ();
 			foreach (Interaction i in obj.GetComponents<Interaction> ())
 			{
 				if (i.enabled)
