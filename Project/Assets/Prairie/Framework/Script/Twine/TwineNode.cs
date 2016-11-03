@@ -8,6 +8,7 @@ public class TwineNode : MonoBehaviour {
 	public string[] tags;
 	public string content;
 	public GameObject[] children;
+	public GameObject[] parents;
 	public GameObject[] triggeredObjects;
 	[HideInInspector]
 	public string[] childrenNames;

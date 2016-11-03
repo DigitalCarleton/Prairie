@@ -64,11 +64,11 @@ public class TwineJsonParser {
 		{
 			string[] children = node.GetComponent<TwineNode> ().childrenNames;
 			node.GetComponent <TwineNode> ().children = new GameObject[children.Length];
-			int count = 0;
+			int childCount = 0;
 			foreach (string child in children)
 			{
-				node.GetComponent <TwineNode> ().children[count] = objDict[child];
-				++count;
+				node.GetComponent <TwineNode> ().children[childCount] = objDict[child];
+				++childCount;
 			}
 		}
 	}
