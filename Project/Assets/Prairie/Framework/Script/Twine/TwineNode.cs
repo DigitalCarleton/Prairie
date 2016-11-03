@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TwineNode : MonoBehaviour {
 
@@ -8,10 +9,10 @@ public class TwineNode : MonoBehaviour {
 	public string[] tags;
 	public string content;
 	public GameObject[] children;
-	public GameObject[] parents;
 	public GameObject[] triggeredObjects;
 	[HideInInspector]
 	public string[] childrenNames;
+	public List<GameObject> parents = new List<GameObject> ();
 
 	// use the unity 'enabled' thing to keep track of whether
 	// a twine node is triggerable or not

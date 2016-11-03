@@ -64,11 +64,18 @@ public class TwineJsonParser {
 		{
 			string[] children = node.GetComponent<TwineNode> ().childrenNames;
 			node.GetComponent <TwineNode> ().children = new GameObject[children.Length];
+			//node.GetComponent <TwineNode> ().parentList = new List<GameObject> ();
 			int childCount = 0;
-			foreach (string child in children)
+			foreach (string childName in children)
 			{
-				node.GetComponent <TwineNode> ().children[childCount] = objDict[child];
+				// add children
+				node.GetComponent <TwineNode> ().children[childCount] = objDict[childName];
 				++childCount;
+				// add parent
+				GameObject childNode = GameObject.Find (childName);
+				Debug.Log (childNode);
+				Debug.Log (childNode.GetComponent <TwineNode> ().parents); 
+				childNode.GetComponent <TwineNode> ().parents.Add (node);
 			}
 		}
 	}
