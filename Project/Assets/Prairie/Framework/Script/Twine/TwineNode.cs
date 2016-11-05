@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TwineNode : MonoBehaviour {
 
@@ -10,8 +11,11 @@ public class TwineNode : MonoBehaviour {
 	public new string name;
 	public string[] tags;
 	public string content;
-	public string[] childrenNames;
 	public GameObject[] children;
+	public GameObject[] triggeredObjects;
+	[HideInInspector]
+	public string[] childrenNames;
+	public List<GameObject> parents = new List<GameObject> ();
 
 	/// <summary>
 	/// Trigger the interactions associated with this Twine Node.
