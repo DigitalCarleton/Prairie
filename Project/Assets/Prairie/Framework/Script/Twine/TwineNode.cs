@@ -21,9 +21,23 @@ public class TwineNode : MonoBehaviour {
 	/// Trigger the interactions associated with this Twine Node.
 	/// </summary>
 	/// <param name="interactor"> The interactor acting on this Twine Node, typically a player. </param>
-	public void StartInteractions(GameObject interactor) {
-		foreach (GameObject gameObject in objectsToTrigger) {
-			gameObject.InteractAll(interactor);
+	public void StartInteractions(GameObject interactor) 
+	{
+		if (this.enabled) 
+		{
+			foreach (GameObject gameObject in objectsToTrigger) 
+			{
+				gameObject.InteractAll (interactor);
+			}
 		}
+	}
+
+	public void Activate() {
+		this.enabled = true;
+		// Show body text of story node here?
+	}
+
+	public void Deactivate() {
+		this.enabled = false;
 	}
 }
