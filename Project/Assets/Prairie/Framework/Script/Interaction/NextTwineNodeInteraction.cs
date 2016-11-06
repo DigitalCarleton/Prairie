@@ -11,7 +11,7 @@ public class NextTwineNodeInteraction : Interaction
 
 		if (twineNodeComponent != null && !twineNodeComponent.enabled && twineNodeComponent.HasActiveParentNode()) 
 		{
-			twineNodeComponent.Activate ();
+			twineNodeComponent.Activate (this.rootInteractor);
 			twineNodeComponent.DeactivateAllParents ();
 		}
 	}
