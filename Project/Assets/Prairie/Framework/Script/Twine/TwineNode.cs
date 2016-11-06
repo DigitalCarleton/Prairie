@@ -32,12 +32,41 @@ public class TwineNode : MonoBehaviour {
 		}
 	}
 
-	public void Activate() {
+	public void Activate() 
+	{
 		this.enabled = true;
+
 		// Show body text of story node here?
+		Debug.Log(this.content);
 	}
 
-	public void Deactivate() {
+	public void Deactivate() 
+	{
 		this.enabled = false;
+	}
+
+	/// <summary>
+	/// Check if this Twine Node has an active parent node.
+	/// </summary>
+	/// <returns><c>true</c>, if there is an active parent node, <c>false</c> otherwise.</returns>
+	public bool HasActiveParentNode() 
+	{
+		foreach (GameObject parent in parents) 
+		{
+			if (parent.GetComponent<TwineNode> ().enabled) 
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public void DeactivateAllParents()
+	{
+		foreach (GameObject parent in parents) 
+		{
+			parent.GetComponent<TwineNode> ().Deactivate ();
+		}
 	}
 }
