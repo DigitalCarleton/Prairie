@@ -36,6 +36,13 @@ public class TwineJsonParser {
 		{
 			GameObject twineNode = MakeGameObjectFromStoryNode (parent, storyNode);
 			twineNodes [count] = twineNode;
+
+			if (count == 0) 
+			{
+				// Activate the first node in the story by default:
+				twineNode.GetComponent<TwineNode> ().Activate ();
+			}
+
 			++count;
 		}
 		// make dictionary
@@ -92,12 +99,16 @@ public class TwineJsonParser {
 
 		GameObject tempObj = new GameObject(storyNode["name"]);
 		tempObj.AddComponent<TwineNode> ();
-		var data = tempObj.GetComponent<TwineNode> ();
+		TwineNode data = tempObj.GetComponent<TwineNode> ();
 		data.pid = storyNode["pid"];
 		data.name = storyNode["name"];
 		data.tags = Serialize (storyNode["tags"], false);
 		data.content = StripChildren (storyNode["content"]);
 		data.childrenNames = Serialize (storyNode["childrenNames"], true);
+
+		// Start all twine nodes as deactivated at first:
+		data.Deactivate();
+
 		tempObj.transform.SetParent (parent.transform);
 		return tempObj;
 
