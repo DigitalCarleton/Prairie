@@ -12,7 +12,6 @@ public class TwineNode : MonoBehaviour {
 	public string[] tags;
 	public string content;
 	public GameObject[] children;
-	public GameObject[] triggeredObjects;
 	[HideInInspector]
 	public string[] childrenNames;
 	public List<GameObject> parents = new List<GameObject> ();
@@ -43,7 +42,7 @@ public class TwineNode : MonoBehaviour {
 	public void Activate(GameObject interactor)
 	{
 		this.Activate ();
-		this.StartInteractions(interactor)
+		this.StartInteractions (interactor);
 	}
 
 	public void Deactivate() 
