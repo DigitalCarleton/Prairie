@@ -40,6 +40,12 @@ public class TwineNode : MonoBehaviour {
 		Debug.Log(this.content);
 	}
 
+	public void Activate(GameObject interactor)
+	{
+		this.Activate ();
+		this.StartInteractions(interactor)
+	}
+
 	public void Deactivate() 
 	{
 		this.enabled = false;
