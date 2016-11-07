@@ -16,6 +16,18 @@ public class TwineNode : MonoBehaviour {
 	public string[] childrenNames;
 	public List<GameObject> parents = new List<GameObject> ();
 
+	public void OnGUI()
+	{
+		if (this.enabled) 
+		{
+			// Draw a GUI with the interaction
+			Rect frame = new Rect (Screen.width / 8, Screen.height / 8, Screen.width / 8, Screen.height / 8);
+			GUI.BeginGroup(frame);
+			GUILayout.Box (this.content);
+			GUI.EndGroup();
+		}
+	}
+
 	/// <summary>
 	/// Trigger the interactions associated with this Twine Node.
 	/// </summary>
