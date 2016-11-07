@@ -31,18 +31,19 @@ public class TwineNode : MonoBehaviour {
 		}
 	}
 
-	public void Activate() 
-	{
-		this.enabled = true;
-
-		// Show body text of story node here?
-		Debug.Log(this.content);
-	}
-
+	/// <summary>
+	/// Activate this TwineNode (provided it isn't already
+	/// 	active/enabled and it has some active parent)
+	/// </summary>
+	/// <param name="interactor">The interactor.</param>
 	public void Activate(GameObject interactor)
 	{
-		this.Activate ();
-		this.StartInteractions (interactor);
+		if (!this.enabled && this.HasActiveParentNode()) 
+		{
+			this.enabled = true;
+			this.DeactivateAllParents ();
+			this.StartInteractions (interactor);
+		}
 	}
 
 	public void Deactivate() 
@@ -67,7 +68,10 @@ public class TwineNode : MonoBehaviour {
 		return false;
 	}
 
-	public void DeactivateAllParents()
+	/// <summary>
+	/// Deactivate all parents of this Twine Node.
+	/// </summary>
+	private void DeactivateAllParents()
 	{
 		foreach (GameObject parent in parents) 
 		{

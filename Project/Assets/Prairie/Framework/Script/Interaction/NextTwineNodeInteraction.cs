@@ -3,16 +3,16 @@ using System.Collections;
 
 public class NextTwineNodeInteraction : Interaction 
 {
-	public GameObject nextTwineNode;
+	public GameObject nextTwineNodeObject;
 
 	protected override void PerformAction () 
 	{
-		TwineNode twineNodeComponent = this.nextTwineNode.GetComponent<TwineNode> ();
+		TwineNode twineNode = this.nextTwineNodeObject.GetComponent<TwineNode> ();
 
-		if (twineNodeComponent != null && !twineNodeComponent.enabled && twineNodeComponent.HasActiveParentNode()) 
+		if (twineNode != null) 
 		{
-			twineNodeComponent.Activate (this.rootInteractor);
-			twineNodeComponent.DeactivateAllParents ();
+			// Activate the node!
+			twineNode.Activate (this.rootInteractor);
 		}
 	}
 }

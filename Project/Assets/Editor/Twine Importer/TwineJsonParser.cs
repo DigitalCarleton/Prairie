@@ -39,8 +39,8 @@ public class TwineJsonParser {
 
 			if (count == 0) 
 			{
-				// Activate the first node in the story by default:
-				twineNode.GetComponent<TwineNode> ().Activate ();
+				// Enable/activate the first node in the story by default:
+				twineNode.GetComponent<TwineNode> ().enabled = true;
 			}
 
 			++count;
