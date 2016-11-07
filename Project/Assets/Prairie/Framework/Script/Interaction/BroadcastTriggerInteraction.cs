@@ -20,7 +20,7 @@ public class BroadcastTriggerInteraction : Interaction
 		{
 			if (string.Equals(listener.eventName, this.eventName, System.StringComparison.CurrentCultureIgnoreCase))
 			{
-				listener.gameObject.InteractAll (this.trigger);
+				listener.gameObject.InteractAll (this.rootInteractor);
 			}
 		}
 	}
