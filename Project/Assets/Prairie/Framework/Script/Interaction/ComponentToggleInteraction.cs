@@ -10,7 +10,7 @@ public class ComponentToggleInteraction : Interaction
 		Gizmos.color = Color.red;
 		for (int i = 0; i < target.Length; i++)
 		{
-			// Draw line(s) between the object and the objects whose Behaviours it toggles
+			// Draw red line(s) between the object and the objects whose Behaviours it toggles
 			Gizmos.DrawLine(transform.position, target[i].transform.position);
 		}
 	}

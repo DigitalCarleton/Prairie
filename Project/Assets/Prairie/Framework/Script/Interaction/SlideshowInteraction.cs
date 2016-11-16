@@ -10,8 +10,6 @@ public class SlideshowInteraction : Interaction
 
 	private Rect Shading;
 
-	//public static MeshFilter ObjMeshFilter;
-
 	void Start()
 	{
 		// Screen-sized panel used for shading when slideshow is displayed.

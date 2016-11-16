@@ -12,7 +12,7 @@ public class TriggerArea : MonoBehaviour
 		Gizmos.color = Color.blue;
 		foreach (GameObject target in additionalTargets)
 		{
-			// Draw line(s) between the trigger area and all additional objects it interacts with (i.e. triggers)
+			// Draw blue line(s) between the trigger area and all additional objects it interacts with (i.e. triggers)
 			Gizmos.DrawLine (transform.position, target.transform.position);
 		}
 	}

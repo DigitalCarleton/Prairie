@@ -16,6 +16,7 @@ public class TumbleInteraction : Interaction
 
 	void OnDrawGizmos() 
 	{
+		// Draw a yellow static mesh of the object's starting orientation
 		Gizmos.color = Color.yellow;
 		tumbleMesh = GetComponent<MeshFilter> ().sharedMesh;
 		Gizmos.DrawWireMesh (tumbleMesh, transform.position);

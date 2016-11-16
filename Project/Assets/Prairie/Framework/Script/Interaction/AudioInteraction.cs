@@ -8,8 +8,6 @@ public class AudioInteraction : Interaction
     public AudioSource audioSource;
     private bool playing; //toggles clip
 
-	public Texture sign;
-
     /// <summary>
     /// Plays an audio clip when the player interacts with an object
     /// </summary>
