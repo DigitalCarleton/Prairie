@@ -10,11 +10,6 @@ public class AudioInteraction : Interaction
 
 	public Texture sign;
 
-	void OnDrawGizmos()
-	{
-		//Gizmos.DrawGUITexture (new Rect (transform.position.x, transform.position.y * 2, -2,-2), sign);
-		Gizmos.DrawIcon (new Vector3(transform.position.x, transform.position.y * 2, transform.position.z), "OtisRedding.jpg", true);
-	}
     /// <summary>
     /// Plays an audio clip when the player interacts with an object
     /// </summary>

@@ -8,7 +8,7 @@ public class TumbleInteraction : Interaction
 	/// </summary>
 	public bool pickedUp = false;
 
-	public static Mesh ObjMesh;
+	public static Mesh tumbleMesh;
 
 	// When the user interacts with object, they invoke the ability to 
 	// tumble the object with the I, J, K and L keys. Interacting
@@ -17,11 +17,8 @@ public class TumbleInteraction : Interaction
 	void OnDrawGizmos() 
 	{
 		Gizmos.color = Color.yellow;
-		//Gizmos.DrawWireSphere (transform.position, 2);
-		//ObjMeshFilter = (MeshFilter)gameObject.GetComponent("MeshFilter");
-		//ObjMesh = ObjMeshFilter.sharedMesh;
-		ObjMesh = GetComponent<MeshFilter> ().sharedMesh;
-		Gizmos.DrawWireMesh (ObjMesh, transform.position);
+		tumbleMesh = GetComponent<MeshFilter> ().sharedMesh;
+		Gizmos.DrawWireMesh (tumbleMesh, transform.position);
 	}
 
 	protected void Update()
