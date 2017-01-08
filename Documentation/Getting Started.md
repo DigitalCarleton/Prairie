@@ -5,11 +5,9 @@
 This document will walk you through the fundamentals of using *Prairie*.
 
 ## The Unity Editor
-*Prairie* is a selection of pre-made Unity scripts and assets to be used inside of the Unity editor workflow. As such, using *Prairie* requires a basic working knowledge of the Unity editor (don’t worry — no code skill is required).
+*Prairie* is a selection of pre-made Unity scripts and assets to be used inside of the Unity editor workflow. As such, using *Prairie* requires a basic working knowledge of the Unity editor (don’t worry — no coding experience is required).
 
-There are a wealth of great Unity tutorials out there. Many of the “Getting Started” tutorials include information on scripting/coding.
-
-The following set of videos (each a digestible 3 minutes or so) will provide you with a good sense of the editor, scene view, and key concepts moving forward, without any coding:
+The following set of videos (each a digestible 3 minutes or so) will provide you with a good sense of the editor, scene view, and key concepts moving forward, (without any coding):
 
 - [Interface Overview](https://unity3d.com/learn/tutorials/topics/interface-essentials/interface-overview?playlist=17090)
 - [Editing Elements in the Scene View](https://unity3d.com/learn/tutorials/topics/interface-essentials/scene-view?playlist=17090)
@@ -27,7 +25,7 @@ Coming back from a long break from Unity and need a refresh? Coming from a diffe
 | Game Object | Entity, Object | Instances of *anything* in the game scene. Including lights, text, players, walls, and even abstract things, like triggers. All Game Objects have a position, rotation, and size. |
 | Prefab | Blueprint, Class | Preconfigured Game Objects, which can be saved as assets for reuse |
 | Component | Script, Behavior | Game Objects are assigned multiple components which define how they work in the game. A player object would have a movement component so it moves when a players gives input as well as a collider component so they can’t walk through walls. |
-| Property | Field, Component Setting | Each component has properties that can be adjusted in the inspector to modify how it behaves. For example, a light component has a color and strength property. |
+| Property | Field, Component Setting | Each component has properties that can be adjusted in the inspector to modify how it behaves. For example, a light component has a color property. |
 
 ## Prairie
-…
+...
