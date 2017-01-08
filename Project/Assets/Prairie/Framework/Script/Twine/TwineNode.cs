@@ -16,6 +16,16 @@ public class TwineNode : MonoBehaviour {
 	public string[] childrenNames;
 	public List<GameObject> parents = new List<GameObject> ();
 
+	void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.cyan;
+		foreach (GameObject gameObject in objectsToTrigger)
+		{
+			// Draw cyan line(s) between the current Twine node and the object(s) it triggers
+			Gizmos.DrawLine(transform.position, gameObject.transform.position);
+		}
+	}
+
 	public void OnGUI()
 	{
 		if (this.enabled) 
