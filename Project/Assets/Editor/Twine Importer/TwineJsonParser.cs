@@ -60,6 +60,9 @@ public class TwineJsonParser {
 		// link nodes to their children
 		MatchChildren (twineNodes, objDict);
 
+		// "If the directory already exists, this method does not create a new directory..."
+		// From the C# docs
+		System.IO.Directory.CreateDirectory ("Assets/Ignored");
 		// save a prefab to disk, and then remove the GameObject from the scene
 		PrefabUtility.CreatePrefab ("Assets/Ignored/Story.prefab", parent);
 		GameObject.DestroyImmediate (parent);
