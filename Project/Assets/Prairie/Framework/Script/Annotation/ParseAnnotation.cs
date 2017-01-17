@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-public class ParseAnnotation {
+public static class ParseAnnotation {
 
     private static readonly string IMAGE_TEXT_FULL = "<\\s*img\\s*=\\s*\"?.*?\"?\\s*>";
     private static readonly string IMAGE_TEXT_SPLIT = "(<\\s*img\\s*=\\s*\"?)|(\"?\\s*>)";
@@ -12,10 +12,10 @@ public class ParseAnnotation {
     /// <param name="text"></param>
     /// <param name="textOut"></param>
     /// <param name="imgOut"></param>
-    public static void ParseAnnotationText(string text, List<string> textOut, List<string> imgOut)
+    public static void ParseAnnotationText(string text, AnnotationContent content)
     {
         string[] splitText = Regex.Split(text, IMAGE_TEXT_FULL);
-        textOut.AddRange(splitText);
+        content.parsedText.AddRange(splitText);
 
         MatchCollection imgCollection = Regex.Matches(text, IMAGE_TEXT_FULL);
 
@@ -25,7 +25,9 @@ public class ParseAnnotation {
         foreach (Match i in imgCollection)
         {
             string x = rgx.Replace(i.ToString(), replacement);
-            imgOut.Add(x);
+            content.imagePaths.Add(x);
         }
     }
 }
+
+

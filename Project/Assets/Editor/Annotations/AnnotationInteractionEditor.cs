@@ -125,7 +125,6 @@ public class AnnotationInteractionEditor : Editor {
         string imagePrompt = "Select File";
         if (annotation.imagePath != "")
         {
-
             imagePrompt = annotation.imagePath;
         }
 
