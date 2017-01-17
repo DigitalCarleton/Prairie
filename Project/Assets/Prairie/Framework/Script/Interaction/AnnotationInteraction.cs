@@ -3,8 +3,25 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 
+
+public class AnnotationContent
+{
+    public List<string> parsedText;
+    public List<string> imagePaths;
+
+    public AnnotationContent()
+    {
+        parsedText = new List<string>();
+        imagePaths = new List<string>();
+    }
+
+}
+
+
 public class AnnotationInteraction : Interaction
 {
+    public AnnotationContent content;
+
     public string textFilePath; //saved for use in the editor
     public int selected = 0; //uses int for editor purposes
     public bool includeImages = false;
@@ -14,7 +31,6 @@ public class AnnotationInteraction : Interaction
     public TextAsset textFile;
     public string text;
     public List<Texture2D> images;
-    public List<string> parsedText;
 
     private bool active = false;
 
@@ -29,6 +45,7 @@ public class AnnotationInteraction : Interaction
 
     void Start()
     {
+        content = new AnnotationContent();
 
         scrollPosition = new Vector2(0, 0);
 
@@ -42,17 +59,13 @@ public class AnnotationInteraction : Interaction
         style.padding.top = 15;
 
         images = new List<Texture2D>();
-        parsedText = new List<string>();
-        List<string> imgPaths = new List<string>();
-
-        
 
         //this changes parsedText and imgPaths
-        ParseAnnotation.ParseAnnotationText(text, parsedText, imgPaths);
+        ParseAnnotation.ParseAnnotationText(text, content);
         
         if (includeImages)
         {
-            foreach (string path in imgPaths)
+            foreach (string path in content.imagePaths)
             {
                 //grabbing byte data from file so we can convert it into a texture
                 try {
@@ -107,11 +120,11 @@ public class AnnotationInteraction : Interaction
     /// </summary>
     private void DisplayAnnotation()
     {
-        for (int i = 0; i < Math.Max(images.Count, parsedText.Count); i++)
+        for (int i = 0; i < Math.Max(images.Count, content.parsedText.Count); i++)
         {
-            if (i < parsedText.Count && parsedText[i] != "")
+            if (i < content.parsedText.Count && content.parsedText[i] != "")
             {
-                GUILayout.Label(new GUIContent(parsedText[i]), style, GUILayout.MaxWidth(BOX_WIDTH - 40));
+                GUILayout.Label(new GUIContent(content.parsedText[i]), style, GUILayout.MaxWidth(BOX_WIDTH - 40));
             }
             if (i < images.Count)
             {
