@@ -24,14 +24,16 @@ public class TwineJsonParser {
 		
 	public static void ReadJson (string jsonString)
 	{
+		// parse using `SimpleJSON`
 		JSONNode parsedJson = JSON.Parse(jsonString);
 		JSONArray parsedArray = parsedJson.AsArray;
 		GameObject[] twineNodes = new GameObject[parsedArray.Count];
 		
-		int count = 0;
-		// create parent game object
+		// parent game object which will be the story prefab
 		GameObject parent = new GameObject("Story");
+
 		// make GameObject nodes out of every twine/json node
+		int count = 0;
 		foreach (JSONNode storyNode in parsedArray)
 		{
 			GameObject twineNode = MakeGameObjectFromStoryNode (parent, storyNode);
@@ -45,15 +47,23 @@ public class TwineJsonParser {
 
 			++count;
 		}
-		// make dictionary
+
+		// normalize the positions to one another
+		NormalizePositioning (parent);
+
+		// create dictionary for fast lookup when matching nodes to their children
 		Dictionary<string, GameObject> objDict = new Dictionary<string, GameObject>();
-		// add things to dictionary
 		foreach (GameObject node in twineNodes)
 		{
 			objDict.Add (node.name, node);
 		}
+		// link nodes to their children
 		MatchChildren (twineNodes, objDict);
-		// create the large prefab, and kill the GameObject that is not a prefab
+
+		// "If the directory already exists, this method does not create a new directory..."
+		// From the C# docs
+		System.IO.Directory.CreateDirectory ("Assets/Ignored");
+		// save a prefab to disk, and then remove the GameObject from the scene
 		PrefabUtility.CreatePrefab ("Assets/Ignored/Story.prefab", parent);
 		GameObject.DestroyImmediate (parent);
 	}
@@ -86,6 +96,60 @@ public class TwineJsonParser {
 			}
 		}
 	}
+
+	/// <summary>
+	/// Twine's coordinate system is different in scale and local root than Unity's.
+	/// Updates the Twine node's coordinates to sensible Unity values.
+	/// </summary>
+	/// <param name="parent">The top level story node.</param>
+	private static void NormalizePositioning(GameObject parent)
+	{
+		// find ranges of `x` and `z` values
+		float minX = float.MaxValue;
+		float maxX = float.MinValue;
+
+		float minZ = float.MaxValue;
+		float maxZ = float.MinValue;
+
+		foreach (Transform childTransform in parent.transform)
+		{
+			GameObject child = childTransform.gameObject;
+
+			float x = child.transform.localPosition.x;
+			float z = child.transform.localPosition.z;
+
+			// update min if less than
+			minX = x < minX ? x : minX;
+			minZ = z < minZ ? z : minZ;
+
+			// update max if greater than
+			maxX = x > maxX ? x : maxX;
+			maxZ = z > maxZ ? z : maxZ;
+		}
+
+		// anchor coordinate system to (0,0)
+		//
+		// such that a hypothetical object at (minX, minZ) will be at (0,0)
+		// and other objects will maintain their original distances to that object
+		foreach (Transform childTransform in parent.transform)
+		{
+			GameObject child = childTransform.gameObject;
+
+			float newX = child.transform.localPosition.x - minX;
+			float newZ = child.transform.localPosition.z - minZ;
+			float originalY = child.transform.localPosition.y;
+
+			child.transform.localPosition = new Vector3 (newX, originalY, newZ);
+		}
+
+		// adjust scale of parent (spacing between nodes) based on max size of Twine bounding box
+		float TWINE_TO_UNITY_SCALE_RATIO = 20.0f;
+
+		float maxTwineRange = Mathf.Max (maxX - minX, maxZ - minZ);
+		float adjustedScale = TWINE_TO_UNITY_SCALE_RATIO / maxTwineRange;
+
+		parent.transform.localScale = new Vector3 (adjustedScale, 1, adjustedScale);
+	}
 		
 	/// <summary>
 	/// Takes the twine/JSON node, and turns it into a game object with all the relevant data.
@@ -99,6 +163,8 @@ public class TwineJsonParser {
 
 		GameObject tempObj = new GameObject(storyNode["name"]);
 		tempObj.AddComponent<TwineNode> ();
+
+		// Save additional Twine data on a Twine component
 		TwineNode data = tempObj.GetComponent<TwineNode> ();
 		data.pid = storyNode["pid"];
 		data.name = storyNode["name"];
@@ -106,9 +172,17 @@ public class TwineJsonParser {
 		data.content = StripChildren (storyNode["content"]);
 		data.childrenNames = Serialize (storyNode["childrenNames"], true);
 
+		// Relative Twine location --> Unity coordinates
+		JSONNode position = storyNode["position"];
+		float twineX = position["x"].AsFloat;	// `AsFloat` returns 0.0f on failure, which is acceptable
+		float twineY = position["y"].AsFloat;
+		// map Twine arrangement x and y to Unity x and z
+		tempObj.transform.localPosition = new Vector3(twineX, 0, twineY);
+
 		// Start all twine nodes as deactivated at first:
 		data.Deactivate();
 
+		// Bind to parent "Story" object
 		tempObj.transform.SetParent (parent.transform);
 		return tempObj;
 
