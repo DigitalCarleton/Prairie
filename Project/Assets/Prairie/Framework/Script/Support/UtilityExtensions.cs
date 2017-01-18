@@ -3,7 +3,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public static class InteractionExtensions {
 
-	public static void GetPlayer(this Interaction i, bool canMove)
+	public static FirstPersonInteractor GetPlayer(this Interaction i, bool canMove)
 	{
 		if (i.rootInteractor != null)
 		{
