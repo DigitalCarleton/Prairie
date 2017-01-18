@@ -1,49 +1,16 @@
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
-public static class PlayerExtensions
-{
-
-	/// <summary>
-	/// Sets the player state to be locked if true, free to move if untrue.
-	/// </summary>
-	/// <param name="isFrozen">If <c>true</c>, the player can not move.</param>
-	public static void SetIsFrozen(this FirstPersonInteractor player, bool isFrozen)
-	{
-		var playerCompTypeA = player.GetComponent<FirstPersonController> ();
-
-		var playerCompTypeB = player.GetComponent<RigidbodyFirstPersonController> ();
-
-		if (playerCompTypeA != null)
-		{
-			playerCompTypeA.enabled = !isFrozen;
-		}
-		if (playerCompTypeB != null)
-		{
-			playerCompTypeB.enabled = !isFrozen;
-		}
-
-		player.enabled = !isFrozen;
-	}
-
-}
-
 public static class InteractionExtensions {
 
-	/// <summary>
-	/// Sets the player who triggered this Interaction's state to be locked if true, free to move if untrue.
-	/// </summary>
-	/// <param name="isFrozen">If <c>true</c>, the player can not move.</param>
-	public static void SetPlayerIsFrozen(this Interaction i, bool isFrozen)
+	public static void GetPlayer(this Interaction i, bool canMove)
 	{
 		if (i.rootInteractor != null)
 		{
 			FirstPersonInteractor player = i.rootInteractor.GetComponent<FirstPersonInteractor> ();
-			if (player != null)
-			{
-				player.SetIsFrozen(isFrozen);
-			}
+			return player
 		}
+		return null
 	}
 
 }
