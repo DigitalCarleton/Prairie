@@ -24,7 +24,7 @@ public class TwineNode : MonoBehaviour {
 			Rect frame = new Rect (10, 10, frameWidth, Screen.height);
 
 			GUI.BeginGroup(frame);
-			GUIStyle style = GUI.skin.box;
+			GUIStyle style = new GUIStyle(GUI.skin.box);
 			style.wordWrap = true;
 			style.fixedWidth = frameWidth;
 			GUILayout.Box (this.content, style);
