@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class FirstPersonInteractor : MonoBehaviour
 {
@@ -54,14 +55,14 @@ public class FirstPersonInteractor : MonoBehaviour
 		if (this.highlightedObject != null)
 		{
 			// draw prompt on highlighted object
-			prompt = this.highlightedObject.GetComponent<Prompt> ();
+			Prompt prompt = this.highlightedObject.GetComponent<Prompt> ();
 			if (prompt != null)
 			{
 				prompt.DrawPrompt();
 			}
 
 			// draw potential stub on highlighted annotation object
-			annotation = this.highlightedObject.GetComponent<AnnotationInteraction> ();
+			AnnotationInteraction annotation = this.highlightedObject.GetComponent<AnnotationInteraction> ();
 			if (annotation != null)
 			{
 				annotation.DrawSummary();
@@ -90,7 +91,11 @@ public class FirstPersonInteractor : MonoBehaviour
 
 	private void AttemptInteract ()
 	{
-		foreach (Interaction i in obj.GetComponents<Interaction> ()) 
+		if (highlightedObject == null) {
+			return;
+		}
+		
+		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
 		{
 			if (i is AnnotationInteraction || i is SlideshowInteraction)
 			{
@@ -100,18 +105,22 @@ public class FirstPersonInteractor : MonoBehaviour
 
 			if (i.enabled)
 			{ 
-				target.Interact (this.gameObject);		
+				i.Interact (this.gameObject);		
 			} 
 		}
 	}
 
 	private void AttemptReadAnnotation ()
 	{
-		foreach (Interaction i in obj.GetComponents<Interaction> ()) 
+		if (highlightedObject == null) {
+			return;
+		}
+
+		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
 		{
 			if (i.enabled && (i is AnnotationInteraction || i is SlideshowInteraction))
 			{
-				target.Interact (this.gameObject);
+				i.Interact (this.gameObject);
 			}
 		}
 	}
@@ -152,8 +161,8 @@ public class FirstPersonInteractor : MonoBehaviour
 
 	public void SetCanMove(bool canMove)
 	{
-		var playerCompTypeA = player.GetComponent<FirstPersonController> ();
-		var playerCompTypeB = player.GetComponent<RigidbodyFirstPersonController> ();
+		var playerCompTypeA = this.gameObject.GetComponent<FirstPersonController> ();
+		var playerCompTypeB = this.gameObject.GetComponent<RigidbodyFirstPersonController> ();
 
 		if (playerCompTypeA != null)
 		{

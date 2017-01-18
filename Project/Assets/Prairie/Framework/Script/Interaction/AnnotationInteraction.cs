@@ -85,7 +85,11 @@ public class AnnotationInteraction : Interaction
     protected override void PerformAction()
     {
         active = true;
-		this.SetPlayerIsFrozen (true);
+		FirstPersonInteractor player = this.GetPlayer ();
+		if (player != null) {
+			player.SetCanMove (false);
+			player.SetDrawsGUI (false);
+		}
     }
 
     void OnGUI()
@@ -175,7 +179,11 @@ public class AnnotationInteraction : Interaction
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 
-				this.SetPlayerIsFrozen (false);
+				FirstPersonInteractor player = this.GetPlayer ();
+				if (player != null) {
+					player.SetCanMove (true);
+					player.SetDrawsGUI (true);
+				}
             }
         }
     }
