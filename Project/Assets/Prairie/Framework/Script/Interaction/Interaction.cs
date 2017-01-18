@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Prompt))]
 public abstract class Interaction : MonoBehaviour
 {
-	public string prompt;
 	public bool repeatable = true;
 
 	[HideInInspector]
