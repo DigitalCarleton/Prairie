@@ -20,12 +20,13 @@ public class TwineNode : MonoBehaviour {
 	{
 		if (this.enabled) 
 		{
-			Rect frame = new Rect (10, 10, Screen.width/3, Screen.height);
+			float frameWidth = Screen.width / 3;
+			Rect frame = new Rect (10, 10, frameWidth, Screen.height);
 
 			GUI.BeginGroup(frame);
 			GUIStyle style = GUI.skin.box;
 			style.wordWrap = true;
-			style.fixedWidth = Screen.width / 3;
+			style.fixedWidth = frameWidth;
 			GUILayout.Box (this.content, style);
 			GUI.EndGroup ();
 
