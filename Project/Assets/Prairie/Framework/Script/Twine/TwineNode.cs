@@ -20,11 +20,15 @@ public class TwineNode : MonoBehaviour {
 	{
 		if (this.enabled) 
 		{
-			// Draw a GUI with the interaction
-			Rect frame = new Rect (Screen.width / 8, Screen.height / 8, Screen.width / 8, Screen.height / 8);
+			Rect frame = new Rect (10, 10, Screen.width/3, Screen.height);
+
 			GUI.BeginGroup(frame);
-			GUILayout.Box (this.content);
-			GUI.EndGroup();
+			GUIStyle style = GUI.skin.box;
+			style.wordWrap = true;
+			style.fixedWidth = Screen.width / 3;
+			GUILayout.Box (this.content, style);
+			GUI.EndGroup ();
+
 		}
 	}
 
