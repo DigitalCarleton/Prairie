@@ -115,6 +115,12 @@ public class AnnotationInteraction : Interaction
         }
     }
 
+    public void DrawSummary ()
+    {
+        // TODO: If a summary exists (and is enabled), draw it to the screen
+        // this function is in charge of checking whether or not it has a summary to draw
+    }
+
     /// <summary>
     /// Displays then annotation text and images
     /// </summary>
