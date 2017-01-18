@@ -85,7 +85,11 @@ public class AnnotationInteraction : Interaction
     protected override void PerformAction()
     {
         active = true;
-		this.SetPlayerIsFrozen (true);
+		FirstPersonInteractor player = this.GetPlayer ();
+		if (player != null) {
+			player.SetCanMove (false);
+			player.SetDrawsGUI (false);
+		}
     }
 
     void OnGUI()
@@ -113,6 +117,12 @@ public class AnnotationInteraction : Interaction
             GUILayout.EndScrollView();
             GUI.EndGroup();
         }
+    }
+
+    public void DrawSummary ()
+    {
+        // TODO: If a summary exists (and is enabled), draw it to the screen
+        // this function is in charge of checking whether or not it has a summary to draw
     }
 
     /// <summary>
@@ -169,7 +179,11 @@ public class AnnotationInteraction : Interaction
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 
-				this.SetPlayerIsFrozen (false);
+				FirstPersonInteractor player = this.GetPlayer ();
+				if (player != null) {
+					player.SetCanMove (true);
+					player.SetDrawsGUI (true);
+				}
             }
         }
     }
