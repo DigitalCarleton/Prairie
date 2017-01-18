@@ -8,9 +8,9 @@ public static class InteractionExtensions {
 		if (i.rootInteractor != null)
 		{
 			FirstPersonInteractor player = i.rootInteractor.GetComponent<FirstPersonInteractor> ();
-			return player
+			return player;
 		}
-		return null
+		return null;
 	}
 
 }
