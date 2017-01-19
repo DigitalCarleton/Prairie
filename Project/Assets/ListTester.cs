@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class ListTester : MonoBehaviour {
 
-	public Object[] integers;
+	public Object[] objects;
 }

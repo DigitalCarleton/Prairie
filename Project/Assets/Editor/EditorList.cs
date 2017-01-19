@@ -14,37 +14,33 @@ public class EditorList {
 	private static GUILayoutOption minusButtonWidth = GUILayout.Width(20f);
 	private static GUILayoutOption plusButtonWidth = GUILayout.Width(60f);
 
-	public static void Show (SerializedProperty list)
+	public static void Show (Object[] array)
 	{
-		if (!list.isArray)
-		{
-			EditorGUILayout.HelpBox (list.name + " is neither an array nor a list!", MessageType.Error);
-			return;
-		}
-		EditorGUILayout.PropertyField (list);
 		EditorGUI.indentLevel += 1;
-		if (list.isExpanded)
+		List<Object> list = new List<Object> (array);
+		for (int i = 0; i < list.Count; i++)
 		{
-			for (int i = 0; i < list.arraySize; i++)
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.TextField ("Element 0: ", list [i].ToString ());
+			if (GUILayout.Button (deleteRowContent, EditorStyles.miniButton, minusButtonWidth))
 			{
-				EditorGUILayout.BeginHorizontal ();
-				EditorGUILayout.PropertyField (list.GetArrayElementAtIndex (i));
-				if (GUILayout.Button (deleteRowContent, EditorStyles.miniButton, minusButtonWidth))
-				{
-					int oldSize = list.arraySize;
-					list.DeleteArrayElementAtIndex (i);
-					if (list.arraySize == oldSize)
-					{
-						list.DeleteArrayElementAtIndex (i);
-					}
-				}
-				EditorGUILayout.EndHorizontal ();
+				list.RemoveAt (i);
+//				int oldSize = list.Length;
+//				list.DeleteArrayElementAtIndex (i);
+//				if (list.arraySize == oldSize)
+//				{
+//					list.DeleteArrayElementAtIndex (i);
+//				}
 			}
-			if (GUILayout.Button (addRowContent, plusButtonWidth))
-			{
-				list.arraySize += 1;
-			}
+			EditorGUILayout.EndHorizontal ();
 		}
+		array = list.ToArray ();
+//		if (GUILayout.Button (addRowContent, plusButtonWidth))
+//		{
+//			Object[] newArray = new Object[array.Length + 1];
+//			array.CopyTo (newArray, 0);
+//			array = newArray;
+//		}
 		EditorGUI.indentLevel -= 1;
 	}
 }
