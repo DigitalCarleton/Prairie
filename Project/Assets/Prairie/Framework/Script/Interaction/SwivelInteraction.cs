@@ -5,7 +5,6 @@ public class SwivelInteraction : Interaction
 {
 	public bool openFromLeft = false;
 
-	private Prompt prompt;
 	private Vector3 hinge;
 	private Vector3 direction;
 	private float rotateSpeed = 90.0f;
@@ -15,8 +14,6 @@ public class SwivelInteraction : Interaction
 
 	void Start()
 	{
-		prompt = this.GetComponent<Prompt>();
-		prompt.promptText = "Click to Open Door";
 		hinge = this.transform.position;
 		float amt = 0.7f * this.transform.localScale.z;
 		if (openFromLeft)
@@ -35,12 +32,10 @@ public class SwivelInteraction : Interaction
 	{
 		if (closed)
 		{
-			prompt.promptText = "Click to Close Door";
 			targetAngle -= rotateSpeed;
 		}
 		else
 		{
-			prompt.promptText = "Click to Open Door";
 			targetAngle += rotateSpeed;	
 		}
 		closed = !closed;

@@ -7,19 +7,12 @@ public class TumbleInteraction : Interaction
 	/// Allows user to rotate object.
 	/// </summary>
 	private bool pickedUp = false;
-	private Prompt prompt;
 
 	public static Mesh tumbleMesh;
 
 	// When the user interacts with object, they invoke the ability to 
 	// tumble the object with the I, J, K and L keys. Interacting
 	// with the object again revokes this ability.
-
-	void Start()
-	{
-		prompt = this.GetComponent<Prompt>();
-		prompt.promptText = "Click to Pick Up";
-	}
 
 	void OnDrawGizmos() 
 	{
@@ -69,14 +62,11 @@ public class TumbleInteraction : Interaction
 			if (pickedUp)
 			{
 				player.SetCanMove (false);
-				prompt.promptText = "Use the I,J,K and L keys to rotate. Click to put down.";
 			}
 			else
 			{
 				player.SetCanMove (true);
-				prompt.promptText = "Click to Pick Up";
 			}
 		}
-
 	}
 }
