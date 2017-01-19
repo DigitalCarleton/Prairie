@@ -18,7 +18,7 @@ public class SwivelInteraction : Interaction
 		prompt = this.GetComponent<Prompt>();
 		prompt.promptText = "Click to Open Door";
 		hinge = this.transform.position;
-		float amt = this.transform.localScale.z/2;
+		float amt = 0.7f * this.transform.localScale.z;
 		if (openFromLeft)
 		{
 			hinge += amt * Vector3.forward;
