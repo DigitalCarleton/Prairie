@@ -16,19 +16,35 @@ public class TwineNode : MonoBehaviour {
 	public string[] childrenNames;
 	public List<GameObject> parents = new List<GameObject> ();
 
+	private bool isMinimized = false;
+
+	void Update ()
+	{
+		if (Input.GetKeyDown (KeyCode.Tab))
+		{
+			this.ToggleMinimize ();
+		}
+	}
+
 	public void OnGUI()
 	{
-		if (this.enabled) 
-		{
+		if (this.enabled && !this.isMinimized) {
+
 			float frameWidth = Screen.width / 3;
 			Rect frame = new Rect (10, 10, frameWidth, Screen.height);
 
-			GUI.BeginGroup(frame);
-			GUIStyle style = new GUIStyle(GUI.skin.box);
+			GUI.BeginGroup (frame);
+			GUIStyle style = new GUIStyle (GUI.skin.box);
 			style.wordWrap = true;
 			style.fixedWidth = frameWidth;
 			GUILayout.Box (this.content, style);
 			GUI.EndGroup ();
+
+		} else if (this.enabled && this.isMinimized) 
+		{
+		
+			// Draw minimized GUI instead
+
 
 		}
 	}
@@ -58,6 +74,7 @@ public class TwineNode : MonoBehaviour {
 		if (!this.enabled && this.HasActiveParentNode()) 
 		{
 			this.enabled = true;
+			this.isMinimized = false;
 			this.DeactivateAllParents ();
 			this.StartInteractions (interactor);
 		}
@@ -94,6 +111,11 @@ public class TwineNode : MonoBehaviour {
 		{
 			parent.GetComponent<TwineNode> ().Deactivate ();
 		}
+	}
+
+	private void ToggleMinimize()
+	{
+		this.isMinimized = !this.isMinimized;
 	}
 
 	// GIZMOS
