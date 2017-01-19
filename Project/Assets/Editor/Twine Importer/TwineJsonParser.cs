@@ -85,13 +85,13 @@ public class TwineJsonParser {
 			int childCount = 0;
 			foreach (string childName in children)
 			{
+				GameObject childNode = objDict [childName];
+
 				// add children
-				node.GetComponent <TwineNode> ().children[childCount] = objDict[childName];
+				node.GetComponent <TwineNode> ().children[childCount] = childNode;
 				++childCount;
+
 				// add parent
-				GameObject childNode = GameObject.Find (childName);
-				Debug.Log (childNode);
-				Debug.Log (childNode.GetComponent <TwineNode> ().parents); 
 				childNode.GetComponent <TwineNode> ().parents.Add (node);
 			}
 		}

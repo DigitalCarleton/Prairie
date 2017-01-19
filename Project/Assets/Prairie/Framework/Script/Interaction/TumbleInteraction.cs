@@ -45,7 +45,11 @@ public class TumbleInteraction : Interaction
 			}
 			else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.Escape))
 			{
-				this.SetPlayerIsFrozen(false);
+				FirstPersonInteractor player = this.GetPlayer ();
+				if (player != null) {
+					player.SetCanMove (true);
+					player.SetDrawsGUI (true);
+				}
 				pickedUp = false;
 			}
 		}
@@ -53,6 +57,10 @@ public class TumbleInteraction : Interaction
 
 	protected override void PerformAction() {
 		pickedUp = true;
-		this.SetPlayerIsFrozen(true);
+		FirstPersonInteractor player = this.GetPlayer ();
+		if (player != null) {
+			player.SetCanMove (false);
+			player.SetDrawsGUI (false);
+		}
 	}
 }

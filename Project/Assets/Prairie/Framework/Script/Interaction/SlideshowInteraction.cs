@@ -24,7 +24,11 @@ public class SlideshowInteraction : Interaction
 		CurrentSlide = 0;
 
 		// Disable player movement/interactor upon interaction
-		this.SetPlayerIsFrozen (true);
+		FirstPersonInteractor player = this.GetPlayer ();
+		if (player != null) {
+			player.SetCanMove (false);
+			player.SetDrawsGUI (false);
+		}
 	}
 
 	/// <summary>
@@ -102,7 +106,11 @@ public class SlideshowInteraction : Interaction
 		{
 			// Upon ESC, exit from GUI and reenable player control
 			Active = false;
-			this.SetPlayerIsFrozen (false);
+			FirstPersonInteractor player = this.GetPlayer ();
+			if (player != null) {
+				player.SetCanMove (true);
+				player.SetDrawsGUI (true);
+			}
 		}
 	}
 }

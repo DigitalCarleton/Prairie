@@ -1,66 +1,131 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class FirstPersonInteractor : MonoBehaviour
 {
+	// Raycast-related
 	public float interactionRange = 3;
-
 	private Camera viewpoint;
 
-	private List<Interaction> avaliableInteractions;
-	private bool interactionAvaliable
-	{
-		get { return avaliableInteractions.Count > 0; }
-	}
+	// Selection-related
+	private GameObject highlightedObject;
+	public List<AnnotationInteraction> areaAnnotationsInRange = new List<AnnotationInteraction>();
 
+	// Control-related
+	[HideInInspector]
+	private bool drawsGUI = true;
+
+	/// --- Game Loop ---
 
 	void Start ()
 	{
 		viewpoint = Camera.main;
 	}
-		
+
 	void Update ()
 	{
-		this.avaliableInteractions = GetAvaliableInteractions ();
+		// update our highlighted object
+		this.highlightedObject = this.GetHighlightedObject();
 
-		if (Input.GetKeyDown (KeyCode.F))
+		// process input
+		if (Input.GetMouseButtonDown (0))
 		{
-			this.AttemptInteract();
+			// left click
+			this.AttemptInteract ();
+		}
+		if (Input.GetMouseButtonDown (1))
+		{
+			// right click
+			this.AttemptReadAnnotation ();
 		}
 	}
+
+	/// --- GUI ---
 
 	void OnGUI()
 	{
-		if (this.interactionAvaliable)
+		if (!this.drawsGUI)
 		{
-			// Draw a GUI with the interaction
-			Rect frame = new Rect (Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
-			string firstInteractionPrompt = avaliableInteractions [0].prompt;
-            GUI.BeginGroup(frame);
-			GUILayout.Box ("Press F to " + firstInteractionPrompt);
-            GUI.EndGroup();
+			// hide all GUI in certain contexts (such as while slideshow is playing, etc.)
+			return;
 		}
-		else 
+
+
+		if (this.highlightedObject != null)
 		{
-			// hacky way to draw a crosshair 
+			// draw prompt on highlighted object
+			Prompt prompt = this.highlightedObject.GetComponent<Prompt> ();
+			if (prompt != null)
+			{
+				prompt.DrawPrompt();
+			}
+
+			// draw potential stub on highlighted annotation object
+			AnnotationInteraction annotation = this.highlightedObject.GetComponent<AnnotationInteraction> ();
+			if (annotation != null)
+			{
+				annotation.DrawSummary();
+			}
+		}
+		else
+		{
+			// draw a crosshair when we have no highlighted object
 			Rect frame = new Rect (Screen.width / 2, Screen.height / 2, 10, 10);
 			GUI.Box (frame, "");
 		}
-
+		
+		// draw toolbar with our set of accessable area annotations
+		this.drawToolbar(this.areaAnnotationsInRange);
 	}
+
+	private void drawToolbar(List<AnnotationInteraction> annotations)
+	{
+		// TODO: Draw a preview (and input button) for each value in `annotations`
+
+		// do not use `this.areaAnnotationsInRange`
+		// This function may move one day, so it'd be better to keep it pure
+	}
+
+	/// --- Handling Interaction ---
 
 	private void AttemptInteract ()
 	{
-		if (interactionAvaliable)
+		if (highlightedObject == null) {
+			return;
+		}
+		
+		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
 		{
-			foreach (Interaction target in avaliableInteractions)
+			if (i is AnnotationInteraction || i is SlideshowInteraction)
 			{
-				target.Interact (this.gameObject);
+				// special cases, handled by `AttemptReadAnnotation`
+				continue;
+			}
+
+			if (i.enabled)
+			{ 
+				i.Interact (this.gameObject);		
+			} 
+		}
+	}
+
+	private void AttemptReadAnnotation ()
+	{
+		if (highlightedObject == null) {
+			return;
+		}
+
+		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
+		{
+			if (i.enabled && (i is AnnotationInteraction || i is SlideshowInteraction))
+			{
+				i.Interact (this.gameObject);
 			}
 		}
 	}
 
-	private List<Interaction> GetAvaliableInteractions ()
+	private GameObject GetHighlightedObject()
 	{
 		// perform a raycast from the main camera to an object in front of it
 		// the object must have a collider to be hit, and an `Interaction` to be added
@@ -76,23 +141,36 @@ public class FirstPersonInteractor : MonoBehaviour
 			if (hit.collider.isTrigger)
 			{
 				// ignore non-physical colliders, such as trigger areas
-				return new List<Interaction> ();
+				return null;
 			}
 
-			GameObject obj = hit.transform.gameObject;
-			List<Interaction> enabledInteractions = new List<Interaction> ();
-			foreach (Interaction i in obj.GetComponents<Interaction> ())
-			{
-				if (i.enabled)
-				{
-					enabledInteractions.Add (i);
-				}
-			}
-			return enabledInteractions;
+			return hit.transform.gameObject;
 		}
 		else
 		{
-			return new List<Interaction> ();	// no interactions, empty list
+			return null;
+		}
+	}
+
+	// --- Changing Player Abilities ---
+
+	public void SetDrawsGUI(bool shouldDraw)
+	{
+		this.drawsGUI = shouldDraw;
+	}
+
+	public void SetCanMove(bool canMove)
+	{
+		var playerCompTypeA = this.gameObject.GetComponent<FirstPersonController> ();
+		var playerCompTypeB = this.gameObject.GetComponent<RigidbodyFirstPersonController> ();
+
+		if (playerCompTypeA != null)
+		{
+			playerCompTypeA.enabled = canMove;
+		}
+		if (playerCompTypeB != null)
+		{
+			playerCompTypeB.enabled = canMove;
 		}
 	}
 
