@@ -10,7 +10,7 @@ public class FirstPersonInteractor : MonoBehaviour
 
 	// Selection-related
 	private GameObject highlightedObject;
-	public List<AnnotationInteraction> areaAnnotationsInRange = new List<AnnotationInteraction>();
+	public List<Annotation> areaAnnotationsInRange = new List<Annotation>();
 
 	// Control-related
 	[HideInInspector]
@@ -62,7 +62,7 @@ public class FirstPersonInteractor : MonoBehaviour
 			}
 
 			// draw potential stub on highlighted annotation object
-			AnnotationInteraction annotation = this.highlightedObject.GetComponent<AnnotationInteraction> ();
+			Annotation annotation = this.highlightedObject.GetComponent<Annotation> ();
 			if (annotation != null)
 			{
 				annotation.DrawSummary();
@@ -79,7 +79,7 @@ public class FirstPersonInteractor : MonoBehaviour
 		this.drawToolbar(this.areaAnnotationsInRange);
 	}
 
-	private void drawToolbar(List<AnnotationInteraction> annotations)
+	private void drawToolbar(List<Annotation> annotations)
 	{
 		// TODO: Draw a preview (and input button) for each value in `annotations`
 
@@ -97,7 +97,7 @@ public class FirstPersonInteractor : MonoBehaviour
 		
 		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
 		{
-			if (i is AnnotationInteraction || i is SlideshowInteraction)
+			if (i is Annotation || i is Slideshow)
 			{
 				// special cases, handled by `AttemptReadAnnotation`
 				continue;
@@ -118,7 +118,7 @@ public class FirstPersonInteractor : MonoBehaviour
 
 		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
 		{
-			if (i.enabled && (i is AnnotationInteraction || i is SlideshowInteraction))
+			if (i.enabled && (i is Annotation || i is Slideshow))
 			{
 				i.Interact (this.gameObject);
 			}
