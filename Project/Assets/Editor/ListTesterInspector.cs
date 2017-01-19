@@ -6,12 +6,15 @@ using UnityEditor;
 [CustomEditor(typeof(ListTester))]
 public class ListTesterInspector : Editor {
 
+	ListTester Tester;
+
 	public override void OnInspectorGUI ()
 	{
-		serializedObject.Update ();
+		Tester = (ListTester)target;
+		EditorList.Show (Tester.objects);
+//		EditorGUILayout.TextField(Tester.objects);
 //		EditorGUILayout.PropertyField (serializedObject.FindProperty ("integers"), true);
-		EditorList.Show (serializedObject.FindProperty ("integers"));
+//		EditorList.Show (serializedObject.FindProperty ("integers"));
 
-		serializedObject.ApplyModifiedProperties ();
 	}
 }
