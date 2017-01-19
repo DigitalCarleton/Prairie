@@ -44,7 +44,9 @@ public class TwineNode : MonoBehaviour {
 		{
 		
 			// Draw minimized GUI instead
+			Rect frame = new Rect (10, 10, 10, 10);
 
+			GUI.Box (frame, "");
 
 		}
 	}
