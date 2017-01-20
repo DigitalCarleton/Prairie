@@ -3,8 +3,10 @@ using System.Collections;
 
 public class SwivelInteraction : Interaction
 {
-	public bool clockwise = true;
+	public bool openFromLeft = false;
+
 	private Vector3 hinge;
+	private Vector3 direction;
 	private float rotateSpeed = 90.0f;
 	private float targetAngle = 0;
 	const float rotationAmount = 1.5f;
@@ -13,14 +15,16 @@ public class SwivelInteraction : Interaction
 	void Start()
 	{
 		hinge = this.transform.position;
-		float amt = this.transform.localScale.z/2;
-		if (clockwise)
+		float amt = 0.7f * this.transform.localScale.z;
+		if (openFromLeft)
 		{
-			hinge += amt * Vector3.forward;	
+			hinge += amt * Vector3.forward;
+			direction = Vector3.up;
 		}
 		else
 		{
-			hinge -= amt * Vector3.forward;	
+			hinge -= amt * Vector3.forward;
+			direction = Vector3.down;
 		}
 	}
 
@@ -49,12 +53,12 @@ public class SwivelInteraction : Interaction
 	{
 		if (targetAngle > 0)
 		{
-			transform.RotateAround (hinge, Vector3.up, -rotationAmount);
+			transform.RotateAround (hinge, direction, -rotationAmount);
 			targetAngle -= rotationAmount;
 		}
 		else if (targetAngle < 0)
 		{
-			transform.RotateAround (hinge, Vector3.up, rotationAmount);
+			transform.RotateAround (hinge, direction, rotationAmount);
 			targetAngle += rotationAmount;
 		}
 	}
