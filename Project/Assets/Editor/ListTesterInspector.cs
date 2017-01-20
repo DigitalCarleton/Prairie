@@ -11,7 +11,7 @@ public class ListTesterInspector : Editor {
 	public override void OnInspectorGUI ()
 	{
 		Tester = (ListTester)target;
-		EditorList.Show (Tester.objects);
+		Tester.objects = EditorList.Show (Tester.objects);
 //		EditorGUILayout.TextField(Tester.objects);
 //		EditorGUILayout.PropertyField (serializedObject.FindProperty ("integers"), true);
 //		EditorList.Show (serializedObject.FindProperty ("integers"));

@@ -6,15 +6,19 @@ using UnityEditor;
 [CustomEditor(typeof(TwineNode))]
 public class TwineNodeInspector : Editor {
 
+	TwineNode node;
+
 	public override void OnInspectorGUI ()
 	{
-		serializedObject.Update ();
-		PrairieGUI.drawList (serializedObject.FindProperty ("objectsToTrigger"));
-		EditorGUILayout.PropertyField (serializedObject.FindProperty ("name"));
-		PrairieGUI.drawList (serializedObject.FindProperty ("tags"));
-		EditorGUILayout.PropertyField (serializedObject.FindProperty ("content"));
-		PrairieGUI.drawList (serializedObject.FindProperty ("children"));
-		PrairieGUI.drawList (serializedObject.FindProperty ("parents"));
-		serializedObject.ApplyModifiedProperties ();
+		node = (TwineNode)target;
+		node.objectsToTrigger = PrairieGUI.drawList ("Objects To Trigger", node.objectsToTrigger);
+		node.name = EditorGUILayout.TextField ("Name", node.name);
+		node.tags = PrairieGUI.drawList ("Tags", node.tags);
+		node.content = EditorGUILayout.TextField ("Content", node.content);
+		node.children = PrairieGUI.drawList ("Children", node.children);
+		GameObject[] parentArray = node.parents.ToArray ();
+		parentArray = PrairieGUI.drawList ("Parents", parentArray);
+		node.parents = new List<GameObject> (parentArray);
+
 	}
 }
