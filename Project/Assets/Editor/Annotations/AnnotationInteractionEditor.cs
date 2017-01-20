@@ -3,16 +3,16 @@ using UnityEditor;
 using System.IO;
 
 
-[CustomEditor(typeof(AnnotationInteraction))]
+[CustomEditor(typeof(Annotation))]
 public class AnnotationInteractionEditor : Editor {
 
     bool showRichText = true;
-    AnnotationInteraction annotation;
+    Annotation annotation;
 
 
     public override void OnInspectorGUI()
     {
-        annotation = (AnnotationInteraction)target;
+        annotation = (Annotation)target;
 
         string[] options = new string[] { "Import Text File", "Write in Inspector" };
         annotation.selected = EditorGUILayout.Popup("Import Method", annotation.selected, options);

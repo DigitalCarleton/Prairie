@@ -18,7 +18,7 @@ public class AnnotationContent
 }
 
 
-public class AnnotationInteraction : Interaction
+public class Annotation : Interaction
 {
     public AnnotationContent content;
 
