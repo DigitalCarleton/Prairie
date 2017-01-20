@@ -34,7 +34,7 @@ public class Annotation : Interaction
     public TextAsset textFile;
     public string text;
     public List<Texture2D> images;
-    public string summary = "";
+    public string summary;
 
     private bool active = false;
 
@@ -48,6 +48,8 @@ public class Annotation : Interaction
     private readonly float BOX_Y = 10;
     private readonly float BOX_WIDTH = Screen.width / 2;
     private readonly float BOX_HEIGHT = Screen.height - 20;
+
+	private FirstPersonInteractor player;
 
     void Start()
     {
@@ -221,4 +223,33 @@ public class Annotation : Interaction
             }
         }
     }
+
+	void OnTriggerEnter(Collider other)
+	{
+
+		// ensure we're being triggered by a player
+		player = other.gameObject.GetComponent<FirstPersonInteractor> ();
+		if (player == null)
+		{
+			return;
+		}
+		else
+		{
+			player.areaAnnotationsInRange.Add(this);
+		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		// ensure we're being triggered by a player
+		player = other.gameObject.GetComponent<FirstPersonInteractor> ();
+		if (player == null)
+		{
+			return;
+		}
+		else
+		{
+			player.areaAnnotationsInRange.Remove(this);
+		}
+	}
 }
