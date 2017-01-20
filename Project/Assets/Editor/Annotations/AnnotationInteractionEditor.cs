@@ -1,31 +1,53 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System;
 
-
-[CustomEditor(typeof(AnnotationInteraction))]
+[CustomEditor(typeof(Annotation))]
 public class AnnotationInteractionEditor : Editor {
 
     bool showRichText = true;
-    AnnotationInteraction annotation;
+    Annotation annotation;
 
 
     public override void OnInspectorGUI()
     {
-        annotation = (AnnotationInteraction)target;
+        annotation = (Annotation)target;
 
-        string[] options = new string[] { "Import Text File", "Write in Inspector" };
-        annotation.selected = EditorGUILayout.Popup("Import Method", annotation.selected, options);
+
+        string[] typeOptions = new string[] { "Summary Annotation", "Area Annotation" };
+        annotation.annotationType= EditorGUILayout.Popup("Annotation Type", annotation.annotationType, typeOptions);
+
+        if(annotation.annotationType == 0)
+        {
+            DisplaySetSummary();
+        }
+        else
+        {
+            ///Stuff for Area Annotations here
+        }
+
+
+        string[] importOptions = new string[] { "No Full Annotation", "Import Text File", "Write in Inspector" };
+        annotation.importType = EditorGUILayout.Popup("Import Method", annotation.importType, importOptions);
 
         //Processing if importing a text file
-        if (annotation.selected == 0)
+        if (annotation.importType == 1)
         {
             DisplayImportFile();
-
-        } else //Process text written in inspector
+        }
+        else if (annotation.importType == 2) //Process text written in inspector
         {
             DisplayWriteInInspector();
         }
+    }
+
+    void DisplaySetSummary()
+    {
+        GUIStyle textAreaStyle = new GUIStyle(GUI.skin.textArea);
+        textAreaStyle.wordWrap = true;
+        annotation.summary = GUILayout.TextArea(annotation.summary, 250, textAreaStyle, GUILayout.Height(75),
+            GUILayout.Width(EditorGUIUtility.currentViewWidth - 40), GUILayout.ExpandWidth(false));
     }
 
     /// <summary>
@@ -61,7 +83,7 @@ public class AnnotationInteractionEditor : Editor {
     void ImportFileButton()
     {
         string prompt = "Select File";
-        if (annotation.textFilePath != "")
+        if (string.IsNullOrEmpty(annotation.textFilePath.Trim()))
         {
             prompt = annotation.textFilePath;
         }
@@ -123,7 +145,7 @@ public class AnnotationInteractionEditor : Editor {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Images Folder:");
         string imagePrompt = "Select File";
-        if (annotation.imagePath != "")
+        if (string.IsNullOrEmpty(annotation.imagePath.Trim()))
         {
             imagePrompt = annotation.imagePath;
         }

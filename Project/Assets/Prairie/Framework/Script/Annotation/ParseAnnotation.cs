@@ -3,8 +3,8 @@ using System.Text.RegularExpressions;
 
 public static class ParseAnnotation {
 
-    private static readonly string IMAGE_TEXT_FULL = "<\\s*img\\s*=\\s*\"?.*?\"?\\s*>";
-    private static readonly string IMAGE_TEXT_SPLIT = "(<\\s*img\\s*=\\s*\"?)|(\"?\\s*>)";
+    private static readonly string IMAGE_TEXT_FULL = "<\\s*img\\s*src\\s*=\\s*\"?.*?\"?\\s*>";
+    private static readonly string IMAGE_TEXT_SPLIT = "(<\\s*img\\s*src\\s*=\\s*\"?)|(\"?\\s*>)";
 
     /// <summary>
     /// Takes a string and parses text so that textOut gets populated by strings, separated by image paths that are stored in imgOut
