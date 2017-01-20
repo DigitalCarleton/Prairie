@@ -61,4 +61,10 @@ public class TumbleInteraction : Interaction
 			}
 		}
 	}
+
+	override public string defaultPrompt {
+		get {
+			return "Pick up Object";
+		}
+	}
 }

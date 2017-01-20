@@ -62,4 +62,10 @@ public class SwivelInteraction : Interaction
 			targetAngle += rotationAmount;
 		}
 	}
+
+	override public string defaultPrompt {
+		get {
+			return "Open Door";
+		}
+	}
 }
