@@ -34,7 +34,7 @@ public class Annotation : Interaction
     public TextAsset textFile;
     public string text;
     public List<Texture2D> images;
-    public string summary;
+    public string summary = "";
 
     private bool active = false;
 
