@@ -83,6 +83,25 @@ public class FirstPersonInteractor : MonoBehaviour
 	{
 		// TODO: Draw a preview (and input button) for each value in `annotations`
 
+		if (annotations.Count != 0)
+		{
+			float xpos = 0.1f * Screen.width;
+			float ypos = 0.8f * Screen.height;
+			int button = 0;
+
+			// Make a background box
+			GUI.Box(new Rect (xpos, ypos, 250, 120), "Scenic Annotations");
+
+			// Make list of buttons, paired with annotation summaries
+			foreach (Annotation a in annotations)
+			{
+				ypos += 25;
+				button += 1;
+				GUI.Button (new Rect (xpos, ypos, 20, 20), string.Format("{0}", button));
+				GUI.Label (new Rect (xpos + 30, ypos, 150, 20), a.summary);
+			}
+		}
+
 		// do not use `this.areaAnnotationsInRange`
 		// This function may move one day, so it'd be better to keep it pure
 	}
@@ -95,7 +114,7 @@ public class FirstPersonInteractor : MonoBehaviour
 			return;
 		}
 		
-		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
+		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ())
 		{
 			if (i is Annotation || i is Slideshow)
 			{
