@@ -22,8 +22,8 @@ public class Annotation : Interaction
 {
     public AnnotationContent content;
 
-    public string textFilePath; //saved for use in the editor
-    public string imagePath;
+    public string textFilePath = ""; //saved for use in the editor
+    public string imagePath = "";
 
     public int importType = 0; //uses int for editor purposes
     public int annotationType = 0; //0 for summary, 1 for area.  Default to 0 for inspector
@@ -32,7 +32,7 @@ public class Annotation : Interaction
     public bool sharedFile = true; //whether images and text are in the same file
     
     public TextAsset textFile;
-    public string text;
+    public string text = "";
     public List<Texture2D> images;
     public string summary = "";
 
