@@ -91,12 +91,17 @@ public class Annotation : Interaction
 
     protected override void PerformAction()
     {
-        active = true;
-		FirstPersonInteractor player = this.GetPlayer ();
-		if (player != null) {
-			player.SetCanMove (false);
-			player.SetDrawsGUI (false);
-		}
+        if (importType != 0)
+        {
+            active = true;
+            FirstPersonInteractor player = this.GetPlayer();
+            if (player != null)
+            {
+                player.SetCanMove(false);
+                player.SetDrawsGUI(false);
+            }
+        }
+        
     }
 
     void OnGUI()
