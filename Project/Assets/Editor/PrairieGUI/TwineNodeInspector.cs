@@ -11,13 +11,13 @@ public class TwineNodeInspector : Editor {
 	public override void OnInspectorGUI ()
 	{
 		node = (TwineNode)target;
-		node.objectsToTrigger = PrairieGUI.drawList ("Objects To Trigger", node.objectsToTrigger);
+		node.objectsToTrigger = PrairieGUI.drawObjectList ("Objects To Trigger", node.objectsToTrigger);
 		node.name = EditorGUILayout.TextField ("Name", node.name);
-		node.tags = PrairieGUI.drawList ("Tags", node.tags);
+		node.tags = PrairieGUI.drawPrimitiveList ("Tags", node.tags);
 		node.content = EditorGUILayout.TextField ("Content", node.content);
-		node.children = PrairieGUI.drawList ("Children", node.children);
+		node.children = PrairieGUI.drawObjectList ("Children", node.children);
 		GameObject[] parentArray = node.parents.ToArray ();
-		parentArray = PrairieGUI.drawList ("Parents", parentArray);
+		parentArray = PrairieGUI.drawObjectList ("Parents", parentArray);
 		node.parents = new List<GameObject> (parentArray);
 
 	}
