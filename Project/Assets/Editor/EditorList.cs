@@ -14,33 +14,26 @@ public class EditorList {
 	private static GUILayoutOption minusButtonWidth = GUILayout.Width(20f);
 	private static GUILayoutOption plusButtonWidth = GUILayout.Width(60f);
 
-	public static void Show (Object[] array)
+	public static T[] Show <T> (T[] array) where T : Object
 	{
 		EditorGUI.indentLevel += 1;
-		List<Object> list = new List<Object> (array);
+		List<T> list = new List<T> (array);
 		for (int i = 0; i < list.Count; i++)
 		{
 			EditorGUILayout.BeginHorizontal ();
-			EditorGUILayout.TextField ("Element 0: ", list [i].ToString ());
+			list[i] = (T)EditorGUILayout.ObjectField("Element " + i, list[i], typeof(T), true);
 			if (GUILayout.Button (deleteRowContent, EditorStyles.miniButton, minusButtonWidth))
 			{
 				list.RemoveAt (i);
-//				int oldSize = list.Length;
-//				list.DeleteArrayElementAtIndex (i);
-//				if (list.arraySize == oldSize)
-//				{
-//					list.DeleteArrayElementAtIndex (i);
-//				}
 			}
 			EditorGUILayout.EndHorizontal ();
 		}
-		array = list.ToArray ();
-//		if (GUILayout.Button (addRowContent, plusButtonWidth))
-//		{
-//			Object[] newArray = new Object[array.Length + 1];
-//			array.CopyTo (newArray, 0);
-//			array = newArray;
-//		}
+		if (GUILayout.Button (addRowContent, plusButtonWidth))
+		{
+			list.Add (null);
+		}
 		EditorGUI.indentLevel -= 1;
+
+		return (T[])list.ToArray ();
 	}
 }
