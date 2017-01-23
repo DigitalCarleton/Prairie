@@ -32,8 +32,11 @@ public class AudioInteraction : Interaction
             audioSource.Play();
             playing = true;
         }
-        
-        
-        
+    }
+
+    override public string defaultPrompt {
+        get {
+            return "Play Audio";
+        }
     }
 }
