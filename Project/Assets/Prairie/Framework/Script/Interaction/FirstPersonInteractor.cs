@@ -39,6 +39,16 @@ public class FirstPersonInteractor : MonoBehaviour
 			// right click
 			this.AttemptReadAnnotation ();
 		}
+		if (areaAnnotationsInRange.Count != 0)
+		{
+			for (int a = 0; a < areaAnnotationsInRange.Count; a++)
+			{
+				if (Input.GetKeyDown ((a+1).ToString()))
+				{
+					areaAnnotationsInRange[a].Interact (this.gameObject);
+				}
+			}
+		}
 	}
 
 	/// --- GUI ---
@@ -86,11 +96,12 @@ public class FirstPersonInteractor : MonoBehaviour
 		if (annotations.Count != 0)
 		{
 			float xpos = 0.1f * Screen.width;
-			float ypos = 0.8f * Screen.height;
+			float ypos = 0.7f * Screen.height;
 			int button = 0;
 
 			// Make a background box
-			GUI.Box(new Rect (xpos, ypos, 250, 120), "Scenic Annotations");
+			GUI.Box(new Rect (xpos, ypos, 250, 120), "Area Annotations");
+			xpos += 10;
 
 			// Make list of buttons, paired with annotation summaries
 			foreach (Annotation a in annotations)
