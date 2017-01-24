@@ -32,18 +32,24 @@ public class TwineNode : MonoBehaviour {
 		if (this.enabled && !this.isMinimized) {
 
 			float frameWidth = Screen.width / 3;
-			Rect frame = new Rect (10, 10, frameWidth, Screen.height);
+			Rect frame = new Rect (10, 10, frameWidth, Screen.height / 2);
 
 			GUI.BeginGroup (frame);
 			GUIStyle style = new GUIStyle (GUI.skin.box);
 			style.wordWrap = true;
 			style.fixedWidth = frameWidth;
 			GUILayout.Box (this.content, style);
+
+			if (isDecisionNode) {
+				GUIStyle decisionHintStyle = new GUIStyle (style);
+				decisionHintStyle.fontStyle = FontStyle.BoldAndItalic;
+				GUILayout.Box ("Press Q to progress in the story...", decisionHintStyle);
+			}
+				
 			GUI.EndGroup ();
 
-		} else if (this.enabled && this.isMinimized) 
-		{
-		
+		} else if (this.enabled && this.isMinimized) {
+	
 			// Draw minimized GUI instead
 			Rect frame = new Rect (10, 10, 10, 10);
 
