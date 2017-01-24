@@ -15,6 +15,7 @@ public class TwineNode : MonoBehaviour {
 	[HideInInspector]
 	public string[] childrenNames;
 	public List<GameObject> parents = new List<GameObject> ();
+	public bool isDecisionNode;
 
 	private bool isMinimized = false;
 
