@@ -113,4 +113,10 @@ public class Slideshow : Interaction
 			}
 		}
 	}
+
+	override public string defaultPrompt {
+		get {
+			return "Play Slideshow";
+		}
+	}
 }

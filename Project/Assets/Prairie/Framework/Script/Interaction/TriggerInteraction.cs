@@ -13,4 +13,11 @@ public class TriggerInteraction : Interaction
             target.InteractAll(this.rootInteractor);
         }
     }
+
+	override public string defaultPrompt {
+		get {
+			return "Trigger Something";
+		}
+	}
+
 }
