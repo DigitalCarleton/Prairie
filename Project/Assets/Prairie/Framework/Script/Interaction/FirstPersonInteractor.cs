@@ -95,10 +95,10 @@ public class FirstPersonInteractor : MonoBehaviour
 		{
 			float xMargin = 10f;
 			float yMargin = 10f;
-			float rowSize = 40f;
+			float rowSize = 35f;
 
 			float toolbarWidth = Mathf.Min (0.2f * Screen.width, 500f);
-			float toolbarHeight = annotations.Count * rowSize;
+			float toolbarHeight = (annotations.Count + 1) * rowSize;	// first row is a label
 
 			// GUI coordinate system places 0,0 in top left corner
 			float currentX = xMargin;
@@ -108,15 +108,16 @@ public class FirstPersonInteractor : MonoBehaviour
 			Rect toolbarFrame = new Rect (currentX, currentY, toolbarWidth, toolbarHeight);
 			GUI.Box(toolbarFrame, "Area Annotations");
 			
-			// Indent a bit inwards
+			// Shift down and indent 
 			currentX += 10f;
+			currentY += rowSize;
 
 			// Make list of buttons, paired with annotation summaries
 			int buttonIndex = 1;
 			foreach (Annotation a in annotations)
 			{
 				float rowHeight = rowSize/2f;
-				Rect buttonFrame = new Rect (currentX, currentY, rowHeight, rowHeight);
+				Rect buttonFrame = new Rect (currentX, currentY, 20, 20);
 				Rect labelFrame = new Rect (currentX + 30, currentY, toolbarWidth, rowHeight);
 
 				GUI.Button (buttonFrame, buttonIndex.ToString());
