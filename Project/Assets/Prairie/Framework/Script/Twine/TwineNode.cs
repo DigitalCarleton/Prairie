@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 public class TwineNode : MonoBehaviour {
+
+	public const string PRAIRIE_DECISION_TAG = "prairie_decision";
 
 	public GameObject[] objectsToTrigger;
 
@@ -21,6 +25,13 @@ public class TwineNode : MonoBehaviour {
 	private bool isOptionsGuiOpen = false;
 
 	private int selectedOptionIndex = 0;
+
+	void Start () 
+	{
+		// Upon creation of this node, ensure that it is a decision node if it has
+		//	the decision tag:
+		this.isDecisionNode = this.tags.Contains (PRAIRIE_DECISION_TAG);
+	}
 
 	void Update ()
 	{
@@ -130,7 +141,8 @@ public class TwineNode : MonoBehaviour {
 	/// 	the TwineNode's child at the given index.
 	/// </summary>
 	/// <param name="index">Index of the child to activate.</param>
-	private void ActivateChildAtIndex(int index) {
+	private void ActivateChildAtIndex(int index) 
+	{
 		// Find the interactor:
 		FirstPersonInteractor interactor = (FirstPersonInteractor) FindObjectOfType(typeof(FirstPersonInteractor));
 
@@ -175,7 +187,7 @@ public class TwineNode : MonoBehaviour {
 			parent.GetComponent<TwineNode> ().Deactivate ();
 		}
 	}
-		
+
 	// GIZMOS
 
 	void OnDrawGizmos()
