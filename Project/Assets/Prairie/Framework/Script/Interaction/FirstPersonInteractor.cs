@@ -93,21 +93,37 @@ public class FirstPersonInteractor : MonoBehaviour
 	{
 		if (annotations.Count != 0)
 		{
-			float xpos = 0.1f * Screen.width;
-			float ypos = 0.7f * Screen.height;
-			int button = 0;
+			float xMargin = 10f;
+			float yMargin = 10f;
+			float rowSize = 40f;
+
+			float toolbarWidth = Mathf.Min (0.2f * Screen.width, 500f);
+			float toolbarHeight = annotations.Count * rowSize;
+
+			// GUI coordinate system places 0,0 in top left corner
+			float currentX = xMargin;
+			float currentY = Screen.height - (yMargin + toolbarHeight);
 
 			// Make a background box
-			GUI.Box(new Rect (xpos, ypos, 250, 120), "Area Annotations");
-			xpos += 10;
+			Rect toolbarFrame = new Rect (currentX, currentY, toolbarWidth, toolbarHeight);
+			GUI.Box(toolbarFrame, "Area Annotations");
+			
+			// Indent a bit inwards
+			currentX += 10f;
 
 			// Make list of buttons, paired with annotation summaries
+			int buttonIndex = 1;
 			foreach (Annotation a in annotations)
 			{
-				ypos += 25;
-				button += 1;
-				GUI.Button (new Rect (xpos, ypos, 20, 20), string.Format("{0}", button));
-				GUI.Label (new Rect (xpos + 30, ypos, 150, 20), a.summary);
+				float rowHeight = rowSize/2f;
+				Rect buttonFrame = new Rect (currentX, currentY, rowHeight, rowHeight);
+				Rect labelFrame = new Rect (currentX + 30, currentY, toolbarWidth, rowHeight);
+
+				GUI.Button (buttonFrame, buttonIndex.ToString());
+				GUI.Label (labelFrame, a.summary);
+
+				currentY += rowSize;
+				buttonIndex++;
 			}
 		}
 	}
