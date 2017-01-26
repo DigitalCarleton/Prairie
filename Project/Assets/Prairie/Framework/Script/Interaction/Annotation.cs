@@ -17,6 +17,9 @@ public class AnnotationContent
 
 }
 
+public enum AnnotationTypes : int {SUMMARY = 0, AREA = 1 };
+public enum ImportTypes : int {NONE = 0, IMPORT = 1, INSPECTOR = 2 };
+
 
 public class Annotation : Interaction
 {
@@ -25,8 +28,8 @@ public class Annotation : Interaction
     public string textFilePath = ""; //saved for use in the editor
     public string imagePath = "";
 
-    public int importType = 0; //uses int for editor purposes
-    public int annotationType = 0; //0 for summary, 1 for area.  Default to 0 for inspector
+    public int importType = (int)ImportTypes.NONE; //uses int for editor purposes
+    public int annotationType = (int)AnnotationTypes.SUMMARY; //0 for summary, 1 for area.  Default to 0 for inspector
 
     public bool includeImages = false;
     public bool sharedFile = true; //whether images and text are in the same file
@@ -93,12 +96,17 @@ public class Annotation : Interaction
 
     protected override void PerformAction()
     {
-        active = true;
-		FirstPersonInteractor player = this.GetPlayer ();
-		if (player != null) {
-			player.SetCanMove (false);
-			player.SetDrawsGUI (false);
-		}
+        if (importType != (int)ImportTypes.NONE)
+        {
+            active = true;
+            FirstPersonInteractor player = this.GetPlayer();
+            if (player != null)
+            {
+                player.SetCanMove(false);
+                player.SetDrawsGUI(false);
+            }
+        }
+        
     }
 
     void OnGUI()
@@ -133,7 +141,7 @@ public class Annotation : Interaction
     /// </summary>
     public void DrawSummary ()
     {
-        if (annotationType == 0 && summary != "")
+        if (annotationType == (int)AnnotationTypes.SUMMARY && summary != "")
         {
             //set up the style so that the summary expands vertically
             //TODO: figure out why this has to be here, and doesn't work if defined in start
@@ -147,9 +155,9 @@ public class Annotation : Interaction
             GUILayout.FlexibleSpace();
             string displayText = summary;
 
-            string clickForMore = "\n\n <size=12><i>Right Click For More...</i></size>";
+            string clickForMore = "\n\n <size=12><i>Right click for more...</i></size>";
 
-            if (this.importType != 0)
+            if (this.importType != (int)ImportTypes.NONE)
             {
                 displayText += clickForMore;
             }

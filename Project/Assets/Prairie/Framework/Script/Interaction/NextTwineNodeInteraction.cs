@@ -22,5 +22,11 @@ public class NextTwineNodeInteraction : Interaction
 			twineNode.Activate (this.rootInteractor);
 		}
 	}
+
+	override public string defaultPrompt {
+		get {
+			return "Progress the Story";
+		}
+	}
 }
 
