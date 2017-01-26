@@ -35,7 +35,7 @@ public class TwineNode : MonoBehaviour {
 				this.selectedOptionIndex = (this.selectedOptionIndex + 1) % (children.Length);
 			} else if (this.isOptionsGuiOpen && (Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown (KeyCode.Return))) {
 				// Press ENTER or RETURN to select that child
-				this.SoftActivateChildAtIndex (selectedOptionIndex);
+				this.ActivateChildAtIndex (selectedOptionIndex);
 			} else if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.E)) {
 				// E closes the options list
 				this.isOptionsGuiOpen = false;
@@ -125,19 +125,22 @@ public class TwineNode : MonoBehaviour {
 		}
 	}
 
-	// TODO: Make this a method that acts on this twinenode, then call it from the child.
-	// TODO: discuss how to not have a separate activation type (soft). Can we get an interactor ref?
-	public void SoftActivateChildAtIndex(int index)
-	{
-		TwineNode child = this.children [index].GetComponent<TwineNode>();
+	/// <summary>
+	/// Find the FirstPersonInteractor in the world, and use it to activate
+	/// 	the TwineNode's child at the given index.
+	/// </summary>
+	/// <param name="index">Index of the child to activate.</param>
+	private void ActivateChildAtIndex(int index) {
+		// Find the interactor:
+		FirstPersonInteractor interactor = (FirstPersonInteractor) FindObjectOfType(typeof(FirstPersonInteractor));
 
-		if (!child.enabled && child.HasActiveParentNode()) 
-		{
-			child.enabled = true;
-			child.isMinimized = false;
-			child.DeactivateAllParents ();
+		if (interactor != null) {
+			GameObject interactorObject = interactor.gameObject;
+
+			// Now activate the child using this interactor!
+			TwineNode child = this.children [index].GetComponent<TwineNode> ();
+			child.Activate (interactorObject);
 		}
-
 	}
 
 	public void Deactivate() 
