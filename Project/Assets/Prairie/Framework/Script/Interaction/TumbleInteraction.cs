@@ -6,7 +6,7 @@ public class TumbleInteraction : Interaction
 	/// <summary>
 	/// Allows user to rotate object.
 	/// </summary>
-	public bool pickedUp = false;
+	private bool pickedUp = false;
 
 	public static Mesh tumbleMesh;
 
@@ -26,7 +26,6 @@ public class TumbleInteraction : Interaction
 	{
 		if (pickedUp)
 		{
-
 			if (Input.GetKey (KeyCode.L)) // right
 			{
 				transform.RotateRelativeToCamera (-10, 0);
@@ -43,24 +42,29 @@ public class TumbleInteraction : Interaction
 			{
 				transform.RotateRelativeToCamera (0, -10);
 			}
-			else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.Escape))
-			{
-				FirstPersonInteractor player = this.GetPlayer ();
-				if (player != null) {
-					player.SetCanMove (true);
-					player.SetDrawsGUI (true);
-				}
-				pickedUp = false;
-			}
 		}
 	}
 
 	protected override void PerformAction() {
-		pickedUp = true;
+		pickedUp = !pickedUp;
 		FirstPersonInteractor player = this.GetPlayer ();
 		if (player != null) {
-			player.SetCanMove (false);
-			player.SetDrawsGUI (false);
+			if (pickedUp)
+			{
+				player.SetCanMove (false);
+				player.SetDrawsGUI (false);
+			}
+			else
+			{
+				player.SetCanMove (true);
+				player.SetDrawsGUI (true);
+			}
+		}
+	}
+
+	override public string defaultPrompt {
+		get {
+			return "Pick up Object";
 		}
 	}
 }

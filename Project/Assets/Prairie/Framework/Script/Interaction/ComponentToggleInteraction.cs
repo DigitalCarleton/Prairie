@@ -22,4 +22,10 @@ public class ComponentToggleInteraction : Interaction
 			target[i].enabled = !target[i].enabled;
 		}
 	}
+
+	override public string defaultPrompt {
+		get {
+			return "Toggle Something";
+		}
+	}
 }

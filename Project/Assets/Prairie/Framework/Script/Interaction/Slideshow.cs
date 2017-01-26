@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SlideshowInteraction : Interaction
+public class Slideshow : Interaction
 {
 	private bool Active = false;
 
@@ -111,6 +111,12 @@ public class SlideshowInteraction : Interaction
 				player.SetCanMove (true);
 				player.SetDrawsGUI (true);
 			}
+		}
+	}
+
+	override public string defaultPrompt {
+		get {
+			return "Play Slideshow";
 		}
 	}
 }
