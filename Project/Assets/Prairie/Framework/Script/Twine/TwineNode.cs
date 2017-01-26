@@ -30,17 +30,20 @@ public class TwineNode : MonoBehaviour {
 		}
 
 		if (this.isDecisionNode) {
-			if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.E) ) {
-				// Press E to scroll through the children nodes
+			if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.Q)) {
+				// Press Q to scroll through the children nodes
 				this.selectedOptionIndex = (this.selectedOptionIndex + 1) % (children.Length);
-			} else if (this.isOptionsGuiOpen && (Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))) {
+			} else if (this.isOptionsGuiOpen && (Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown (KeyCode.Return))) {
 				// Press ENTER or RETURN to select that child
 				this.SoftActivateChildAtIndex (selectedOptionIndex);
-			} 
+			} else if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.E)) {
+				// E closes the options list
+				this.isOptionsGuiOpen = false;
+			}
 
-			if (Input.GetKeyDown (KeyCode.Q)) {
-				// Press Q to show/hide the children options list
-				this.isOptionsGuiOpen = !this.isOptionsGuiOpen;
+			// Q opens the options list if it's not already open
+			if (!this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.Q)) {
+				this.isOptionsGuiOpen = true;
 			}
 		}
 	}
@@ -65,26 +68,19 @@ public class TwineNode : MonoBehaviour {
 				if (!isOptionsGuiOpen) {
 					GUILayout.Box ("Press Q to progress in the story...", decisionHintStyle);
 				} else {
-					GUILayout.Box ("Press Q to close, E to scroll, ENTER to choose", decisionHintStyle);
+					GUILayout.Box ("Press Q to scroll, E to close, ENTER to choose", decisionHintStyle);
 				}
+			}
+
+			if (this.isOptionsGuiOpen) {
+				// Draw list of buttons for the possible children nodes to visit:
+				GUIStyle optionButtonStyle = new GUIStyle (GUI.skin.button);
+				optionButtonStyle.fontStyle = FontStyle.Italic;
+				optionButtonStyle.wordWrap = true;
+				selectedOptionIndex = GUILayout.SelectionGrid(selectedOptionIndex, childrenNames, 1, optionButtonStyle);
 			}
 			
 			GUI.EndGroup ();
-
-			if (this.isOptionsGuiOpen) {
-				GUIStyle optionButtonStyle = new GUIStyle (GUI.skin.button);
-				optionButtonStyle.wordWrap = true;
-
-				int buttonWidth = Screen.width / 8;
-				int buttonHeight = Screen.height / 8;
-
-				int buttonX = Screen.width / 2 - buttonWidth / 2;
-				int buttonY = Screen.height / 2 - buttonHeight / 2;
-
-				Rect buttonFrame = new Rect(buttonX, buttonY, buttonWidth, buttonHeight);
-				selectedOptionIndex = GUI.SelectionGrid(buttonFrame, selectedOptionIndex, childrenNames, 1, optionButtonStyle);
-
-			}
 
 		} else if (this.enabled && this.isMinimized) {
 
@@ -129,6 +125,8 @@ public class TwineNode : MonoBehaviour {
 		}
 	}
 
+	// TODO: Make this a method that acts on this twinenode, then call it from the child.
+	// TODO: discuss how to not have a separate activation type (soft). Can we get an interactor ref?
 	public void SoftActivateChildAtIndex(int index)
 	{
 		TwineNode child = this.children [index].GetComponent<TwineNode>();
