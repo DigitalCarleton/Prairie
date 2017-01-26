@@ -226,30 +226,29 @@ public class Annotation : Interaction
 
 	void OnTriggerEnter(Collider other)
 	{
-
 		// ensure we're being triggered by a player
-		player = other.gameObject.GetComponent<FirstPersonInteractor> ();
-		if (player == null)
+		FirstPersonInteractor interactor = other.gameObject.GetComponent<FirstPersonInteractor> ();
+		if (interactor == null)
 		{
 			return;
 		}
 		else
 		{
-			player.areaAnnotationsInRange.Add(this);
+			interactor.areaAnnotationsInRange.Add(this);
 		}
 	}
 
 	void OnTriggerExit(Collider other)
 	{
 		// ensure we're being triggered by a player
-		player = other.gameObject.GetComponent<FirstPersonInteractor> ();
-		if (player == null)
+		FirstPersonInteractor interactor = other.gameObject.GetComponent<FirstPersonInteractor> ();
+		if (interactor == null)
 		{
 			return;
 		}
 		else
 		{
-			player.areaAnnotationsInRange.Remove(this);
+			interactor.areaAnnotationsInRange.Remove(this);
 		}
 	}
 }
