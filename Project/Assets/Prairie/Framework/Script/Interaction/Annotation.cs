@@ -52,6 +52,8 @@ public class Annotation : Interaction
     private readonly float BOX_WIDTH = Screen.width / 2;
     private readonly float BOX_HEIGHT = Screen.height - 20;
 
+	private FirstPersonInteractor player;
+
     void Start()
     {
         content = new AnnotationContent();
@@ -229,4 +231,44 @@ public class Annotation : Interaction
             }
         }
     }
+
+	void OnTriggerEnter(Collider other)
+	{
+        if (this.annotationType != (int)AnnotationTypes.AREA)
+        {
+            // do not act as area annotation if not specified as one
+            return;
+        }
+
+		// ensure we're being triggered by a player
+		FirstPersonInteractor interactor = other.gameObject.GetComponent<FirstPersonInteractor> ();
+		if (interactor == null)
+		{
+			return;
+		}
+		else
+		{
+			interactor.areaAnnotationsInRange.Add(this);
+		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+        if (this.annotationType != (int)AnnotationTypes.AREA)
+        {
+            // do not act as area annotation if not specified as one
+            return;
+        }
+
+		// ensure we're being triggered by a player
+		FirstPersonInteractor interactor = other.gameObject.GetComponent<FirstPersonInteractor> ();
+		if (interactor == null)
+		{
+			return;
+		}
+		else
+		{
+			interactor.areaAnnotationsInRange.Remove(this);
+		}
+	}
 }
