@@ -234,6 +234,12 @@ public class Annotation : Interaction
 
 	void OnTriggerEnter(Collider other)
 	{
+        if (this.annotationType != (int)AnnotationTypes.AREA)
+        {
+            // do not act as area annotation if not specified as one
+            return
+        }
+
 		// ensure we're being triggered by a player
 		FirstPersonInteractor interactor = other.gameObject.GetComponent<FirstPersonInteractor> ();
 		if (interactor == null)
@@ -248,6 +254,12 @@ public class Annotation : Interaction
 
 	void OnTriggerExit(Collider other)
 	{
+        if (this.annotationType != (int)AnnotationTypes.AREA)
+        {
+            // do not act as area annotation if not specified as one
+            return
+        }
+
 		// ensure we're being triggered by a player
 		FirstPersonInteractor interactor = other.gameObject.GetComponent<FirstPersonInteractor> ();
 		if (interactor == null)
