@@ -237,7 +237,7 @@ public class Annotation : Interaction
         if (this.annotationType != (int)AnnotationTypes.AREA)
         {
             // do not act as area annotation if not specified as one
-            return
+            return;
         }
 
 		// ensure we're being triggered by a player
@@ -257,7 +257,7 @@ public class Annotation : Interaction
         if (this.annotationType != (int)AnnotationTypes.AREA)
         {
             // do not act as area annotation if not specified as one
-            return
+            return;
         }
 
 		// ensure we're being triggered by a player
