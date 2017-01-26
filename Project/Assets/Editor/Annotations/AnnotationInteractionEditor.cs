@@ -14,19 +14,27 @@ public class AnnotationInteractionEditor : Editor {
     {
         annotation = (Annotation)target;
 
-
+        // select type
         string[] typeOptions = new string[] { "Summary Annotation", "Area Annotation" };
         annotation.annotationType= EditorGUILayout.Popup("Annotation Type", annotation.annotationType, typeOptions);
 
+        // warnings
+        if (annotation.annotationType == (int)AnnotationTypes.AREA)
+        {
+            DisplayAreaAnnotationWarnings();
+        }
+
+        // summary
         if(annotation.annotationType == (int)AnnotationTypes.SUMMARY)
         {
-            DisplaySetSummary();
+            DisplaySetLargeSummary();   // summary is used as an introduction to an object
         }
         else
         {
-            ///Stuff for Area Annotations here
+            DisplaySetAreaInteractionSummary();  // summary is used as a very quick "name" preview
         }
 
+        // import type
         int previousType = annotation.importType;
 
         string[] importOptions = new string[] { "No Full Annotation", "Import Text File", "Write in Inspector" };
@@ -60,13 +68,19 @@ public class AnnotationInteractionEditor : Editor {
         }
     }
 
-    void DisplaySetSummary()
+    void DisplaySetLargeSummary()
     {
         GUIStyle textAreaStyle = new GUIStyle(GUI.skin.textArea);
         textAreaStyle.wordWrap = true;
         GUILayout.Label("Annotation Summary Text:");
         annotation.summary = GUILayout.TextArea(annotation.summary, 250, textAreaStyle, GUILayout.Height(75),
             GUILayout.Width(EditorGUIUtility.currentViewWidth - 40), GUILayout.ExpandWidth(false));
+    }
+
+    void DisplaySetAreaInteractionSummary()
+    {
+        GUILayout.Label("Annotation Name:");
+        annotation.summary = GUILayout.TextField(annotation.summary, 40);
     }
 
     /// <summary>
@@ -226,4 +240,47 @@ public class AnnotationInteractionEditor : Editor {
             }
         }
     }
+
+    void DisplayAreaAnnotationWarnings()
+    {
+        GUIStyle warningLabel = new GUIStyle(GUI.skin.label);
+        warningLabel.normal.textColor = Color.red;
+        warningLabel.wordWrap = true;
+
+        if (annotation.annotationType == (int)AnnotationTypes.AREA)
+        {
+            // ensure there is a collider attached to this object
+            GameObject owner = this.annotation.gameObject;
+            Collider[] colliders = owner.GetComponents<Collider> ();
+
+            if (colliders == null || colliders.Length == 0)
+            {
+                // error: doesn't have collider
+                GUILayout.Label("Area Annotations require a Collider to function. Would you like to add one?", warningLabel);
+                if (GUILayout.Button("Add Collider"))
+                {
+                    Collider collider = owner.AddComponent<BoxCollider> () as Collider;
+                    collider.isTrigger = true;
+                }
+
+            } else {
+                bool foundTriggerCollider = false;
+                foreach (Collider collider in colliders)
+                {
+                    foundTriggerCollider = foundTriggerCollider || collider.isTrigger;
+                }
+
+                // error: doesn't have any trigger collider
+                if (!foundTriggerCollider)
+                {
+                    GUILayout.Label("Area Annotations require a Collider configured as a trigger. Would you like to set a collider to trigger?", warningLabel);
+                    if (GUILayout.Button("Set to Trigger"))
+                    {
+                        colliders[0].isTrigger = true;
+                    }
+                }
+            }
+        }
+    }
+
 }
