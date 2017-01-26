@@ -91,8 +91,6 @@ public class FirstPersonInteractor : MonoBehaviour
 
 	private void drawToolbar(List<Annotation> annotations)
 	{
-		// TODO: Draw a preview (and input button) for each value in `annotations`
-
 		if (annotations.Count != 0)
 		{
 			float xpos = 0.1f * Screen.width;
@@ -112,9 +110,6 @@ public class FirstPersonInteractor : MonoBehaviour
 				GUI.Label (new Rect (xpos + 30, ypos, 150, 20), a.summary);
 			}
 		}
-
-		// do not use `this.areaAnnotationsInRange`
-		// This function may move one day, so it'd be better to keep it pure
 	}
 
 	/// --- Handling Interaction ---
