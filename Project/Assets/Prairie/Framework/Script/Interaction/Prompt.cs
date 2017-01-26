@@ -13,5 +13,35 @@ public class Prompt : MonoBehaviour
 		GUILayout.Box (promptText); 
 		GUI.EndGroup();
 	}
+
+	// `Reset()` is called when this component is being added to a
+	// GameObject in the Inpsector for the first time, or if the user
+	// explicitly clicks the "reset" button on the component.
+	//
+	// Here, we use it to set a sensible default for the component,
+	// based on the presense of interaction components.
+	public void Reset()
+	{
+		this.SetDefaultPrompt ();
+	}
+
+	public void SetDefaultPrompt()
+	{
+		string prompt = "";
+		GameObject source = this.gameObject;
+		foreach (Interaction i in source.GetComponents<Interaction> ())
+		{
+			if (i.defaultPrompt != null)
+			{
+				if (prompt != "") {
+					prompt += ", ";		// seperate multiple actions
+				}
+				prompt += i.defaultPrompt;
+			}
+		}
+
+		this.promptText = prompt;
+	}
+
 }
 

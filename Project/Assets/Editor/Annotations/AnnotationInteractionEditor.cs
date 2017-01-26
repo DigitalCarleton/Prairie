@@ -18,7 +18,7 @@ public class AnnotationInteractionEditor : Editor {
         string[] typeOptions = new string[] { "Summary Annotation", "Area Annotation" };
         annotation.annotationType= EditorGUILayout.Popup("Annotation Type", annotation.annotationType, typeOptions);
 
-        if(annotation.annotationType == 0)
+        if(annotation.annotationType == (int)AnnotationTypes.SUMMARY)
         {
             DisplaySetSummary();
         }
@@ -27,13 +27,13 @@ public class AnnotationInteractionEditor : Editor {
             ///Stuff for Area Annotations here
         }
 
-        int before = annotation.importType;
+        int previousType = annotation.importType;
 
         string[] importOptions = new string[] { "No Full Annotation", "Import Text File", "Write in Inspector" };
         annotation.importType = EditorGUILayout.Popup("Import Method", annotation.importType, importOptions);
 
         //checks with user, then resets full annotation information
-        if (before != 0 && annotation.importType == 0)
+        if (previousType != 0 && annotation.importType == (int)ImportTypes.NONE)
         {
             if (EditorUtility.DisplayDialog("Reset", "WARNING: Switching back to 'No Full Annotation' will cause any curent information to be lost...",
                 "Continue", "Cancel"))
@@ -45,16 +45,16 @@ public class AnnotationInteractionEditor : Editor {
             }
             else
             {
-                annotation.importType = before;
+                annotation.importType = previousType;
             }
         }
 
         //Processing if importing a text file
-        if (annotation.importType == 1)
+        if (annotation.importType == (int)ImportTypes.IMPORT)
         {
             DisplayImportFile();
         }
-        else if (annotation.importType == 2) //Process text written in inspector
+        else if (annotation.importType == (int)ImportTypes.INSPECTOR) //Process text written in inspector
         {
             DisplayWriteInInspector();
         }
@@ -64,6 +64,7 @@ public class AnnotationInteractionEditor : Editor {
     {
         GUIStyle textAreaStyle = new GUIStyle(GUI.skin.textArea);
         textAreaStyle.wordWrap = true;
+        GUILayout.Label("Annotation Summary Text:");
         annotation.summary = GUILayout.TextArea(annotation.summary, 250, textAreaStyle, GUILayout.Height(75),
             GUILayout.Width(EditorGUIUtility.currentViewWidth - 40), GUILayout.ExpandWidth(false));
     }
@@ -206,6 +207,7 @@ public class AnnotationInteractionEditor : Editor {
                     {
                         File.WriteAllText(path, annotation.text);
 
+                        //Links annotation file to newly saved file
                         annotation.textFilePath = "Assets" + path.Substring(Application.dataPath.Length);
                         annotation.textFile = AssetDatabase.LoadAssetAtPath<TextAsset>(annotation.textFilePath);
 
