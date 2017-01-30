@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(FirstPersonInteractor))]
-public class PromptInspector : Editor {
+public class FirstPersonInteractorInspector : Editor {
 
 	FirstPersonInteractor player;
 

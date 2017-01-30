@@ -2,10 +2,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(Prompt))]
-public class PrairiePromptInspector : Editor {
-
-	// The reason this is called 'PrairiePromptInspector' is because Unity has
-	// a tool internally called 'PromptInspector'.
+public class PromptInspector : Editor {
 
 	Prompt prompt;
 
