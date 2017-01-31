@@ -39,6 +39,16 @@ public class FirstPersonInteractor : MonoBehaviour
 			// right click
 			this.AttemptReadAnnotation ();
 		}
+		if (areaAnnotationsInRange.Count != 0)
+		{
+			for (int a = 0; a < areaAnnotationsInRange.Count; a++)
+			{
+				if (Input.GetKeyDown ((a+1).ToString()))
+				{
+					areaAnnotationsInRange[a].Interact (this.gameObject);
+				}
+			}
+		}
 	}
 
 	/// --- GUI ---
@@ -81,10 +91,42 @@ public class FirstPersonInteractor : MonoBehaviour
 
 	private void drawToolbar(List<Annotation> annotations)
 	{
-		// TODO: Draw a preview (and input button) for each value in `annotations`
+		if (annotations.Count != 0)
+		{
+			float xMargin = 10f;
+			float yMargin = 10f;
+			float rowSize = 35f;
 
-		// do not use `this.areaAnnotationsInRange`
-		// This function may move one day, so it'd be better to keep it pure
+			float toolbarWidth = Mathf.Min (0.2f * Screen.width, 500f);
+			float toolbarHeight = (annotations.Count + 1) * rowSize;	// first row is a label
+
+			// GUI coordinate system places 0,0 in top left corner
+			float currentX = xMargin;
+			float currentY = Screen.height - (yMargin + toolbarHeight);
+
+			// Make a background box
+			Rect toolbarFrame = new Rect (currentX, currentY, toolbarWidth, toolbarHeight);
+			GUI.Box(toolbarFrame, "Area Annotations");
+			
+			// Shift down and indent 
+			currentX += 10f;
+			currentY += rowSize;
+
+			// Make list of buttons, paired with annotation summaries
+			int buttonIndex = 1;
+			foreach (Annotation a in annotations)
+			{
+				float rowHeight = rowSize/2f;
+				Rect buttonFrame = new Rect (currentX, currentY, 20, 20);
+				Rect labelFrame = new Rect (currentX + 30, currentY, toolbarWidth, rowHeight);
+
+				GUI.Button (buttonFrame, buttonIndex.ToString());
+				GUI.Label (labelFrame, a.summary);
+
+				currentY += rowSize;
+				buttonIndex++;
+			}
+		}
 	}
 
 	/// --- Handling Interaction ---
@@ -95,7 +137,7 @@ public class FirstPersonInteractor : MonoBehaviour
 			return;
 		}
 		
-		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
+		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ())
 		{
 			if (i is Annotation || i is Slideshow)
 			{
