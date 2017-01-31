@@ -26,26 +26,27 @@ public class TwineNode : MonoBehaviour {
 
 	void Update ()
 	{
-		if (Input.GetKeyDown (KeyCode.Tab))
-		{
-			this.isMinimized = !this.isMinimized;
-		}
-
-		if (this.isDecisionNode) {
-			if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.Q)) {
-				// Press Q to scroll through the children nodes
-				this.selectedOptionIndex = (this.selectedOptionIndex + 1) % (children.Length);
-			} else if (this.isOptionsGuiOpen && (Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown (KeyCode.Return))) {
-				// Press ENTER or RETURN to select that child
-				this.ActivateChildAtIndex (selectedOptionIndex);
-			} else if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.E)) {
-				// E closes the options list
-				this.isOptionsGuiOpen = false;
+		if (this.enabled) {
+			if (Input.GetKeyDown (KeyCode.Tab)) {
+				this.isMinimized = !this.isMinimized;
 			}
 
-			// Q opens the options list if it's not already open
-			if (!this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.Q)) {
-				this.isOptionsGuiOpen = true;
+			if (this.isDecisionNode) {
+				if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.Q)) {
+					// Press Q to scroll through the children nodes
+					this.selectedOptionIndex = (this.selectedOptionIndex + 1) % (children.Length);
+				} else if (this.isOptionsGuiOpen && (Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown (KeyCode.Return))) {
+					// Press ENTER or RETURN to select that child
+					this.ActivateChildAtIndex (selectedOptionIndex);
+				} else if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.E)) {
+					// E closes the options list
+					this.isOptionsGuiOpen = false;
+				}
+
+				// Q opens the options list if it's not already open
+				if (!this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.Q)) {
+					this.isOptionsGuiOpen = true;
+				}
 			}
 		}
 	}
