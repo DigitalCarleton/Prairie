@@ -2,24 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class NextTwineNodeInteraction : Interaction 
+public class AssociatedTwineNodes : Interaction 
 {
-	public List<GameObject> nextTwineNodeObjects;
+	public List<GameObject> associatedTwineNodeObjects;
 	public List<int> selectedTwineNodeIndices = new List<int>(){0};
 
 	public void UpdateTwineNodeObjectsFromIndices(TwineNode[] nodes)
 	{
 
-		if (this.nextTwineNodeObjects != null) {
+		if (this.associatedTwineNodeObjects != null) {
 			// Clear the list of twine nodes and re-add them based on the new indices:
-			this.nextTwineNodeObjects.Clear ();
+			this.associatedTwineNodeObjects.Clear ();
 		} else {
 			// Make sure it exists!
-			this.nextTwineNodeObjects = new List<GameObject> ();
+			this.associatedTwineNodeObjects = new List<GameObject> ();
 		}
 		foreach (int index in this.selectedTwineNodeIndices) {
 			GameObject twineNodeObject = nodes [index].gameObject;
-			this.nextTwineNodeObjects.Add (twineNodeObject);
+			this.associatedTwineNodeObjects.Add (twineNodeObject);
 		}
 	}
 
@@ -27,14 +27,14 @@ public class NextTwineNodeInteraction : Interaction
 	{
 		// Draw a green line between a Twine node and its subsequent Twine nodes
 		Gizmos.color = Color.green;
-		foreach (GameObject twineNodeObject in nextTwineNodeObjects) {
+		foreach (GameObject twineNodeObject in associatedTwineNodeObjects) {
 			Gizmos.DrawLine (transform.position, twineNodeObject.transform.position);
 		}
 	}
 
 	protected override void PerformAction () 
 	{
-		foreach (GameObject twineNodeObject in nextTwineNodeObjects) {
+		foreach (GameObject twineNodeObject in associatedTwineNodeObjects) {
 			TwineNode twineNode = twineNodeObject.GetComponent<TwineNode> ();
 
 			if (twineNode != null) {
