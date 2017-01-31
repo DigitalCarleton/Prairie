@@ -14,6 +14,14 @@ public class PrairieGUI {
 	private static GUILayoutOption minusButtonWidth = GUILayout.Width(20f);
 	private static GUILayoutOption plusButtonWidth = GUILayout.Width(60f);
 
+	public static void warningLabel(string text) {
+		GUIStyle warningLabel = new GUIStyle(GUI.skin.label);
+        warningLabel.normal.textColor = Color.red;
+        warningLabel.wordWrap = true;
+
+        GUILayout.Label(text, warningLabel);
+	}
+
 	public static T[] drawObjectList <T> (string title, T[] array) where T : UnityEngine.Object
 	{
 		EditorGUILayout.PrefixLabel (title);
