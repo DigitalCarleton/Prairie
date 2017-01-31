@@ -243,10 +243,6 @@ public class AnnotationInteractionEditor : Editor {
 
     void DisplayAreaAnnotationWarnings()
     {
-        GUIStyle warningLabel = new GUIStyle(GUI.skin.label);
-        warningLabel.normal.textColor = Color.red;
-        warningLabel.wordWrap = true;
-
         if (annotation.annotationType == (int)AnnotationTypes.AREA)
         {
             // ensure there is a collider attached to this object
@@ -256,7 +252,7 @@ public class AnnotationInteractionEditor : Editor {
             if (colliders == null || colliders.Length == 0)
             {
                 // error: doesn't have collider
-                GUILayout.Label("Area Annotations require a Collider to function. Would you like to add one?", warningLabel);
+                PrairieGUI.warningLabel("Area Annotations require a Collider to function. Would you like to add one?");
                 if (GUILayout.Button("Add Collider"))
                 {
                     Collider collider = owner.AddComponent<BoxCollider> () as Collider;
@@ -273,7 +269,7 @@ public class AnnotationInteractionEditor : Editor {
                 // error: doesn't have any trigger collider
                 if (!foundTriggerCollider)
                 {
-                    GUILayout.Label("Area Annotations require a Collider configured as a trigger. Would you like to set a collider to trigger?", warningLabel);
+                    PrairieGUI.warningLabel("Area Annotations require a Collider to function. Would you like to add one?");
                     if (GUILayout.Button("Set to Trigger"))
                     {
                         colliders[0].isTrigger = true;
