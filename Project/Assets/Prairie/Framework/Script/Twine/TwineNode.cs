@@ -81,6 +81,12 @@ public class TwineNode : MonoBehaviour {
 				GUIStyle optionButtonStyle = new GUIStyle (GUI.skin.button);
 				optionButtonStyle.fontStyle = FontStyle.Italic;
 				optionButtonStyle.wordWrap = true;
+
+				// Set highlighted button to have green text (this state is called `onNormal`):
+				optionButtonStyle.onNormal.textColor = Color.white;
+				// Set non-highlighted buttons to have grayed out text (state is called `normal`)
+				optionButtonStyle.normal.textColor = Color.gray;
+
 				selectedOptionIndex = GUILayout.SelectionGrid(selectedOptionIndex, childrenNames, 1, optionButtonStyle);
 			}
 			
