@@ -55,8 +55,9 @@ public class TwineNode : MonoBehaviour {
 	{
 		if (this.enabled && !this.isMinimized) {
 
-			float frameWidth = Screen.width / 3;
-			Rect frame = new Rect (10, 10, frameWidth, Screen.height / 2);
+			float frameWidth = Math.Min(Screen.width / 3, 350);
+			float frameHeight = Math.Min(Screen.height / 2, 500);
+			Rect frame = new Rect (10, 10, frameWidth, frameHeight);
 
 			GUI.BeginGroup (frame);
 			GUIStyle style = new GUIStyle (GUI.skin.box);
