@@ -14,8 +14,6 @@ public class TwineNodeInspector : Editor {
 	{
 		node = (TwineNode)target;
 
-		bool wasDecisionNode = node.isDecisionNode;
-
 		node.isDecisionNode = EditorGUILayout.Toggle ("Decision node?", node.isDecisionNode);
 		node.objectsToTrigger = PrairieGUI.drawObjectList ("Objects To Trigger", node.objectsToTrigger);
 		node.name = EditorGUILayout.TextField ("Name", node.name);
