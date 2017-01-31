@@ -6,8 +6,6 @@ using System.Linq;
 
 public class TwineNode : MonoBehaviour {
 
-	public const string PRAIRIE_DECISION_TAG = "prairie_decision";
-
 	public GameObject[] objectsToTrigger;
 
 	[HideInInspector]
@@ -25,13 +23,6 @@ public class TwineNode : MonoBehaviour {
 	private bool isOptionsGuiOpen = false;
 
 	private int selectedOptionIndex = 0;
-
-	void Start () 
-	{
-		// Upon creation of this node, ensure that it is a decision node if it has
-		//	the decision tag:
-		this.isDecisionNode = this.tags.Contains (PRAIRIE_DECISION_TAG);
-	}
 
 	void Update ()
 	{

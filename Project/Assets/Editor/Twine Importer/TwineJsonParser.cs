@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 public class TwineJsonParser {
+
+	public const string PRAIRIE_DECISION_TAG = "prairie_decision";
 
 	/// <summary>
 	/// Imports the provided file in full to the current project.
@@ -171,6 +174,10 @@ public class TwineJsonParser {
 		data.tags = Serialize (storyNode["tags"], false);
 		data.content = StripChildren (storyNode["content"]);
 		data.childrenNames = Serialize (storyNode["childrenNames"], true);
+
+		// Upon creation of this node, ensure that it is a decision node if it has
+		//	the decision tag:
+		data.isDecisionNode = data.tags.Contains (PRAIRIE_DECISION_TAG);
 
 		// Relative Twine location --> Unity coordinates
 		JSONNode position = storyNode["position"];
