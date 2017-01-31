@@ -91,4 +91,39 @@ public class PrairieGUI {
 		EditorGUI.indentLevel -= 1;
 		return (T[])list.ToArray ();
 	}
+
+	public static List<int> drawTwineNodeDropdownList (string listTitle, string itemTitle, TwineNode[] nodes, List<int> selectedIndices)
+	{
+		List<GameObject> objectsWithTwineNode = new List<GameObject> ();
+		List<string> twineNodeNames = new List<string> ();
+
+		foreach (TwineNode node in nodes) {
+			objectsWithTwineNode.Add (node.gameObject);
+			twineNodeNames.Add (node.name);
+		}
+
+		EditorGUILayout.PrefixLabel (listTitle);
+		EditorGUI.indentLevel += 1;
+
+		string[] dropdownChoices = twineNodeNames.ToArray ();
+
+		for (int i = 0; i < selectedIndices.Count; i++)
+		{
+			EditorGUILayout.BeginHorizontal ();
+			selectedIndices[i] = EditorGUILayout.Popup (itemTitle + ": ", selectedIndices[i], dropdownChoices);
+
+			if (GUILayout.Button (deleteRowContent, EditorStyles.miniButton, minusButtonWidth))
+			{
+				selectedIndices.RemoveAt (i);
+			}
+			EditorGUILayout.EndHorizontal ();
+		}
+		if (GUILayout.Button(addRowContent, plusButtonWidth))
+		{
+			selectedIndices.Add (0);
+		}
+		EditorGUI.indentLevel -= 1;
+
+		return selectedIndices;
+	}
 }
