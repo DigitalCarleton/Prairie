@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(ComponentToggleInteraction))]
-public class ComponentToggleInteractionInspector : Editor {
+public class ComponentToggleInteractionEditor : Editor {
 
 	ComponentToggleInteraction componentToggle;
 
