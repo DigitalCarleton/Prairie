@@ -5,7 +5,7 @@ using UnityEditor;
 using System.Linq;
 
 [CustomEditor(typeof(TwineNode))]
-public class TwineNodeInspector : Editor {
+public class TwineNodeEditor : Editor {
 
 
 	TwineNode node;
