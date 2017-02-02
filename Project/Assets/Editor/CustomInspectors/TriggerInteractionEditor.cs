@@ -27,6 +27,12 @@ public class TriggerInteractionEditor : Editor {
 				string targetName = triggerTarget.name;
 				PrairieGUI.warningLabel("'" + targetName + "' has no interactions attached to it. Triggering it will do nothing.");
 			}
+
+			if (triggerTarget == this.trigger.gameObject)
+			{
+				// warn users about INFINITE triggering
+				PrairieGUI.warningLabel("A trigger interaction should not trigger itself!");
+			}
 		}
 	}
 
