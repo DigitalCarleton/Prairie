@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(Prompt))]
-public class PromptInspector : Editor {
+public class PromptEditor : Editor {
 
 	Prompt prompt;
 
