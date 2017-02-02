@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TumbleInteraction : Interaction
+public class Tumble : Interaction
 {
 	/// <summary>
 	/// Allows user to rotate object.
@@ -64,7 +64,7 @@ public class TumbleInteraction : Interaction
 
 	override public string defaultPrompt {
 		get {
-			return "Pick up Object";
+			return "Click to Pick Up Object";
 		}
 	}
 }
