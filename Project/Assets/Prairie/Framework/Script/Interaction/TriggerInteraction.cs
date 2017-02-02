@@ -4,7 +4,7 @@ using System.Collections;
 public class TriggerInteraction : Interaction
 {
 
-    public GameObject[] triggeredObjects;
+    public GameObject[] triggeredObjects = new GameObject[0];
 
 	protected override void PerformAction()
     {
