@@ -11,6 +11,20 @@ public class ComponentToggleInteractionEditor : Editor {
 	public override void OnInspectorGUI()
 	{
 		componentToggle = (ComponentToggleInteraction)target;
-		componentToggle.target= PrairieGUI.drawObjectList ("Behaviours To Toggle", componentToggle.target);
+		componentToggle.target = PrairieGUI.drawObjectList ("Behaviours To Toggle", componentToggle.target);
+
+		for (int i = 0; i < componentToggle.target.Length; i++) 
+		{
+			if (componentToggle.target [i] == null) 
+			{
+				DrawWarnings ();
+				break;
+			}
+		}
+	}
+
+	public void DrawWarnings()
+	{
+		PrairieGUI.warningLabel ("You have one or more empty slots in your list of toggles.  Please fill these slots or remove them.");
 	}
 }
