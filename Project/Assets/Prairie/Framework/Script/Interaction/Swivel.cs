@@ -65,7 +65,7 @@ public class Swivel : Interaction
 
 	override public string defaultPrompt {
 		get {
-			return "Click to Open/Close Door";
+			return "Open/Close Door";
 		}
 	}
 }

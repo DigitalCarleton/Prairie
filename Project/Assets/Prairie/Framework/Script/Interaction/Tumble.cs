@@ -64,7 +64,7 @@ public class Tumble : Interaction
 
 	override public string defaultPrompt {
 		get {
-			return "Click to Pick Up Object";
+			return "Pick Up Object";
 		}
 	}
 }
