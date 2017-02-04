@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+
 public class TwineNode : MonoBehaviour {
 
 	public GameObject[] objectsToTrigger;
@@ -14,6 +15,7 @@ public class TwineNode : MonoBehaviour {
 	public string[] tags;
 	public string content;
 	public GameObject[] children;
+	public Dictionary<String, GameObject> linkMap;
 	[HideInInspector]
 	public string[] childrenNames;
 	public List<GameObject> parents = new List<GameObject> ();
