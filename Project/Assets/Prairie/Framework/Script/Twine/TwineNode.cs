@@ -15,7 +15,7 @@ public class TwineNode : MonoBehaviour {
 	public string[] tags;
 	public string content;
 	public GameObject[] children;
-	public Dictionary<String, GameObject> linkMap;
+	public Dictionary<string, GameObject> linkMap = new Dictionary<string, GameObject>();
 	[HideInInspector]
 	public string[] childrenNames;
 	public List<GameObject> parents = new List<GameObject> ();

@@ -10,6 +10,7 @@ using System;
 public class TwineImporterUI : EditorWindow
 {
 	public TextAsset targetFile;
+	private string jsonString = "";
 
 	/// <summary>
 	/// Defines the "Import Twine Data" menu item and its action.
@@ -72,13 +73,18 @@ public class TwineImporterUI : EditorWindow
 
 		GUILayout.EndHorizontal ();
 
+
+		this.jsonString = GUILayout.TextField (this.jsonString);
+
 		GUILayout.FlexibleSpace ();
 
 		// button to send to importer
-		GUI.enabled = (this.targetFile != null);
+//		GUI.enabled = (this.targetFile != null);
+		GUI.enabled = (this.jsonString != "");
 		if (GUILayout.Button ("Import"))
 		{
-			SendToImporter (this.targetFile);
+//			SendToImporter (this.targetFile);
+			SendToImporter(jsonString);
 			this.Close ();
 		}
 	}
@@ -109,4 +115,8 @@ public class TwineImporterUI : EditorWindow
 		TwineJsonParser.ImportFile (file);
 	}
 
+	void SendToImporter (string jsonString) {
+		// TODO: handle errors -- malformed json, etc.
+		TwineJsonParser.ImportFromString (jsonString);
+	}
 }

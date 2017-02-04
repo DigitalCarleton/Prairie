@@ -12,7 +12,7 @@ public class TwineJsonParser {
 
 	public const string PRAIRIE_DECISION_TAG = "prairie_decision";
 
-	private static Dictionary<string, JSONNode> twineNodesByName = new Dictionary<string, JSONNode>();
+	private static Dictionary<string, JSONNode> twineNodesByName;
 
 	/// <summary>
 	/// Imports the provided file in full to the current project.
@@ -38,6 +38,8 @@ public class TwineJsonParser {
 		
 	public static void ReadJson (string jsonString)
 	{
+		twineNodesByName = new Dictionary<string, JSONNode>();
+
 		// parse using `SimpleJSON`
 		JSONNode parsedJson = JSON.Parse(jsonString);
 		JSONArray parsedArray = parsedJson["passages"].AsArray;
@@ -51,7 +53,7 @@ public class TwineJsonParser {
 		foreach (JSONNode storyNode in parsedArray)
 		{
 			GameObject twineNode = MakeGameObjectFromStoryNode (parent, storyNode);
-
+			twineNodes [count] = twineNode;
 			if (count == 0) 
 			{
 				// Enable/activate the first node in the story by default:
@@ -118,7 +120,7 @@ public class TwineJsonParser {
 			GameObject nodeObject = entry.Value;
 
 			TwineNode twineNode = nodeObject.GetComponent<TwineNode> ();
-			JSONNode jsonNode = twineNodesByName ["nodeName"];
+			JSONNode jsonNode = twineNodesByName [nodeName];
 
 			// Iterate through the links and establish object relationships:
 			JSONNode nodeLinks = jsonNode ["links"];
@@ -127,7 +129,10 @@ public class TwineJsonParser {
 
 				string linkName = link ["name"];
 				GameObject linkDestination = gameObjectsByName [link ["link"]];
-
+	
+				if (twineNode.linkMap.ContainsKey (linkName)) {
+					twineNode.linkMap.Remove (linkName);
+				}
 				twineNode.linkMap.Add (linkName, linkDestination);
 			}
 		}
@@ -207,11 +212,11 @@ public class TwineJsonParser {
 
 		data.tags = GetStringArrayFromJsonArray(storyNode["tags"]);
 
-		data.content = RemoveTwineLinks (storyNode["content"]);
+		data.content = RemoveTwineLinks (storyNode["text"]);
 
 		// Upon creation of this node, ensure that it is a decision node if it has
 		//	the decision tag:
-		data.isDecisionNode = data.tags.Contains (PRAIRIE_DECISION_TAG);
+		data.isDecisionNode = (data.tags != null && data.tags.Contains (PRAIRIE_DECISION_TAG));
 
 		// Relative Twine location --> Unity coordinates
 		JSONNode position = storyNode["position"];
