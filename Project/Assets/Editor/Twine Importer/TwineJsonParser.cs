@@ -12,8 +12,6 @@ public class TwineJsonParser {
 
 	public const string PRAIRIE_DECISION_TAG = "prairie_decision";
 
-	private static Dictionary<string, JSONNode> twineNodesByName;
-
 	/// <summary>
 	/// Imports the provided file in full to the current project.
 	/// </summary>
@@ -38,42 +36,43 @@ public class TwineJsonParser {
 		
 	public static void ReadJson (string jsonString)
 	{
-		twineNodesByName = new Dictionary<string, JSONNode>();
-
 		// parse using `SimpleJSON`
 		JSONNode parsedJson = JSON.Parse(jsonString);
 		JSONArray parsedArray = parsedJson["passages"].AsArray;
-		GameObject[] twineNodes = new GameObject[parsedArray.Count];
-		
+
 		// parent game object which will be the story prefab
 		GameObject parent = new GameObject("Story");
 
-		// make GameObject nodes out of every twine/json node
-		int count = 0;
-		foreach (JSONNode storyNode in parsedArray)
+		// Now, let's make GameObject nodes out of every twine/json node.
+		//	Also, for easy access when setting up our parent-child relationships,
+		//	we'll keep two dictionaries, linking names --> JSONNodes and names --> GameObjects
+		Dictionary<string, JSONNode> twineNodesJsonByName = new Dictionary<string, JSONNode>();
+		Dictionary<string, GameObject> twineGameObjectsByName = new Dictionary<string, GameObject>();
+
+		for (int i = 0; i < parsedArray.Count; i++)
 		{
-			GameObject twineNode = MakeGameObjectFromStoryNode (parent, storyNode);
-			twineNodes [count] = twineNode;
-			if (count == 0) 
+			JSONNode storyNode = parsedArray [i];
+			GameObject twineNodeObject = MakeGameObjectFromStoryNode (storyNode);
+
+			// Bind this node to the parent "Story" object
+			twineNodeObject.transform.SetParent (parent.transform);
+
+			// Store this node and its game object in our dictionaries:
+			twineNodesJsonByName [twineNodeObject.name] = storyNode;
+			twineGameObjectsByName [twineNodeObject.name] = twineNodeObject;
+
+			if (i == 0) 
 			{
 				// Enable/activate the first node in the story by default:
-				twineNode.GetComponent<TwineNode> ().enabled = true;
+				twineNodeObject.GetComponent<TwineNode> ().enabled = true;
 			}
-
-			++count;
 		}
 
 		// normalize the positions to one another
 		NormalizePositioning (parent);
 
-		// create dictionary for fast lookup when matching nodes to their children
-		Dictionary<string, GameObject> objDict = new Dictionary<string, GameObject>();
-		foreach (GameObject node in twineNodes)
-		{
-			objDict.Add (node.name, node);
-		}
 		// link nodes to their children
-		MatchChildren (objDict);
+		MatchChildren (twineNodesJsonByName, twineGameObjectsByName);
 
 		// "If the directory already exists, this method does not create a new directory..."
 		// From the C# docs
@@ -82,37 +81,48 @@ public class TwineJsonParser {
 		PrefabUtility.CreatePrefab ("Assets/Ignored/Story.prefab", parent);
 		GameObject.DestroyImmediate (parent);
 	}
-		
-	/// <summary>
-	/// Finds the children of each of the gameObjects from the other gameObjects.
-	/// Iterates through the list of nodes, gets an array of children, and assigns
-	/// gameObject children to the node that match the names ofthe array of children.
-	/// </summary>
-	/// <param name="nodes">Array of nodes.</param>
-	/// <param name="objDict">Dictionary of nodes, with key of node name.</param>
-//	public static void MatchChildren (GameObject[] nodes, Dictionary<string, GameObject> objDict)
-//	{
-//		foreach (GameObject node in nodes)
-//		{
-//			string[] children = node.GetComponent<TwineNode> ().childrenNames;
-//			node.GetComponent <TwineNode> ().children = new GameObject[children.Length];
-//			//node.GetComponent <TwineNode> ().parentList = new List<GameObject> ();
-//			int childCount = 0;
-//			foreach (string childName in children)
-//			{
-//				GameObject childNode = objDict [childName];
-//
-//				// add children
-//				node.GetComponent <TwineNode> ().children[childCount] = childNode;
-//				++childCount;
-//
-//				// add parent
-//				childNode.GetComponent <TwineNode> ().parents.Add (node);
-//			}
-//		}
-//	}
 
-	public static void MatchChildren(Dictionary<string, GameObject> gameObjectsByName)
+	/// <summary>
+	/// Turns a JSON-formatted Twine node into a GameObject with all the relevant data in a TwineNode component.
+	/// </summary>
+	/// <returns>GameObject of single node.</returns>
+	/// <param name="storyNode">A Twine Node, in JSON format</param>
+	public static GameObject MakeGameObjectFromStoryNode (JSONNode storyNode)
+	{
+		#if UNITY_EDITOR
+
+		GameObject nodeGameObject = new GameObject(storyNode["name"]);
+		nodeGameObject.AddComponent<TwineNode> ();
+
+		// Save additional Twine data on a Twine component
+		TwineNode twineNode = nodeGameObject.GetComponent<TwineNode> ();
+		twineNode.pid = storyNode["pid"];
+		twineNode.name = storyNode["name"];
+
+		twineNode.tags = GetDequotedStringArrayFromJsonArray(storyNode["tags"]);
+
+		twineNode.content = RemoveTwineLinks (storyNode["text"]);
+
+		// Upon creation of this node, ensure that it is a decision node if it has
+		//	the decision tag:
+		twineNode.isDecisionNode = (twineNode.tags != null && twineNode.tags.Contains (PRAIRIE_DECISION_TAG));
+
+		// Relative Twine location --> Unity coordinates
+		JSONNode position = storyNode["position"];
+		float twineX = position["x"].AsFloat;	// `AsFloat` returns 0.0f on failure, which is acceptable
+		float twineY = position["y"].AsFloat;
+		// map Twine arrangement x and y to Unity x and z
+		nodeGameObject.transform.localPosition = new Vector3(twineX, 0, twineY);
+
+		// Start all twine nodes as deactivated at first:
+		twineNode.Deactivate();
+
+		return nodeGameObject;
+
+		#endif
+	}
+
+	public static void MatchChildren(Dictionary<string, JSONNode> twineNodesJsonByName, Dictionary<string, GameObject> gameObjectsByName)
 	{
 		foreach(KeyValuePair<string, GameObject> entry in gameObjectsByName)
 		{
@@ -120,10 +130,14 @@ public class TwineJsonParser {
 			GameObject nodeObject = entry.Value;
 
 			TwineNode twineNode = nodeObject.GetComponent<TwineNode> ();
-			JSONNode jsonNode = twineNodesByName [nodeName];
-
+			JSONNode jsonNode = twineNodesJsonByName [nodeName];
+		
 			// Iterate through the links and establish object relationships:
 			JSONNode nodeLinks = jsonNode ["links"];
+
+			// TODO: This is only for displaying in the inspector! Remove this once you've changed the inspector to use the linkMap dictionary!
+			twineNode.children = new GameObject[nodeLinks.Count];
+
 			for (int i = 0; i < nodeLinks.Count; i++) {
 				JSONNode link = nodeLinks [i];
 
@@ -134,6 +148,13 @@ public class TwineJsonParser {
 					twineNode.linkMap.Remove (linkName);
 				}
 				twineNode.linkMap.Add (linkName, linkDestination);
+
+				// Remember parent:
+				linkDestination.GetComponent<TwineNode> ().parents.Add (nodeObject);
+
+				// Add children to list of children.
+				// TODO: This is only for displaying in the inspector! Remove this once you've changed the inspector to use the linkMap dictionary!
+				twineNode.children[i] = linkDestination;
 			}
 		}
 	}
@@ -193,55 +214,6 @@ public class TwineJsonParser {
 	}
 		
 	/// <summary>
-	/// Takes the twine/JSON node, and turns it into a game object with all the relevant data.
-	/// </summary>
-	/// <returns>GameObject of single node.</returns>
-	/// <param name="parent">Parent.</param>
-	/// <param name="storyNode">JSON story node.</param>
-	public static GameObject MakeGameObjectFromStoryNode (GameObject parent, JSONNode storyNode)
-	{
-		#if UNITY_EDITOR
-	
-		GameObject tempObj = new GameObject(storyNode["name"]);
-		tempObj.AddComponent<TwineNode> ();
-
-		// Save additional Twine data on a Twine component
-		TwineNode data = tempObj.GetComponent<TwineNode> ();
-		data.pid = storyNode["pid"];
-		data.name = storyNode["name"];
-
-		data.tags = GetStringArrayFromJsonArray(storyNode["tags"]);
-
-		data.content = RemoveTwineLinks (storyNode["text"]);
-
-		// Upon creation of this node, ensure that it is a decision node if it has
-		//	the decision tag:
-		data.isDecisionNode = (data.tags != null && data.tags.Contains (PRAIRIE_DECISION_TAG));
-
-		// Relative Twine location --> Unity coordinates
-		JSONNode position = storyNode["position"];
-		float twineX = position["x"].AsFloat;	// `AsFloat` returns 0.0f on failure, which is acceptable
-		float twineY = position["y"].AsFloat;
-		// map Twine arrangement x and y to Unity x and z
-		tempObj.transform.localPosition = new Vector3(twineX, 0, twineY);
-
-		// Start all twine nodes as deactivated at first:
-		data.Deactivate();
-
-		// Store this json object in our dictionary so that
-		//	we can easily establish parent-child relationships
-		//	later:
-		twineNodesByName.Add(data.name, storyNode);
-
-		// Bind to parent "Story" object
-		tempObj.transform.SetParent (parent.transform);
-
-		return tempObj;
-
-		#endif
-	}
-		
-	/// <summary>
 	/// Takes a string list of strings from the JSON, and makes it an array of
 	/// strings, where each string is distinct from the other instead of one
 	/// giant string.
@@ -280,7 +252,7 @@ public class TwineJsonParser {
 		return substrings[0];
 	}
 
-	static string[] GetStringArrayFromJsonArray (JSONNode jsonNode)
+	static string[] GetDequotedStringArrayFromJsonArray (JSONNode jsonNode)
 	{
 		if (jsonNode == null) {
 			return null;
@@ -289,21 +261,11 @@ public class TwineJsonParser {
 		string[] stringArray = new string[jsonNode.Count];
 		for (int i = 0; i < jsonNode.Count; i++)
 		{
-			stringArray[i] = jsonNode [i].ToString();
+			string quotedString = jsonNode [i].ToString();
+			string dequotedString = quotedString.Replace ('"', ' ').Trim ();
+			stringArray [i] = dequotedString;
 		}
 
 		return stringArray;
-	}
-
-	static object MakeLinkMap (JSONNode jsonNode)
-	{
-
-		if (jsonNode == null) {
-			return null;
-		}
-
-
-
-		throw new System.NotImplementedException ();
 	}
 }
