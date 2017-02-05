@@ -12,23 +12,25 @@ public class TwineJsonParser {
 
 	public const string PRAIRIE_DECISION_TAG = "prairie_decision";
 
-	public static void ImportFromString(string jsonString)
+	public static void ImportFromString(string jsonString, string prefabDestinationDirectory)
 	{
 		Debug.Log ("Importing JSON...");
 
-		ReadJson (jsonString);
+		ReadJson (jsonString, prefabDestinationDirectory);
 
 		Debug.Log ("Done!");
 	}
 		
-	public static void ReadJson (string jsonString)
+	public static void ReadJson (string jsonString, string prefabDestinationDirectory)
 	{
 		// parse using `SimpleJSON`
 		JSONNode parsedJson = JSON.Parse(jsonString);
 		JSONArray parsedArray = parsedJson["passages"].AsArray;
 
 		// parent game object which will be the story prefab
-		GameObject parent = new GameObject("Story");
+		string nameOfStory = parsedJson["name"];
+		Debug.Log (nameOfStory);
+		GameObject parent = new GameObject(nameOfStory);
 
 		// Now, let's make GameObject nodes out of every twine/json node.
 		//	Also, for easy access when setting up our parent-child relationships,
@@ -63,9 +65,11 @@ public class TwineJsonParser {
 
 		// "If the directory already exists, this method does not create a new directory..."
 		// From the C# docs
-		System.IO.Directory.CreateDirectory ("Assets/Ignored");
+		System.IO.Directory.CreateDirectory (prefabDestinationDirectory);
+
 		// save a prefab to disk, and then remove the GameObject from the scene
-		PrefabUtility.CreatePrefab ("Assets/Ignored/Story.prefab", parent);
+		string prefabDestination = prefabDestinationDirectory + "/" + parent.name + ".prefab";
+		PrefabUtility.CreatePrefab (prefabDestination, parent);
 		GameObject.DestroyImmediate (parent);
 	}
 

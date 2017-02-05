@@ -10,6 +10,7 @@ using System;
 public class TwineImporterUI : EditorWindow
 {
 	private string jsonString = "";
+	private string prefabDestinationDirectory = "Assets";
 
 	/// <summary>
 	/// Defines the "Import Twine Data" menu item and its action.
@@ -34,11 +35,36 @@ public class TwineImporterUI : EditorWindow
 	
 		this.jsonString = GUILayout.TextArea (this.jsonString, GUILayout.MinHeight(20), GUILayout.MaxHeight(50));
 
+		GUILayout.BeginHorizontal ();
+		GUILayout.Label ("Twine story prefab destination:");
+
+		// button which selects a prefab destination
+		if (GUILayout.Button (prefabDestinationDirectory))
+		{
+			string fullPath = EditorUtility.OpenFolderPanel ("Select destination directory...", prefabDestinationDirectory, "");
+
+			// obnoxiously, the OpenFilePanel returns a full file path,
+			// and Unity will only play nice with a relative one so we must convert
+			string projectDirectory = Directory.GetParent (Application.dataPath).ToString ();
+
+			prefabDestinationDirectory = GetRelativePath (fullPath, projectDirectory);
+
+			// double check we'll have access to this file
+			if (!(prefabDestinationDirectory.StartsWith ("Assets/") || prefabDestinationDirectory.StartsWith ("Assets\\")))
+			{
+				EditorUtility.DisplayDialog ("Can't Load Asset", "The folder must be part of your Unity project's assets.", "OK");
+			}
+
+		}
+
+		GUILayout.EndHorizontal ();
+
+
 		// button to send to importer
 		GUI.enabled = (this.jsonString != "");
 		if (GUILayout.Button ("Import"))
 		{
-			SendToImporter(jsonString);
+			SendToImporter(jsonString, prefabDestinationDirectory);
 			this.Close ();
 		}
 	}
@@ -61,8 +87,8 @@ public class TwineImporterUI : EditorWindow
 		return Uri.UnescapeDataString(folderUri.MakeRelativeUri(pathUri).ToString().Replace('/', Path.DirectorySeparatorChar));
 	}
 
-	void SendToImporter (string jsonString) {
+	void SendToImporter (string jsonString, string prefabDestinationDirectory) {
 		// TODO: handle errors -- malformed json, etc.
-		TwineJsonParser.ImportFromString (jsonString);
+		TwineJsonParser.ImportFromString (jsonString, prefabDestinationDirectory);
 	}
 }
