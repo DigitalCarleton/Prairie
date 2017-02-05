@@ -12,19 +12,6 @@ public class TwineJsonParser {
 
 	public const string PRAIRIE_DECISION_TAG = "prairie_decision";
 
-	/// <summary>
-	/// Imports the provided file in full to the current project.
-	/// </summary>
-	/// <param name="file">The Twine JSON file to import.</param>
-	public static void ImportFile (TextAsset file)
-	{
-		Debug.Log ("Importing "+file.name+"...");
-
-		ReadJson (file.text);
-
-		Debug.Log ("Done!");
-	}
-
 	public static void ImportFromString(string jsonString)
 	{
 		Debug.Log ("Importing JSON...");
@@ -135,26 +122,20 @@ public class TwineJsonParser {
 			// Iterate through the links and establish object relationships:
 			JSONNode nodeLinks = jsonNode ["links"];
 
-			// TODO: This is only for displaying in the inspector! Remove this once you've changed the inspector to use the linkMap dictionary!
 			twineNode.children = new GameObject[nodeLinks.Count];
+			twineNode.childrenNames = new string[nodeLinks.Count];
 
 			for (int i = 0; i < nodeLinks.Count; i++) {
 				JSONNode link = nodeLinks [i];
-
 				string linkName = link ["name"];
 				GameObject linkDestination = gameObjectsByName [link ["link"]];
-	
-				if (twineNode.linkMap.ContainsKey (linkName)) {
-					twineNode.linkMap.Remove (linkName);
-				}
-				twineNode.linkMap.Add (linkName, linkDestination);
 
 				// Remember parent:
 				linkDestination.GetComponent<TwineNode> ().parents.Add (nodeObject);
 
-				// Add children to list of children.
-				// TODO: This is only for displaying in the inspector! Remove this once you've changed the inspector to use the linkMap dictionary!
+				// Set link as a child, and remember the name.
 				twineNode.children[i] = linkDestination;
+				twineNode.childrenNames [i] = linkName;
 			}
 		}
 	}
