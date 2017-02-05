@@ -33,7 +33,7 @@ public class TwineImporterUI : EditorWindow
 
 		GUILayout.Label ("Twine JSON text:");
 	
-		this.jsonString = GUILayout.TextArea (this.jsonString, GUILayout.MinHeight(20), GUILayout.MaxHeight(50));
+		this.jsonString = GUILayout.TextArea (this.jsonString, GUILayout.MinHeight(20), GUILayout.MaxHeight(200));
 
 		GUILayout.BeginHorizontal ();
 		GUILayout.Label ("Twine story prefab destination:");
