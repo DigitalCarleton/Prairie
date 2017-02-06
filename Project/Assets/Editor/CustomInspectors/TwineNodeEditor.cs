@@ -16,8 +16,8 @@ public class TwineNodeEditor : Editor {
 
 		node.isDecisionNode = EditorGUILayout.Toggle ("Decision node?", node.isDecisionNode);
 		node.objectsToTrigger = PrairieGUI.drawObjectList ("Objects To Trigger", node.objectsToTrigger);
-		node.name = PrairieGUI.TextFieldReadOnly ("Name", node.name);
-		node.tags = PrairieGUI.drawPrimitiveListReadOnly ("Tags", node.tags);
+		EditorGUILayout.LabelField ("Name", node.name);
+//		node.tags = PrairieGUI.drawPrimitiveListReadOnly ("Tags", node.tags);
 		node.content = EditorGUILayout.TextField ("Content", node.content);
 		node.children = PrairieGUI.drawObjectListReadOnly ("Children", node.children);
 		GameObject[] parentArray = node.parents.ToArray ();
