@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Tumble : Interaction
+public class Tumble : PromptInteraction
 {
 	/// <summary>
 	/// Allows user to rotate object.

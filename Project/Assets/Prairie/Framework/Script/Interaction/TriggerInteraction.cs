@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TriggerInteraction : Interaction
+public class TriggerInteraction : PromptInteraction
 {
 
     public GameObject[] triggeredObjects = new GameObject[0];

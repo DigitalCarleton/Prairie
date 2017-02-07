@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Swivel : Interaction
+public class Swivel : PromptInteraction
 {
 	public bool openFromLeft = false;
 

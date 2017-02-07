@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ComponentToggleInteraction : Interaction 
+public class ComponentToggleInteraction : PromptInteraction 
 {
 	public Behaviour[] target;
 

@@ -29,7 +29,7 @@ public class Prompt : MonoBehaviour
 	{
 		string prompt = "";
 		GameObject source = this.gameObject;
-		foreach (Interaction i in source.GetComponents<Interaction> ())
+		foreach (PromptInteraction i in source.GetComponents<Interaction> ())
 		{
 			if (i.defaultPrompt != null)
 			{
