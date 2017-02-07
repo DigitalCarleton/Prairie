@@ -8,10 +8,13 @@ public class Prompt : MonoBehaviour
 	public void DrawPrompt()
 	{
 		// Draw a GUI with the interaction 
-		Rect frame = new Rect (Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
-		GUI.BeginGroup(frame);
-		GUILayout.Box (promptText); 
-		GUI.EndGroup();
+        if (!string.IsNullOrEmpty(promptText.Trim()))
+        {
+            Rect frame = new Rect(Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
+            GUI.BeginGroup(frame);
+            GUILayout.Box(promptText);
+            GUI.EndGroup();
+        }
 	}
 
 	// `Reset()` is called when this component is being added to a
@@ -29,7 +32,7 @@ public class Prompt : MonoBehaviour
 	{
 		string prompt = "";
 		GameObject source = this.gameObject;
-		foreach (PromptInteraction i in source.GetComponents<Interaction> ())
+		foreach (PromptInteraction i in source.GetComponents<PromptInteraction> ())
 		{
 			if (i.defaultPrompt != null)
 			{
