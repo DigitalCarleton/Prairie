@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SwivelInteraction : Interaction
+public class Swivel : Interaction
 {
 	public bool openFromLeft = false;
 
@@ -65,7 +65,7 @@ public class SwivelInteraction : Interaction
 
 	override public string defaultPrompt {
 		get {
-			return "Open Door";
+			return "Open/Close Door";
 		}
 	}
 }

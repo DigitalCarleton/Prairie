@@ -14,6 +14,38 @@ public class PrairieGUI {
 	private static GUILayoutOption minusButtonWidth = GUILayout.Width(20f);
 	private static GUILayoutOption plusButtonWidth = GUILayout.Width(60f);
 
+	public static void warningLabel(string text) {
+		GUIStyle warningLabel = new GUIStyle(GUI.skin.label);
+        warningLabel.normal.textColor = Color.red;
+        warningLabel.wordWrap = true;
+
+        GUILayout.Label(text, warningLabel);
+	}
+
+	public static string TextFieldReadOnly (string title, string fieldContents)
+	{
+		GUI.enabled = false;
+		string retVal = EditorGUILayout.TextField (title, fieldContents);
+		GUI.enabled = true;
+		return retVal;
+	}
+
+	public static T[] drawObjectListReadOnly <T> (string title, T[] array) where T : UnityEngine.Object
+	{
+		GUI.enabled = false;
+		T[] retVal = drawObjectList (title, array);
+		GUI.enabled = true;
+		return retVal;
+	}
+
+	public static T[] drawPrimitiveListReadOnly <T> (string title, T[] array) where T : IConvertible
+	{
+		GUI.enabled = false;
+		T[] retval = drawPrimitiveList (title, array);
+		GUI.enabled = true;
+		return retval;
+	}
+
 	public static T[] drawObjectList <T> (string title, T[] array) where T : UnityEngine.Object
 	{
 		EditorGUILayout.PrefixLabel (title);
@@ -82,5 +114,40 @@ public class PrairieGUI {
 		}
 		EditorGUI.indentLevel -= 1;
 		return (T[])list.ToArray ();
+	}
+
+	public static List<int> drawTwineNodeDropdownList (string listTitle, string itemTitle, TwineNode[] nodes, List<int> selectedIndices)
+	{
+		List<GameObject> objectsWithTwineNode = new List<GameObject> ();
+		List<string> twineNodeNames = new List<string> ();
+
+		foreach (TwineNode node in nodes) {
+			objectsWithTwineNode.Add (node.gameObject);
+			twineNodeNames.Add (node.name);
+		}
+
+		EditorGUILayout.PrefixLabel (listTitle);
+		EditorGUI.indentLevel += 1;
+
+		string[] dropdownChoices = twineNodeNames.ToArray ();
+
+		for (int i = 0; i < selectedIndices.Count; i++)
+		{
+			EditorGUILayout.BeginHorizontal ();
+			selectedIndices[i] = EditorGUILayout.Popup (itemTitle + ": ", selectedIndices[i], dropdownChoices);
+
+			if (GUILayout.Button (deleteRowContent, EditorStyles.miniButton, minusButtonWidth))
+			{
+				selectedIndices.RemoveAt (i);
+			}
+			EditorGUILayout.EndHorizontal ();
+		}
+		if (GUILayout.Button(addRowContent, plusButtonWidth))
+		{
+			selectedIndices.Add (0);
+		}
+		EditorGUI.indentLevel -= 1;
+
+		return selectedIndices;
 	}
 }

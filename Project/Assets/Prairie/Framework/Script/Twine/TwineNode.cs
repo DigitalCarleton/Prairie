@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 public class TwineNode : MonoBehaviour {
 
@@ -9,20 +11,44 @@ public class TwineNode : MonoBehaviour {
 	[HideInInspector]
 	public string pid;
 	public new string name;
+	[HideInInspector]
 	public string[] tags;
 	public string content;
 	public GameObject[] children;
 	[HideInInspector]
 	public string[] childrenNames;
 	public List<GameObject> parents = new List<GameObject> ();
+	public bool isDecisionNode;
 
 	private bool isMinimized = false;
+	private bool isOptionsGuiOpen = false;
+
+	private int selectedOptionIndex = 0;
 
 	void Update ()
 	{
-		if (Input.GetKeyDown (KeyCode.Tab))
-		{
-			this.ToggleMinimize ();
+		if (this.enabled) {
+			if (Input.GetKeyDown (KeyCode.Tab)) {
+				this.isMinimized = !this.isMinimized;
+			}
+
+			if (this.isDecisionNode) {
+				if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.Q)) {
+					// Press Q to scroll through the children nodes
+					this.selectedOptionIndex = (this.selectedOptionIndex + 1) % (children.Length);
+				} else if (this.isOptionsGuiOpen && (Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown (KeyCode.Return))) {
+					// Press ENTER or RETURN to select that child
+					this.ActivateChildAtIndex (selectedOptionIndex);
+				} else if (this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.E)) {
+					// E closes the options list
+					this.isOptionsGuiOpen = false;
+				}
+
+				// Q opens the options list if it's not already open
+				if (!this.isOptionsGuiOpen && Input.GetKeyDown (KeyCode.Q)) {
+					this.isOptionsGuiOpen = true;
+				}
+			}
 		}
 	}
 
@@ -30,25 +56,52 @@ public class TwineNode : MonoBehaviour {
 	{
 		if (this.enabled && !this.isMinimized) {
 
-			float frameWidth = Screen.width / 3;
-			Rect frame = new Rect (10, 10, frameWidth, Screen.height);
+			float frameWidth = Math.Min(Screen.width / 3, 350);
+			float frameHeight = Math.Min(Screen.height / 2, 500);
+			Rect frame = new Rect (10, 10, frameWidth, frameHeight);
 
 			GUI.BeginGroup (frame);
 			GUIStyle style = new GUIStyle (GUI.skin.box);
 			style.wordWrap = true;
 			style.fixedWidth = frameWidth;
 			GUILayout.Box (this.content, style);
+
+			if (isDecisionNode) {
+				GUIStyle decisionHintStyle = new GUIStyle (style);
+				decisionHintStyle.fontStyle = FontStyle.BoldAndItalic;
+
+				if (!isOptionsGuiOpen) {
+					GUILayout.Box ("Press Q to progress in the story...", decisionHintStyle);
+				} else {
+					GUILayout.Box ("Press Q to scroll, E to close, ENTER to choose", decisionHintStyle);
+				}
+			}
+
+			if (this.isOptionsGuiOpen) {
+				// Draw list of buttons for the possible children nodes to visit:
+				GUIStyle optionButtonStyle = new GUIStyle (GUI.skin.button);
+				optionButtonStyle.fontStyle = FontStyle.Italic;
+				optionButtonStyle.wordWrap = true;
+
+				// Set highlighted button to have green text (this state is called `onNormal`):
+				optionButtonStyle.onNormal.textColor = Color.white;
+				// Set non-highlighted buttons to have grayed out text (state is called `normal`)
+				optionButtonStyle.normal.textColor = Color.gray;
+
+				selectedOptionIndex = GUILayout.SelectionGrid(selectedOptionIndex, childrenNames, 1, optionButtonStyle);
+			}
+			
 			GUI.EndGroup ();
 
-		} else if (this.enabled && this.isMinimized) 
-		{
-		
+		} else if (this.enabled && this.isMinimized) {
+
 			// Draw minimized GUI instead
 			Rect frame = new Rect (10, 10, 10, 10);
 
 			GUI.Box (frame, "");
 
 		}
+	
 	}
 
 	/// <summary>
@@ -77,8 +130,28 @@ public class TwineNode : MonoBehaviour {
 		{
 			this.enabled = true;
 			this.isMinimized = false;
+			this.isOptionsGuiOpen = false;
 			this.DeactivateAllParents ();
 			this.StartInteractions (interactor);
+		}
+	}
+
+	/// <summary>
+	/// Find the FirstPersonInteractor in the world, and use it to activate
+	/// 	the TwineNode's child at the given index.
+	/// </summary>
+	/// <param name="index">Index of the child to activate.</param>
+	private void ActivateChildAtIndex(int index) 
+	{
+		// Find the interactor:
+		FirstPersonInteractor interactor = (FirstPersonInteractor) FindObjectOfType(typeof(FirstPersonInteractor));
+
+		if (interactor != null) {
+			GameObject interactorObject = interactor.gameObject;
+
+			// Now activate the child using this interactor!
+			TwineNode child = this.children [index].GetComponent<TwineNode> ();
+			child.Activate (interactorObject);
 		}
 	}
 
@@ -113,11 +186,6 @@ public class TwineNode : MonoBehaviour {
 		{
 			parent.GetComponent<TwineNode> ().Deactivate ();
 		}
-	}
-
-	private void ToggleMinimize()
-	{
-		this.isMinimized = !this.isMinimized;
 	}
 
 	// GIZMOS
