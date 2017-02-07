@@ -3,13 +3,14 @@ using UnityEditor;
 using System.Collections;
 using System.IO;
 using System;
+using SimpleJSON;
 
 /// <summary>
 /// Defines the Import Twine window and a few contextual menu actions to trigger import.
 /// </summary>
 public class TwineImporterUI : EditorWindow
 {
-	private string jsonString = "Copy-and-paste JSON here...";
+	private string jsonString = "Copy and paste your Twine JSON here...";
 	private string prefabDestinationDirectory = "Assets";
 
 	/// <summary>
@@ -67,9 +68,16 @@ public class TwineImporterUI : EditorWindow
 
 		GUILayout.EndHorizontal ();
 
+		bool isValid = isValidJson ();
+
+		if (!isValid) 
+		{
+			PrairieGUI.warningLabel ("The JSON entered is invalid. Copy and paste JSON from Twison to import.");
+		}
+
 
 		// button to send to importer
-		GUI.enabled = (this.jsonString != "");
+		GUI.enabled = (this.jsonString != "" && isValid);
 		if (GUILayout.Button ("Import"))
 		{
 			SendToImporter(jsonString, prefabDestinationDirectory);
@@ -98,5 +106,22 @@ public class TwineImporterUI : EditorWindow
 	void SendToImporter (string jsonString, string prefabDestinationDirectory) {
 		// TODO: handle errors -- malformed json, etc.
 		TwineJsonParser.ImportFromString (jsonString, prefabDestinationDirectory);
+	}
+
+	private bool isValidJson()
+	{
+		try 
+		{
+			JSONNode parsedJson = JSON.Parse(this.jsonString);
+
+			// Even if the JSON parses and gets to this point, ensure 
+			//  that it has a "startnode" attribute. Valid Twison must 
+			//  have a startnode indicator!
+			return parsedJson["startnode"] != null;
+		} catch (Exception e) 
+		{
+			return false;
+		}
+
 	}
 }
