@@ -18,7 +18,11 @@ public class TwineNodeEditor : Editor {
 		node.objectsToTrigger = PrairieGUI.drawObjectList ("Objects To Trigger", node.objectsToTrigger);
 		EditorGUILayout.LabelField ("Name", node.name);
 //		node.tags = PrairieGUI.drawPrimitiveListReadOnly ("Tags", node.tags);
-		node.content = EditorGUILayout.TextField ("Content", node.content);
+//		node.content = EditorGUILayout.TextField ("Content", node.content);
+		EditorGUILayout.LabelField ("Content");
+		EditorGUI.indentLevel += 1;
+		node.content = EditorGUILayout.TextArea (node.content);
+		EditorGUI.indentLevel -= 1;
 		node.children = PrairieGUI.drawObjectListReadOnly ("Children", node.children);
 		GameObject[] parentArray = node.parents.ToArray ();
 		parentArray = PrairieGUI.drawObjectListReadOnly ("Parents", parentArray);
