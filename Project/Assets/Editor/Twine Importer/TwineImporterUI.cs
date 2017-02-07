@@ -31,7 +31,15 @@ public class TwineImporterUI : EditorWindow
 	{
 		GUILayout.Label ("Import Twine Data", EditorStyles.boldLabel);
 
+		GUILayout.BeginHorizontal ();
 		GUILayout.Label ("Twine JSON text:");
+
+		if (GUILayout.Button ("Paste from clipboard")) 
+		{
+			this.jsonString = GUIUtility.systemCopyBuffer;
+		}
+
+		GUILayout.EndHorizontal ();
 	
 		this.jsonString = GUILayout.TextArea (this.jsonString, GUILayout.MinHeight(20), GUILayout.MaxHeight(200));
 
