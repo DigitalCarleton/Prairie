@@ -9,7 +9,7 @@ using System;
 /// </summary>
 public class TwineImporterUI : EditorWindow
 {
-	private string jsonString = "";
+	private string jsonString = "Copy-and-paste JSON here...";
 	private string prefabDestinationDirectory = "Assets";
 
 	/// <summary>
