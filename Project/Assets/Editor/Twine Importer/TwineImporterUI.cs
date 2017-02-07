@@ -104,7 +104,6 @@ public class TwineImporterUI : EditorWindow
 	}
 
 	void SendToImporter (string jsonString, string prefabDestinationDirectory) {
-		// TODO: handle errors -- malformed json, etc.
 		TwineJsonParser.ImportFromString (jsonString, prefabDestinationDirectory);
 	}
 
