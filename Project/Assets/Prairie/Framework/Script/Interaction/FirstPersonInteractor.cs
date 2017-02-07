@@ -97,7 +97,7 @@ public class FirstPersonInteractor : MonoBehaviour
 			float yMargin = 10f;
 			float rowSize = 35f;
 
-			float toolbarWidth = Mathf.Min (0.2f * Screen.width, 500f);
+			float toolbarWidth = Mathf.Min (0.25f * Screen.width, 500f);
 			float toolbarHeight = (annotations.Count + 1) * rowSize;	// first row is a label
 
 			// GUI coordinate system places 0,0 in top left corner
@@ -116,7 +116,7 @@ public class FirstPersonInteractor : MonoBehaviour
 			int buttonIndex = 1;
 			foreach (Annotation a in annotations)
 			{
-				float rowHeight = rowSize/2f;
+				float rowHeight = 0.6f*rowSize;
 				Rect buttonFrame = new Rect (currentX, currentY, 20, 20);
 				Rect labelFrame = new Rect (currentX + 30, currentY, toolbarWidth, rowHeight);
 

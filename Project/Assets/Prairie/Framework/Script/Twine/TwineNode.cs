@@ -12,6 +12,7 @@ public class TwineNode : MonoBehaviour {
 	[HideInInspector]
 	public string pid;
 	public new string name;
+	[HideInInspector]
 	public string[] tags;
 	public string content;
 	public GameObject[] children;
