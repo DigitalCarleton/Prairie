@@ -68,7 +68,7 @@ public class TwineJsonParser {
 		System.IO.Directory.CreateDirectory (prefabDestinationDirectory);
 
 		// save a prefab to disk, and then remove the GameObject from the scene
-		string prefabDestination = prefabDestinationDirectory + "/" + parent.name + ".prefab";
+		string prefabDestination = prefabDestinationDirectory + "/" + parent.name + " - Twine.prefab";
 		PrefabUtility.CreatePrefab (prefabDestination, parent);
 		GameObject.DestroyImmediate (parent);
 	}
