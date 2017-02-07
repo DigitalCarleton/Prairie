@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DebugInteraction : Interaction 
+public class DebugInteraction : PromptInteraction 
 {
 	protected override void PerformAction () 
 	{

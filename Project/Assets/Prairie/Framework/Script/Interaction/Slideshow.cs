@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Slideshow : Interaction
+public class Slideshow : PromptInteraction
 {
 	private bool Active = false;
 

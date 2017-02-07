@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AssociatedTwineNodes : Interaction 
+public class AssociatedTwineNodes : PromptInteraction 
 {
 	public List<GameObject> associatedTwineNodeObjects;
 	public List<int> selectedTwineNodeIndices;
