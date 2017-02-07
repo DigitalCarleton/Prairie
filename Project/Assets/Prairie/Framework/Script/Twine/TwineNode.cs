@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+
 public class TwineNode : MonoBehaviour {
 
 	public GameObject[] objectsToTrigger;
@@ -88,7 +89,7 @@ public class TwineNode : MonoBehaviour {
 				// Set non-highlighted buttons to have grayed out text (state is called `normal`)
 				optionButtonStyle.normal.textColor = Color.gray;
 
-				selectedOptionIndex = GUILayout.SelectionGrid(selectedOptionIndex, childrenNames, 1, optionButtonStyle);
+				selectedOptionIndex = GUILayout.SelectionGrid(selectedOptionIndex, this.childrenNames, 1, optionButtonStyle);
 			}
 			
 			GUI.EndGroup ();
@@ -148,7 +149,7 @@ public class TwineNode : MonoBehaviour {
 
 		if (interactor != null) {
 			GameObject interactorObject = interactor.gameObject;
-
+		
 			// Now activate the child using this interactor!
 			TwineNode child = this.children [index].GetComponent<TwineNode> ();
 			child.Activate (interactorObject);

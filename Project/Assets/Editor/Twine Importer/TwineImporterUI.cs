@@ -3,13 +3,15 @@ using UnityEditor;
 using System.Collections;
 using System.IO;
 using System;
+using SimpleJSON;
 
 /// <summary>
 /// Defines the Import Twine window and a few contextual menu actions to trigger import.
 /// </summary>
 public class TwineImporterUI : EditorWindow
 {
-	public TextAsset targetFile;
+	private string jsonString = "Copy and paste your Twine JSON here...";
+	private string prefabDestinationDirectory = "Assets";
 
 	/// <summary>
 	/// Defines the "Import Twine Data" menu item and its action.
@@ -18,21 +20,9 @@ public class TwineImporterUI : EditorWindow
 	[MenuItem("Assets/Import Twine Data...")]
 	static void ShowTwineImportWindow ()
 	{
-
-		// if triggered while a text asset is selected, populate it as the target file
-		TextAsset selectedFile = null;
-		if (Selection.activeObject != null)
-		{
-			var filePath = AssetDatabase.GetAssetPath (Selection.activeObject);
-			if (Path.GetExtension (filePath).Contains ("json"))
-			{
-				selectedFile = (TextAsset) Selection.activeObject;
-			}
-		}
-
 		// create and show window
 		var window = EditorWindow.GetWindow<TwineImporterUI> ();
-		window.targetFile = selectedFile;
+		window.Show ();
 	}
 
 	/// <summary>
@@ -43,42 +33,54 @@ public class TwineImporterUI : EditorWindow
 		GUILayout.Label ("Import Twine Data", EditorStyles.boldLabel);
 
 		GUILayout.BeginHorizontal ();
-		GUILayout.Label ("Twine File:");
+		GUILayout.Label ("Twine JSON text:");
 
-		// button which selects a target file
-		string prompt = "Select File...";
-		if (targetFile != null) {
-			prompt = targetFile.name;
-		}
-		if (GUILayout.Button (prompt))
+		if (GUILayout.Button ("Paste from clipboard")) 
 		{
-			string fullPath = EditorUtility.OpenFilePanel ("Select File", "Assets", "json");
+			this.jsonString = GUIUtility.systemCopyBuffer;
+		}
+
+		GUILayout.EndHorizontal ();
+	
+		this.jsonString = GUILayout.TextArea (this.jsonString, GUILayout.MinHeight(20), GUILayout.MaxHeight(200));
+
+		GUILayout.BeginHorizontal ();
+		GUILayout.Label ("Twine story prefab destination:");
+
+		// button which selects a prefab destination
+		if (GUILayout.Button (prefabDestinationDirectory))
+		{
+			string fullPath = EditorUtility.OpenFolderPanel ("Select destination directory...", prefabDestinationDirectory, "");
 
 			// obnoxiously, the OpenFilePanel returns a full file path,
 			// and Unity will only play nice with a relative one so we must convert
 			string projectDirectory = Directory.GetParent (Application.dataPath).ToString ();
-			string relativePath = GetRelativePath (fullPath, projectDirectory);
+
+			prefabDestinationDirectory = GetRelativePath (fullPath, projectDirectory);
 
 			// double check we'll have access to this file
-			if (relativePath.StartsWith ("Assets/") || relativePath.StartsWith ("Assets\\"))
+			if (!(prefabDestinationDirectory.StartsWith ("Assets/") || prefabDestinationDirectory.StartsWith ("Assets\\")))
 			{
-				this.targetFile = AssetDatabase.LoadAssetAtPath<TextAsset> (relativePath);
+				EditorUtility.DisplayDialog ("Can't Load Asset", "The folder must be part of your Unity project's assets.", "OK");
 			}
-			else
-			{
-				EditorUtility.DisplayDialog ("Can't Load Asset", "The file must be stored as part of your Unity project's assets.", "OK");
-			}
+
 		}
 
 		GUILayout.EndHorizontal ();
 
-		GUILayout.FlexibleSpace ();
+		bool isValid = isValidJson ();
+
+		if (!isValid) 
+		{
+			PrairieGUI.warningLabel ("The JSON entered is invalid. Copy and paste JSON from Twison to import.");
+		}
+
 
 		// button to send to importer
-		GUI.enabled = (this.targetFile != null);
+		GUI.enabled = (this.jsonString != "" && isValid);
 		if (GUILayout.Button ("Import"))
 		{
-			SendToImporter (this.targetFile);
+			SendToImporter(jsonString, prefabDestinationDirectory);
 			this.Close ();
 		}
 	}
@@ -101,12 +103,24 @@ public class TwineImporterUI : EditorWindow
 		return Uri.UnescapeDataString(folderUri.MakeRelativeUri(pathUri).ToString().Replace('/', Path.DirectorySeparatorChar));
 	}
 
-	/// <summary>
-	/// Sends an html file to the Twine importer for input
-	/// </summary>
-	/// <param name="filePath">The file path of the Twine html to be imported</param>
-	void SendToImporter (TextAsset file) {
-		TwineJsonParser.ImportFile (file);
+	void SendToImporter (string jsonString, string prefabDestinationDirectory) {
+		TwineJsonParser.ImportFromString (jsonString, prefabDestinationDirectory);
 	}
 
+	private bool isValidJson()
+	{
+		try 
+		{
+			JSONNode parsedJson = JSON.Parse(this.jsonString);
+
+			// Even if the JSON parses and gets to this point, ensure 
+			//  that it has a "startnode" attribute. Valid Twison must 
+			//  have a startnode indicator!
+			return parsedJson["startnode"] != null;
+		} catch (Exception e) 
+		{
+			return false;
+		}
+
+	}
 }

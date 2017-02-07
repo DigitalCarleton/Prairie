@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class AssociatedTwineNodes : PromptInteraction 
 {
-	public List<GameObject> associatedTwineNodeObjects;
+	public List<GameObject> associatedTwineNodeObjects = new List<GameObject>();
 	public List<int> selectedTwineNodeIndices;
 
 	public void UpdateTwineNodeObjectsFromIndices(TwineNode[] nodes)
