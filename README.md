@@ -10,8 +10,8 @@ Prairie brings three things together: [Unity](https://unity3d.com/), [Twine](twi
 
 For tutorials and documentation, see [the wiki](https://github.com/mjavaly/Prairie/wiki).
 
-## Installing and Contributing
-To get started, pull the code to your computer and open the project in Unity. We're open to contributions / pull requests from others!
+## Contributing to Prairie's development
+You don't need to write any code to make a game with Prairie, but if you want to help us with the code behind the scenes, we'd love to see your contributions and pull requests! To get started, pull the code to your computer and open the project in Unity.
 
 #### Directory tips
 * Add files to a folder called `Ignored/` if you don't want to commit them to the repo.
