@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class AssociatedTwineNodes : Interaction 
 {
-	public List<GameObject> associatedTwineNodeObjects;
+	public List<GameObject> associatedTwineNodeObjects = new List<GameObject>();
 	public List<int> selectedTwineNodeIndices = new List<int>(){0};
 
 	public void UpdateTwineNodeObjectsFromIndices(TwineNode[] nodes)

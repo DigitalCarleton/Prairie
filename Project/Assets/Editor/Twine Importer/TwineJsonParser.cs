@@ -38,9 +38,11 @@ public class TwineJsonParser {
 		Dictionary<string, JSONNode> twineNodesJsonByName = new Dictionary<string, JSONNode>();
 		Dictionary<string, GameObject> twineGameObjectsByName = new Dictionary<string, GameObject>();
 
-		for (int i = 0; i < parsedArray.Count; i++)
+		string startNodePid = parsedJson ["startnode"].ToString ();
+		startNodePid = startNodePid.Replace ('"', ' ').Trim(); // remove the surrounding quotes (leftover from JSONNode toString() method)
+
+		foreach (JSONNode storyNode in parsedArray)
 		{
-			JSONNode storyNode = parsedArray [i];
 			GameObject twineNodeObject = MakeGameObjectFromStoryNode (storyNode);
 
 			// Bind this node to the parent "Story" object
@@ -50,9 +52,10 @@ public class TwineJsonParser {
 			twineNodesJsonByName [twineNodeObject.name] = storyNode;
 			twineGameObjectsByName [twineNodeObject.name] = twineNodeObject;
 
-			if (i == 0) 
-			{
-				// Enable/activate the first node in the story by default:
+			TwineNode twineNode = twineNodeObject.GetComponent<TwineNode> ();
+
+			if (startNodePid.Equals(twineNode.pid)) {
+				// Enable/activate the start node in the story:
 				twineNodeObject.GetComponent<TwineNode> ().enabled = true;
 			}
 		}
