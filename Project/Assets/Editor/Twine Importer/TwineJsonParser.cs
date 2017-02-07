@@ -199,33 +199,6 @@ public class TwineJsonParser {
 	}
 		
 	/// <summary>
-	/// Takes a string list of strings from the JSON, and makes it an array of
-	/// strings, where each string is distinct from the other instead of one
-	/// giant string.
-	/// Boolean allows children to have more sliced off of each string than tags.
-	/// The 4 within the if statement is to slice off the brackets around the children: [[children]].
-	/// The 2 comes because we want to slice the brackets off of the tag: [tag].
-	/// </summary>
-	/// <param name="node">the JSONNode, which just holds the tag or childrenNames content.</param>
-	/// <param name="parseChildren">If set to <c>true</c>, slice more off the ends of child names.</param>
-	public static string[] Serialize (JSONNode node, bool parseChildren)
-	{
-		string[] nodeList = new string[node.Count];
-		for (int i = 0; i < node.Count; i++)
-		{
-			string nodeString = node [i].ToString();
-			if (parseChildren)
-			{
-				int stringLength = nodeString.Length - 4;
-				nodeString = nodeString.Substring (2, stringLength);
-			}
-			nodeString = nodeString.Substring (1, nodeString.Length - 2);
-			nodeList[i] = (nodeString);
-		}
-		return nodeList;
-	}
-		
-	/// <summary>
 	/// Strips the list of children off the content,
 	/// because we really only want the content.
 	/// </summary>
