@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-
+[AddComponentMenu("Prairie/Utility/Twine Node")]
 public class TwineNode : MonoBehaviour {
 
 	public GameObject[] objectsToTrigger;
