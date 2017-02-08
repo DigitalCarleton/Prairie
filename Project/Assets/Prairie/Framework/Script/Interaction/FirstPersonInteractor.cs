@@ -216,4 +216,15 @@ public class FirstPersonInteractor : MonoBehaviour
 		}
 	}
 
+	// --- Gizmos ---
+
+	void OnDrawGizmosSelected() {
+		Gizmos.color = Color.gray;
+
+		Vector3 origin = this.transform.position;
+		Vector3 forward = this.transform.TransformDirection (Vector3.forward) * this.interactionRange;
+
+		Gizmos.DrawRay(origin, forward);
+	}
+
 }
