@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Prairie/Interactions/Slideshow")]
 public class Slideshow : PromptInteraction
 {
 	private bool Active = false;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Prairie/Interactions/Trigger Area")]
 [RequireComponent(typeof(Collider))]
 public class TriggerArea : MonoBehaviour
 {

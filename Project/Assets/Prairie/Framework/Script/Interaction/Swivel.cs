@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Prairie/Interactions/Door Swivel")]
 public class Swivel : PromptInteraction
 {
 	public bool openFromLeft = false;

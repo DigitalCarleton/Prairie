@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[AddComponentMenu("Prairie/Twine/Associated Twine Nodes")]
 public class AssociatedTwineNodes : PromptInteraction 
 {
 	public List<GameObject> associatedTwineNodeObjects = new List<GameObject>();

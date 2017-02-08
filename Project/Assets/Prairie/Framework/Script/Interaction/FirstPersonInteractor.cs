@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityStandardAssets.Characters.FirstPerson;
 
+[AddComponentMenu("Prairie/Player/First Person Interactor")]
 public class FirstPersonInteractor : MonoBehaviour
 {
 	// Raycast-related

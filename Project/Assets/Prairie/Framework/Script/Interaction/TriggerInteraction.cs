@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Prairie/Interactions/Trigger Interaction")]
 public class TriggerInteraction : PromptInteraction
 {
 
