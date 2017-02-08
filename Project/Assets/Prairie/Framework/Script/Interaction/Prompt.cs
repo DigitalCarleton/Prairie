@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Prairie/Utility/Prompt")]
 public class Prompt : MonoBehaviour 
 {
 	public string promptText;

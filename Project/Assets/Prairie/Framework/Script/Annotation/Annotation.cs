@@ -20,7 +20,7 @@ public class AnnotationContent
 public enum AnnotationTypes : int {SUMMARY = 0, AREA = 1 };
 public enum ImportTypes : int {NONE = 0, IMPORT = 1, INSPECTOR = 2 };
 
-
+[AddComponentMenu("Prairie/Annotation/Annotation")]
 public class Annotation : Interaction
 {
     public AnnotationContent content;

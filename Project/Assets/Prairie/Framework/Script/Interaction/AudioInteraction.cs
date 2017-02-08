@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Prairie/Interactions/Play Audio")]
 public class AudioInteraction : PromptInteraction
 {
     public AudioClip audioClip;

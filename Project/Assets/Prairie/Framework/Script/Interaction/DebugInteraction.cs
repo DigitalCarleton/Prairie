@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Prairie/Interactions/Debug")]
 public class DebugInteraction : PromptInteraction 
 {
 	protected override void PerformAction () 

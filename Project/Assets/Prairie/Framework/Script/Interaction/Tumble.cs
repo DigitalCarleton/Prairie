@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Prairie/Interactions/Tumble")]
 public class Tumble : PromptInteraction
 {
 	/// <summary>
