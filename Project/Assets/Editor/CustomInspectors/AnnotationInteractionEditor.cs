@@ -252,7 +252,7 @@ public class AnnotationInteractionEditor : Editor {
             if (colliders == null || colliders.Length == 0)
             {
                 // error: doesn't have collider
-                PrairieGUI.warningLabel("Area Annotations require a Collider to function. Would you like to add one?");
+                PrairieGUI.warningLabel("Area Annotations require a Collider to function.");
                 if (GUILayout.Button("Add Collider"))
                 {
                     Collider collider = owner.AddComponent<BoxCollider> () as Collider;
@@ -269,7 +269,7 @@ public class AnnotationInteractionEditor : Editor {
                 // error: doesn't have any trigger collider
                 if (!foundTriggerCollider)
                 {
-                    PrairieGUI.warningLabel("Area Annotations require a Collider to function. Would you like to add one?");
+                    PrairieGUI.warningLabel("Area Annotations require a Collider set to trigger mode to function.");
                     if (GUILayout.Button("Set to Trigger"))
                     {
                         colliders[0].isTrigger = true;
