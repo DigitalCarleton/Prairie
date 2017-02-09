@@ -130,6 +130,21 @@ public class FirstPersonInteractor : MonoBehaviour
 		}
 	}
 
+	/// --- Trigger Areas ---
+	public void OnTriggerEnter(Collider other)
+	{
+		GameObject inside = other.gameObject;
+		// automatically trigger area we're now inside of's NON-ANNOTATION interactions
+		List<Interaction> toTrigger = new List<Interaction>();
+		foreach (Interaction i in inside.GetComponents<Interaction> ())
+		{
+			if (!(i is Annotation || i is Slideshow))
+			{
+				i.Interact (this.gameObject);
+			}
+		}
+	}
+
 	/// --- Handling Interaction ---
 
 	private void AttemptInteract ()
