@@ -67,7 +67,7 @@ public class FirstPersonInteractor : MonoBehaviour
 		{
 			// draw prompt on highlighted object
 			Prompt prompt = this.highlightedObject.GetComponent<Prompt> ();
-			if (prompt != null)
+			if (prompt != null || prompt.promptText == "")
 			{
 				prompt.DrawPrompt();
 			}
