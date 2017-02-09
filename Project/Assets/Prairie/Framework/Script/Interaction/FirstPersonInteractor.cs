@@ -67,9 +67,12 @@ public class FirstPersonInteractor : MonoBehaviour
 		{
 			// draw prompt on highlighted object
 			Prompt prompt = this.highlightedObject.GetComponent<Prompt> ();
-			if (prompt != null || prompt.promptText == "")
+			if (prompt != null && prompt.promptText != "")
 			{
 				prompt.DrawPrompt();
+			} else {
+				// draw crosshair when the prompt is left blank
+				this.drawCrosshair();
 			}
 
 			// draw potential stub on highlighted annotation object
@@ -82,12 +85,17 @@ public class FirstPersonInteractor : MonoBehaviour
 		else
 		{
 			// draw a crosshair when we have no highlighted object
-			Rect frame = new Rect (Screen.width / 2, Screen.height / 2, 10, 10);
-			GUI.Box (frame, "");
+			this.drawCrosshair();
 		}
 		
 		// draw toolbar with our set of accessable area annotations
 		this.drawToolbar(this.areaAnnotationsInRange);
+	}
+
+	private void drawCrosshair()
+	{
+		Rect frame = new Rect (Screen.width / 2, Screen.height / 2, 10, 10);
+		GUI.Box (frame, "");
 	}
 
 	private void drawToolbar(List<Annotation> annotations)
