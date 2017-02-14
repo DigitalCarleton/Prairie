@@ -6,7 +6,7 @@ public class Slideshow : PromptInteraction
 {
 	private bool Active = false;
 
-	public Texture2D[] Slides;
+	public Texture2D[] Slides = new Texture2D[0];
 	public int CurrentSlide;
 
 	private Rect Shading;
