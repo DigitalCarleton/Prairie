@@ -20,6 +20,7 @@ public class FirstPersonInteractorEditor : Editor {
 
 		// Warnings:
 		this.DrawWarnings ();
+		EditorUtility.SetDirty(player);
 	}
 
 	public void DrawWarnings()
