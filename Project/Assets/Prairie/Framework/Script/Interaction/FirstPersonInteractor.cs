@@ -12,6 +12,7 @@ public class FirstPersonInteractor : MonoBehaviour
 	// Selection-related
 	private GameObject highlightedObject;
 	public List<Annotation> areaAnnotationsInRange = new List<Annotation>();
+	public bool annotationsEnabled = true;
 
 	// Control-related
 	[HideInInspector]

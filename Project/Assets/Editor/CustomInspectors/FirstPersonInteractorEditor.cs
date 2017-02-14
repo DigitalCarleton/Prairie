@@ -12,8 +12,11 @@ public class FirstPersonInteractorEditor : Editor {
 		player = (FirstPersonInteractor)target;
 
 		// Principle Configuration:
-		GUIContent label = new GUIContent("Interaction Range", "The maximum distance a player can be from an object and interact with it.");
-		player.interactionRange = EditorGUILayout.FloatField(label, player.interactionRange);
+		GUIContent rangeLabel = new GUIContent("Interaction Range", "The max distance a player can be from an object and interact with it.");
+		player.interactionRange = EditorGUILayout.FloatField(rangeLabel, player.interactionRange);
+		
+		GUIContent annotationsLabel = new GUIContent("Enable Annotations", "If disabled, historical annotations are not shown in game.");
+		player.annotationsEnabled = EditorGUILayout.Toggle(annotationsLabel, player.annotationsEnabled);
 
 		// Warnings:
 		this.DrawWarnings ();
