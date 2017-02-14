@@ -66,6 +66,10 @@ public class AnnotationInteractionEditor : Editor {
         {
             DisplayWriteInInspector();
         }
+
+        if (GUI.changed) {
+            EditorUtility.SetDirty(annotation);
+        }
     }
 
     void DisplaySetLargeSummary()

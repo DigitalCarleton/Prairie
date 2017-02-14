@@ -20,6 +20,10 @@ public class SlideshowEditor : Editor {
 				break;
 			}
 		}
+
+		if (GUI.changed) {
+			EditorUtility.SetDirty(slideshow);
+		}
 	}
 
 	public void DrawWarnings()
