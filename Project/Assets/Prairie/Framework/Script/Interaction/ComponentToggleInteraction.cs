@@ -4,7 +4,7 @@ using System.Collections;
 [AddComponentMenu("Prairie/Interactions/Toggle Component")]
 public class ComponentToggleInteraction : PromptInteraction 
 {
-	public Behaviour[] target;
+	public Behaviour[] target = new Behaviour[0];
 
 	void OnDrawGizmosSelected()
 	{

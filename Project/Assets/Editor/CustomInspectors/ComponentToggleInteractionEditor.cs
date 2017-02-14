@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(ComponentToggleInteraction))]
@@ -7,23 +6,25 @@ public class ComponentToggleInteractionEditor : Editor {
 
 	ComponentToggleInteraction componentToggle;
 
-	public override void OnInspectorGUI()
+	public override void OnInspectorGUI ()
 	{
-		componentToggle = (ComponentToggleInteraction)target;
-		componentToggle.target = PrairieGUI.drawObjectList ("Behaviours To Toggle", componentToggle.target);
+		this.componentToggle = (ComponentToggleInteraction)target;
 
-		for (int i = 0; i < componentToggle.target.Length; i++) 
-		{
-			if (componentToggle.target [i] == null) 
-			{
-				DrawWarnings ();
-				break;
-			}
-		}
+		componentToggle.repeatable = EditorGUILayout.Toggle ("Repeatable?", componentToggle.repeatable);
+		componentToggle.target = PrairieGUI.drawObjectList<Behaviour> ("Behaviours To Toggle:", componentToggle.target);
+
+		this.DrawWarnings();
 	}
 
 	public void DrawWarnings()
 	{
-		PrairieGUI.warningLabel ("You have one or more empty slots in your list of toggles.  Please fill these slots or remove them.");
+		foreach (Behaviour behaviour in componentToggle.target) 
+		{
+			if (behaviour == null) 
+			{
+				PrairieGUI.warningLabel ("You have one or more empty slots in your list of toggles.  Please fill these slots or remove them.");
+				break;
+			}
+		}
 	}
 }

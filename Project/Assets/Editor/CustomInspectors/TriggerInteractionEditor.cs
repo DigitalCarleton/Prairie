@@ -11,6 +11,7 @@ public class TriggerInteractionEditor : Editor {
 		this.trigger = (TriggerInteraction)target;
 
 		// Principle Configuration:
+		trigger.repeatable = EditorGUILayout.Toggle ("Repeatable?", trigger.repeatable);
 		trigger.triggeredObjects = PrairieGUI.drawObjectList<GameObject> ("Trigger Objects:", trigger.triggeredObjects);
 
 		// Warnings:
