@@ -18,5 +18,9 @@ public class PromptEditor : Editor {
 			// I feel like there should be a warning here, but I don't know what to write
 			// PrairieGUI.warningLabel("?")
 		}
+
+		if (GUI.changed) {
+			EditorUtility.SetDirty(prompt);
+		}
 	}
 }

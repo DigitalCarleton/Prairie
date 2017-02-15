@@ -22,6 +22,9 @@ public class AudioInteractionEditor : Editor {
 		}
 
 		this.DrawWarnings ();
+		if (GUI.changed) {
+			EditorUtility.SetDirty(audio);
+		}
 	}
 
 	public void DrawWarnings()

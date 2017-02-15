@@ -27,10 +27,8 @@ public class TwineNodeEditor : Editor {
 		node.parents = new List<GameObject> (parentArray);
 
 		// Save changes to the TwineNode if the user edits something in the GUI:
-		if (GUI.changed)
-		{
-			EditorUtility.SetDirty( target );
+		if (GUI.changed) {
+			EditorUtility.SetDirty(target);
 		}
-
 	}
 }

@@ -16,6 +16,9 @@ public class TriggerInteractionEditor : Editor {
 
 		// Warnings:
 		this.DrawWarnings();
+		if (GUI.changed) {
+			EditorUtility.SetDirty(trigger);
+		}
 	}
 
 	public void DrawWarnings()

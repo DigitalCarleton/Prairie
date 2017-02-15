@@ -14,6 +14,9 @@ public class ComponentToggleInteractionEditor : Editor {
 		componentToggle.target = PrairieGUI.drawObjectList<Behaviour> ("Behaviours To Toggle:", componentToggle.target);
 
 		this.DrawWarnings();
+		if (GUI.changed) {
+			EditorUtility.SetDirty(componentToggle);
+		}
 	}
 
 	public void DrawWarnings()

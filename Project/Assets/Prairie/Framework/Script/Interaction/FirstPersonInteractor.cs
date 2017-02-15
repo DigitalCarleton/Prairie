@@ -12,6 +12,7 @@ public class FirstPersonInteractor : MonoBehaviour
 	// Selection-related
 	private GameObject highlightedObject;
 	public List<Annotation> areaAnnotationsInRange = new List<Annotation>();
+	public bool annotationsEnabled = true;
 
 	// Control-related
 	[HideInInspector]
@@ -40,7 +41,7 @@ public class FirstPersonInteractor : MonoBehaviour
 			// right click
 			this.AttemptReadAnnotation ();
 		}
-		if (areaAnnotationsInRange.Count != 0)
+		if (areaAnnotationsInRange.Count != 0 && this.annotationsEnabled)
 		{
 			for (int a = 0; a < areaAnnotationsInRange.Count; a++)
 			{
@@ -77,7 +78,7 @@ public class FirstPersonInteractor : MonoBehaviour
 
 			// draw potential stub on highlighted annotation object
 			Annotation annotation = this.highlightedObject.GetComponent<Annotation> ();
-			if (annotation != null)
+			if (annotation != null && this.annotationsEnabled)
 			{
 				annotation.DrawSummary();
 			}
@@ -100,7 +101,7 @@ public class FirstPersonInteractor : MonoBehaviour
 
 	private void drawToolbar(List<Annotation> annotations)
 	{
-		if (annotations.Count != 0)
+		if (annotations.Count != 0 && this.annotationsEnabled)
 		{
 			float xMargin = 10f;
 			float yMargin = 10f;
@@ -178,7 +179,7 @@ public class FirstPersonInteractor : MonoBehaviour
 
 	private void AttemptReadAnnotation ()
 	{
-		if (highlightedObject == null) {
+		if (!this.annotationsEnabled || highlightedObject == null) {
 			return;
 		}
 
