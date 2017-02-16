@@ -41,7 +41,7 @@ public class Swivel : PromptInteraction
 		}
 		else if (width == localy)
 		{
-			amt = this.transform.up;
+			amt = -1 * this.transform.up;
 		}
 		else
 		{
