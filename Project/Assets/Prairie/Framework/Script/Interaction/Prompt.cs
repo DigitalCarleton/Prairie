@@ -4,16 +4,35 @@ using System.Collections;
 [AddComponentMenu("Prairie/Utility/Prompt")]
 public class Prompt : MonoBehaviour 
 {
-	public string promptText;
+    private static readonly int FIRST_PROMPT = 1;
+    private static readonly int SECOND_PROMPT = 2;
+
+    public bool isCyclic = false;
+
+    public int curPrompt = FIRST_PROMPT;
+    public string firstPrompt = "";
+    public string secondPrompt = "";
 	
+    public string GetPrompt()
+    {
+        if (curPrompt == FIRST_PROMPT)
+        {
+            return this.firstPrompt;
+        }
+        else
+        {
+            return this.secondPrompt;
+        }
+    }
+
 	public void DrawPrompt()
 	{
 		// Draw a GUI with the interaction 
-        if (!string.IsNullOrEmpty(promptText.Trim()))
+        if (!string.IsNullOrEmpty(this.GetPrompt().Trim()))
         {
             Rect frame = new Rect(Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
             GUI.BeginGroup(frame);
-            GUILayout.Box(promptText);
+            GUILayout.Box(this.GetPrompt());
             GUI.EndGroup();
         }
 	}
@@ -44,8 +63,24 @@ public class Prompt : MonoBehaviour
 			}
 		}
 
-		this.promptText = prompt;
+        this.firstPrompt = prompt;
 	}
+
+    public void CyclePrompt()
+    {
+        
+        if (isCyclic && !string.IsNullOrEmpty(this.secondPrompt.Trim()) && !string.IsNullOrEmpty(this.firstPrompt.Trim()))
+        {
+            if (curPrompt == FIRST_PROMPT)
+            {
+                curPrompt = SECOND_PROMPT;
+            }
+            else
+            {
+                curPrompt = FIRST_PROMPT;
+            }
+        }
+    }
 
 }
 

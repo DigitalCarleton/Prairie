@@ -11,13 +11,26 @@ public class PromptEditor : Editor {
 		prompt = (Prompt)target;
 
 		GUIContent label = new GUIContent ("Prompt Text", "Text displayed when a player can interact with this object.");
-		prompt.promptText = EditorGUILayout.TextField (label, prompt.promptText);
+		prompt.firstPrompt = EditorGUILayout.TextField (label, prompt.firstPrompt);
 
-		if (prompt.promptText == null || prompt.promptText == "")
+		if (string.IsNullOrEmpty(prompt.firstPrompt.Trim()))
 		{
-			// I feel like there should be a warning here, but I don't know what to write
-			// PrairieGUI.warningLabel("?")
-		}
+            PrairieGUI.warningLabel("No prompt will be displayed in game.");
+		} else
+        {
+            GUIContent cyclicLabel = new GUIContent("Cyclic Prompt", "Does this prompt have two cycling values? (i.e. open, close)");
+            prompt.isCyclic = EditorGUILayout.Toggle(cyclicLabel, prompt.isCyclic);
+            if (prompt.isCyclic)
+            {
+
+                GUIContent secondLabel = new GUIContent("Second Prompt", "Second prompt to display, will toggle between this and first prompt.");
+                prompt.secondPrompt = EditorGUILayout.TextField(secondLabel, prompt.secondPrompt);
+                if (string.IsNullOrEmpty(prompt.secondPrompt.Trim()))
+                {
+                    PrairieGUI.warningLabel("Second prompt will be ignored.");
+                }
+            }
+        }
 
 		if (GUI.changed) {
 			EditorUtility.SetDirty(prompt);
