@@ -20,28 +20,45 @@ public class Swivel : PromptInteraction
 	void Start()
 	{
 		hinge = this.transform.position;
-		float amt = 0.6f;
+		Vector3 amt;
 
 		// assuming target is a cube transformed to look like a door
 		// the largest side should be the height
 		// the second largest side is width used to construct the pivot point
 		List<float> dimensions = new List<float>();
-		dimensions.Add(this.transform.localScale.x);
-		dimensions.Add(this.transform.localScale.y);
-		dimensions.Add(this.transform.localScale.z);
+		localx = this.transform.localScale.x;
+		localy = this.transform.localScale.y;
+		localz = this.transform.localScale.z;
+		dimensions.Add(localx);
+		dimensions.Add(localy);
+		dimensions.Add(localz);
 		dimensions.Sort();
-		amt *= dimensions[1];
+		float width = dimensions[1];
+
+		if (width == localx)
+		{
+			amt = this.transform.right;
+		}
+		else if (width == localy)
+		{
+			amt = this.transform.up;
+		}
+		else
+		{
+			amt = this.transform.forward;
+		}
+		amt *= 0.5f * width;
 
 		// opening from left requires a pivot point opposite its counterpart
 		// and a different direction
 		if (openFromLeft)
 		{
-			hinge += amt * Vector3.forward;
+			hinge += amt;
 			direction = Vector3.up;
 		}
 		else
 		{
-			hinge -= amt * Vector3.forward;
+			hinge -= amt;
 			direction = Vector3.down;
 		}
 	}
