@@ -69,19 +69,15 @@ public class PromptEditor : Editor {
         Dictionary<string, string> twinePrompts = new Dictionary<string, string> ();
         foreach (string nodeName in twineNodeNames)
         {
-			string previousValue;
-			this.prompt.twinePrompts.TryGetValue(nodeName, out previousValue);
-            if (previousValue == null)
+			string previousValue = "";
+			if (this.prompt.twinePrompts.ContainsKey(nodeName))
             {
-				previousValue = "";  // initialize a missing value
+				previousValue = this.prompt.twinePrompts [nodeName];
             }
 
             GUIContent label = new GUIContent (nodeName, "Text displayed when a player can progress the story to this twine node.");
-            twinePrompts[nodeName] = EditorGUILayout.TextField(label, previousValue);
+			this.prompt.twinePrompts[nodeName] = EditorGUILayout.TextField(label, previousValue);
         }
-
-        // save dictionary back to the prompt
-        this.prompt.twinePrompts = twinePrompts;
     }
 
 }

@@ -16,7 +16,7 @@ public class Prompt : MonoBehaviour
 
     // if an AssociatedTwineNode interaction is present on the gameobject, then this
     // dictionary overrides all other prompt information
-    public Dictionary<string, string> twinePrompts = new Dictionary<string, string>();
+	public Dictionary<string, string> twinePrompts = new Dictionary<string, string>();
 	public bool isTwinePrompt
     {
         get { return this.gameObject.GetComponent<AssociatedTwineNodes>() != null; }
