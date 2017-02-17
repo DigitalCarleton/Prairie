@@ -12,17 +12,33 @@ public class Prompt : MonoBehaviour
     public int curPrompt = FIRST_PROMPT;
     public string firstPrompt = "";
     public string secondPrompt = "";
-	
+
+    // if an AssociatedTwineNode interaction is present on the gameobject, then this
+    // dictionary overrides all other prompt information
+    public Dictionary<TwineNode, string> twinePrompts = new Dictionary<TwineNode, string>();
+	public bool isTwinePrompt
+    {
+        get { return this.gameObject.GetComponent<AssociatedTwineNode>() != null; }
+    }
+
     public string GetPrompt()
     {
-        if (curPrompt == FIRST_PROMPT)
+        if (this.isTwinePrompt)
         {
-            return this.firstPrompt;
+            TwineNode activeNode = this.GetActiveAssociatedTwineNode();
+            if (activeNode == null)
+            {
+                // if there is no active node, return an empty (hidden) prompt
+                return "";
+            }
+            // return the prompt associated with this node
+            string twinePrompt = this.twinePrompts[activeNode];
+            if (twinePrompt == null) { return ""; }   // use empty prompt if not specified
+            return twinePrompt;
         }
-        else
-        {
-            return this.secondPrompt;
-        }
+
+        // return single or cyclic prompt
+        return curPrompt == FIRST_PROMPT ? this.firstPrompt : this.secondPrompt;
     }
 
 	public void DrawPrompt()
@@ -36,6 +52,8 @@ public class Prompt : MonoBehaviour
             GUI.EndGroup();
         }
 	}
+
+    // ---- DEFAULT PROMPTS ----
 
 	// `Reset()` is called when this component is being added to a
 	// GameObject in the Inpsector for the first time, or if the user
@@ -65,6 +83,29 @@ public class Prompt : MonoBehaviour
 
         this.firstPrompt = prompt;
 	}
+
+    // ---- TWINE PROMPT ----
+
+    // returns the twine node this prompt which is currently active
+    public TwineNode GetActiveAssociatedTwineNode()
+    {
+        AssociatedTwineNode nodes = this.gameObject.GetComponent<AssociatedTwineNode>();
+        if (nodes == null) { return; }  // sanity check
+
+        foreach (twineNodeObject in nodes.associatedTwineNodeObjects)
+        {
+            TwineNode twineNode = twineNodeObject.GetComponent<TwineNode> ();
+            if (twineNode.enabled)
+            {
+                return twineNode
+            }
+        }
+
+        // no active twine node was found
+        return null;
+    }
+
+    // ---- CYCLE PROMPT ----
 
     public void CyclePrompt()
     {
