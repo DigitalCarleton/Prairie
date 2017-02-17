@@ -69,7 +69,8 @@ public class PromptEditor : Editor {
         Dictionary<string, string> twinePrompts = new Dictionary<string, string> ();
         foreach (string nodeName in twineNodeNames)
         {
-            string previousValue = this.prompt.twinePrompts[nodeName];
+			string previousValue;
+			this.prompt.twinePrompts.TryGetValue(nodeName, out previousValue);
             if (previousValue == null)
             {
 				previousValue = "";  // initialize a missing value
