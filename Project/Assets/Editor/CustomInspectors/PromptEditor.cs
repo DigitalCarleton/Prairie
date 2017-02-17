@@ -15,7 +15,7 @@ public class PromptEditor : Editor {
 
 		if (string.IsNullOrEmpty(prompt.firstPrompt.Trim()))
 		{
-            PrairieGUI.warningLabel("No prompt will be displayed in game.");
+            PrairieGUI.hintLabel("No prompt will be displayed in game.");
 		} else
         {
             GUIContent cyclicLabel = new GUIContent("Cyclic Prompt", "Does this prompt have two cycling values? (i.e. open, close)");
@@ -27,7 +27,7 @@ public class PromptEditor : Editor {
                 prompt.secondPrompt = EditorGUILayout.TextField(secondLabel, prompt.secondPrompt);
                 if (string.IsNullOrEmpty(prompt.secondPrompt.Trim()))
                 {
-                    PrairieGUI.warningLabel("Second prompt will be ignored.");
+                    PrairieGUI.hintLabel("Second prompt will be ignored.");
                 }
             }
         }
