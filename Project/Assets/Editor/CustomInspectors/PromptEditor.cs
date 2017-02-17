@@ -34,7 +34,8 @@ public class PromptEditor : Editor {
         if (string.IsNullOrEmpty(prompt.firstPrompt.Trim()))
         {
             PrairieGUI.hintLabel("No prompt will be displayed in game.");
-        } else
+        }
+		else
         {
             GUIContent cyclicLabel = new GUIContent("Cyclic Prompt", "Does this prompt have two cycling values? (i.e. open, close)");
             prompt.isCyclic = EditorGUILayout.Toggle(cyclicLabel, prompt.isCyclic);
@@ -53,7 +54,7 @@ public class PromptEditor : Editor {
 
     public void TwinePromptGUI()
     {
-        EditorGUILayout.Label("Twine Prompts");
+		EditorGUILayout.LabelField ("Twine Prompts:");
 
         // get list of twine nodes we need prompts for, the keys of our dictionary
         AssociatedTwineNodes associatedNodes = this.prompt.gameObject.GetComponent<AssociatedTwineNodes> ();
@@ -71,7 +72,7 @@ public class PromptEditor : Editor {
             string previousValue = this.prompt.twinePrompts[nodeName];
             if (previousValue == null)
             {
-                previousValue = ""  // initialize a missing value
+				previousValue = "";  // initialize a missing value
             }
 
             GUIContent label = new GUIContent (nodeName, "Text displayed when a player can progress the story to this twine node.");

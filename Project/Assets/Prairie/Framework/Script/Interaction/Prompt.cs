@@ -19,7 +19,7 @@ public class Prompt : MonoBehaviour
     public Dictionary<string, string> twinePrompts = new Dictionary<string, string>();
 	public bool isTwinePrompt
     {
-        get { return this.gameObject.GetComponent<AssociatedTwineNode>() != null; }
+        get { return this.gameObject.GetComponent<AssociatedTwineNodes>() != null; }
     }
 
     public string GetPrompt()
@@ -90,15 +90,15 @@ public class Prompt : MonoBehaviour
     // returns the twine node this prompt which is currently active
     public TwineNode GetActiveAssociatedTwineNode()
     {
-        AssociatedTwineNode nodes = this.gameObject.GetComponent<AssociatedTwineNode>();
-        if (nodes == null) { return; }  // sanity check
+        AssociatedTwineNodes nodes = this.gameObject.GetComponent<AssociatedTwineNodes>();
+        if (nodes == null) { return null; }  // sanity check
 
         foreach (GameObject twineNodeObject in nodes.associatedTwineNodeObjects)
         {
             TwineNode twineNode = twineNodeObject.GetComponent<TwineNode> ();
             if (twineNode.enabled)
             {
-                return twineNode
+				return twineNode;
             }
         }
 
