@@ -16,7 +16,7 @@ public class Prompt : MonoBehaviour
 
     // if an AssociatedTwineNode interaction is present on the gameobject, then this
     // dictionary overrides all other prompt information
-	public Dictionary<string, string> twinePrompts = new Dictionary<string, string>();
+	public SerializedStringDictionary twinePrompts = new SerializedStringDictionary();
 	public bool isTwinePrompt
     {
         get { return this.gameObject.GetComponent<AssociatedTwineNodes>() != null; }
@@ -33,7 +33,7 @@ public class Prompt : MonoBehaviour
                 return "";
             }
             // return the prompt associated with this node
-            string twinePrompt = this.twinePrompts[activeNode.name];
+			string twinePrompt = this.twinePrompts.ValueForKey(activeNode.name);
             if (twinePrompt == null) { return ""; }   // use empty prompt if not specified
             return twinePrompt;
         }
