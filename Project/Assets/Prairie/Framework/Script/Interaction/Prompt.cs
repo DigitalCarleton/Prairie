@@ -96,7 +96,7 @@ public class Prompt : MonoBehaviour
         foreach (GameObject twineNodeObject in nodes.associatedTwineNodeObjects)
         {
             TwineNode twineNode = twineNodeObject.GetComponent<TwineNode> ();
-            if (twineNode.enabled)
+			if (twineNode.HasActiveParentNode())
             {
 				return twineNode;
             }
