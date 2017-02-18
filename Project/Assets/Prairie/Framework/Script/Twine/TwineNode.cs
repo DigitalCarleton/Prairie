@@ -125,7 +125,7 @@ public class TwineNode : MonoBehaviour {
 	/// 	active/enabled and it has some active parent)
 	/// </summary>
 	/// <param name="interactor">The interactor.</param>
-	public void Activate(GameObject interactor)
+	public bool Activate(GameObject interactor)
 	{
 		if (!this.enabled && this.HasActiveParentNode()) 
 		{
@@ -134,7 +134,11 @@ public class TwineNode : MonoBehaviour {
 			this.isOptionsGuiOpen = false;
 			this.DeactivateAllParents ();
 			this.StartInteractions (interactor);
+
+			return true;
 		}
+
+		return false;
 	}
 
 	/// <summary>
