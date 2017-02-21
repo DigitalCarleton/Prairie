@@ -74,6 +74,8 @@ public class PromptEditor : Editor {
             return;
         }
 
+        EditorGUILayout.LabelField ("Twine Prompts:");
+
         // build dictionary and get a value for each key
         foreach (string nodeName in twineNodeNames)
         {
