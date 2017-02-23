@@ -8,10 +8,13 @@ public class PromptEditor : Editor {
 
 	Prompt prompt;
 
+    public void Awake()
+    {
+        this.prompt = (Prompt) target;
+    }
+
 	public override void OnInspectorGUI ()
 	{
-		prompt = (Prompt)target;
-
 		if (prompt.isTwinePrompt)
         {
             TwinePromptGUI();
@@ -20,18 +23,21 @@ public class PromptEditor : Editor {
         {
             SimplePromptGUI();
         }
-
-		if (GUI.changed) {
-			EditorUtility.SetDirty(prompt);
-		}
 	}
 
     public void SimplePromptGUI(bool cyclicAllowed = true)
     {
         GUIContent label = new GUIContent ("Prompt Text", "Text displayed when a player can interact with this object.");
-        prompt.firstPrompt = EditorGUILayout.TextField (label, prompt.firstPrompt);
+        EditorGUI.BeginChangeCheck();
+        string _firstPrompt = EditorGUILayout.TextField (label, prompt.firstPrompt);
+        if (EditorGUI.EndChangeCheck())
+        {
+            // first prompt was edited
+            Undo.RecordObject(prompt, "Change Prompt");
+            prompt.firstPrompt = _firstPrompt;
+        }
 
-        if (string.IsNullOrEmpty(prompt.firstPrompt.Trim()))
+        if (string.IsNullOrEmpty(_firstPrompt.Trim()))
         {
             PrairieGUI.hintLabel("No prompt will be displayed in game.");
             prompt.isCyclic = false;    // don't allow for a cycle if the first prompt is empty
@@ -40,11 +46,26 @@ public class PromptEditor : Editor {
         if (!cyclicAllowed) { return; } // guard statement
 
         GUIContent cyclicLabel = new GUIContent("Cyclic Prompt", "Does this prompt have two cycling values? (i.e. open, close)");
-        prompt.isCyclic = EditorGUILayout.Toggle(cyclicLabel, prompt.isCyclic);
+        EditorGUI.BeginChangeCheck();
+        bool _isCyclic = EditorGUILayout.Toggle(cyclicLabel, prompt.isCyclic);
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(prompt, "Modify Prompt");
+            prompt.isCyclic = _isCyclic;
+        }
+
         if (prompt.isCyclic)
         {
             GUIContent secondLabel = new GUIContent("Second Prompt", "Second prompt to display, will toggle between this and first prompt.");
-            prompt.secondPrompt = EditorGUILayout.TextField(secondLabel, prompt.secondPrompt);
+            EditorGUI.BeginChangeCheck();
+            string _secondPrompt = EditorGUILayout.TextField(secondLabel, prompt.secondPrompt);
+            if (EditorGUI.EndChangeCheck())
+            {
+                // second prompt was edited
+                Undo.RecordObject(prompt, "Change Prompt");
+                prompt.secondPrompt = _secondPrompt;
+            }
+
             if (string.IsNullOrEmpty(prompt.secondPrompt.Trim()))
             {
                 PrairieGUI.hintLabel("Second prompt will be ignored.");
@@ -67,9 +88,15 @@ public class PromptEditor : Editor {
         if (twineNodeNames.Count == 1)
         {
             // use the simple prompt GUI without allowing for cycles
+            EditorGUI.BeginChangeCheck();
             SimplePromptGUI(cyclicAllowed: false);
-            // bind the result from simple GUI back to the twine based key
-            prompt.twinePrompts.Set(twineNodeNames[0], prompt.firstPrompt);
+            if (EditorGUI.EndChangeCheck())
+            {
+                // bind the result from simple GUI back to the twine based key
+                prompt.twinePrompts.Set(twineNodeNames[0], prompt.firstPrompt);
+                // since this is effectivally a reflection of the data modified, we do
+                // not need to create a seperate undo event
+            }
             // do not fall through into the dictionary input
             return;
         }
@@ -86,8 +113,14 @@ public class PromptEditor : Editor {
             }
 
             GUIContent label = new GUIContent (nodeName, "Text displayed when a player can progress the story to this twine node.");
+
+            EditorGUI.BeginChangeCheck();
 			string newPromptText = EditorGUILayout.TextField(label, previousValue);
-			this.prompt.twinePrompts.Set (nodeName, newPromptText);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(prompt, "Change Prompt");
+    			this.prompt.twinePrompts.Set (nodeName, newPromptText);
+            }
         }
     }
 
