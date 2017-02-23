@@ -12,7 +12,6 @@ public class Tumble : PromptInteraction
 	private Vector3 oldPosition;
 	public float distance = 1.5f;
 	public float speed = 10;
-	private Ray hit;
 
 	// When the user interacts with object, they invoke the ability to 
 	// tumble the object with the I, J, K and L keys. Interacting
