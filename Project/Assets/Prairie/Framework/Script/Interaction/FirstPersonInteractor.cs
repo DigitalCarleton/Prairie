@@ -143,11 +143,11 @@ public class FirstPersonInteractor : MonoBehaviour
 	public void OnTriggerEnter(Collider other)
 	{
 		GameObject inside = other.gameObject;
-		// automatically trigger area we're now inside of's NON-ANNOTATION interactions
+		// automatically trigger area we're now inside of's interactions
 		List<Interaction> toTrigger = new List<Interaction>();
 		foreach (Interaction i in inside.GetComponents<Interaction> ())
 		{
-			if (!(i is Annotation || i is Slideshow))
+			if (!(i is Annotation))
 			{
 				i.Interact (this.gameObject);
 			}
@@ -164,7 +164,7 @@ public class FirstPersonInteractor : MonoBehaviour
 		
 		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ())
 		{
-			if (i is Annotation || i is Slideshow)
+			if (i is Annotation)
 			{
 				// special cases, handled by `AttemptReadAnnotation`
 				continue;
@@ -191,7 +191,7 @@ public class FirstPersonInteractor : MonoBehaviour
 
 		foreach (Interaction i in this.highlightedObject.GetComponents<Interaction> ()) 
 		{
-			if (i.enabled && (i is Annotation || i is Slideshow))
+			if (i.enabled && (i is Annotation))
 			{
 				i.Interact (this.gameObject);
 			}
