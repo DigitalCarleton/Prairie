@@ -6,17 +6,26 @@ public class ComponentToggleInteractionEditor : Editor {
 
 	ComponentToggleInteraction componentToggle;
 
-	public override void OnInspectorGUI ()
+	public void Awake()
 	{
 		this.componentToggle = (ComponentToggleInteraction)target;
+	}
 
-		componentToggle.repeatable = EditorGUILayout.Toggle ("Repeatable?", componentToggle.repeatable);
-		componentToggle.target = PrairieGUI.drawObjectList<Behaviour> ("Behaviours To Toggle:", componentToggle.target);
+	public override void OnInspectorGUI ()
+	{
+		// Configuration:
+		bool _repeatable = EditorGUILayout.Toggle ("Repeatable?", componentToggle.repeatable);
+		Behaviour[] _targets = PrairieGUI.drawObjectList<Behaviour> ("Behaviours To Toggle:", componentToggle.target);
 
-		this.DrawWarnings();
+		// Save:
 		if (GUI.changed) {
-			EditorUtility.SetDirty(componentToggle);
+			Undo.RecordObject(componentToggle);
+			componentToggle.repeatable = _repeatable;
+			componentToggle.target = _targets;
 		}
+
+		// Warnings (after properties have been updated):
+		this.DrawWarnings();
 	}
 
 	public void DrawWarnings()
