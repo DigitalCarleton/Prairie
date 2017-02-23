@@ -12,7 +12,11 @@ public class ComponentToggleInteraction : PromptInteraction
 		for (int i = 0; i < target.Length; i++)
 		{
 			// Draw red line(s) between the object and the objects whose Behaviours it toggles
-			Gizmos.DrawLine(transform.position, target[i].transform.position);
+            if (target[i] != null)
+            {
+                Gizmos.DrawLine(transform.position, target[i].transform.position);
+            }
+			
 		}
 	}
 
