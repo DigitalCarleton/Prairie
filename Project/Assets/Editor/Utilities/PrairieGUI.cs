@@ -32,28 +32,25 @@ public class PrairieGUI {
         GUILayout.Label(text, warningLabel);
 	}
 
-	public static string TextFieldReadOnly (string title, string fieldContents)
+	public static void TextFieldReadOnly (string title, string fieldContents)
 	{
 		GUI.enabled = false;
-		string retVal = EditorGUILayout.TextField (title, fieldContents);
+		EditorGUILayout.TextField (title, fieldContents);
 		GUI.enabled = true;
-		return retVal;
 	}
 
-	public static T[] drawObjectListReadOnly <T> (string title, T[] array) where T : UnityEngine.Object
+	public static void drawObjectListReadOnly <T> (string title, T[] array) where T : UnityEngine.Object
 	{
 		GUI.enabled = false;
-		T[] retVal = drawObjectList (title, array);
+		drawObjectList (title, array);
 		GUI.enabled = true;
-		return retVal;
 	}
 
-	public static T[] drawPrimitiveListReadOnly <T> (string title, T[] array) where T : IConvertible
+	public static void drawPrimitiveListReadOnly <T> (string title, T[] array) where T : IConvertible
 	{
 		GUI.enabled = false;
-		T[] retval = drawPrimitiveList (title, array);
+		drawPrimitiveList (title, array);
 		GUI.enabled = true;
-		return retval;
 	}
 
 	public static T[] drawObjectList <T> (string title, T[] array) where T : UnityEngine.Object
