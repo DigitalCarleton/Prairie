@@ -37,7 +37,7 @@ public class PromptEditor : Editor {
             prompt.firstPrompt = _firstPrompt;
         }
 
-        if (string.IsNullOrEmpty(_firstPrompt.Trim()))
+        if (string.IsNullOrEmpty(prompt.firstPrompt.Trim()))
         {
             PrairieGUI.hintLabel("No prompt will be displayed in game.");
             prompt.isCyclic = false;    // don't allow for a cycle if the first prompt is empty
