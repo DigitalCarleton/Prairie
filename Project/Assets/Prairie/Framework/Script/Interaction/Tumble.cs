@@ -21,7 +21,7 @@ public class Tumble : PromptInteraction
 	void Start()
 	{
 		pickedUp = false;
-		oldRotation = transform.rotation;
+		oldRotation = this.transform.rotation;
 		oldPosition = this.transform.position;
 	}
 
