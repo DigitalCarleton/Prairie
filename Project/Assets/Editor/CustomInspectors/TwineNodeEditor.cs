@@ -10,25 +10,33 @@ public class TwineNodeEditor : Editor {
 
 	TwineNode node;
 
+	public void Awake()
+	{
+		this.node = (TwineNode) target;
+	}
+
 	public override void OnInspectorGUI ()
 	{
-		node = (TwineNode)target;
+		// Configuration:
+		bool _isDecisionNode = EditorGUILayout.Toggle ("Decision node?", node.isDecisionNode);
+		GameObject[] _objectsToTrigger = PrairieGUI.drawObjectList ("Objects To Trigger", node.objectsToTrigger);
 
-		node.isDecisionNode = EditorGUILayout.Toggle ("Decision node?", node.isDecisionNode);
-		node.objectsToTrigger = PrairieGUI.drawObjectList ("Objects To Trigger", node.objectsToTrigger);
 		EditorGUILayout.LabelField ("Name", node.name);
 		EditorGUILayout.LabelField ("Content");
 		EditorGUI.indentLevel += 1;
-		node.content = EditorGUILayout.TextArea (node.content);
+		string _content = EditorGUILayout.TextArea (node.content);
 		EditorGUI.indentLevel -= 1;
-		node.children = PrairieGUI.drawObjectListReadOnly ("Children", node.children);
-		GameObject[] parentArray = node.parents.ToArray ();
-		parentArray = PrairieGUI.drawObjectListReadOnly ("Parents", parentArray);
-		node.parents = new List<GameObject> (parentArray);
+
+		// Read-Only Display:
+		PrairieGUI.drawObjectListReadOnly ("Children", node.children);
+		PrairieGUI.drawObjectListReadOnly ("Parents", node.parents.ToArray ());
 
 		// Save changes to the TwineNode if the user edits something in the GUI:
 		if (GUI.changed) {
-			EditorUtility.SetDirty(target);
+			Undo.RecordObject(node, "Modify Twine Node");
+			node.isDecisionNode = _isDecisionNode;
+			node.objectsToTrigger = _objectsToTrigger;
+			node.content = _content;
 		}
 	}
 }
