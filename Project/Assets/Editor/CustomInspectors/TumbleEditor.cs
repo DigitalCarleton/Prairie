@@ -14,7 +14,7 @@ public class TumbleEditor : Editor {
 		EditorGUILayout.LabelField ("Distance from player:");
 		tumble.distance = EditorGUILayout.Slider(tumble.distance, 0, 10);
 		EditorGUILayout.LabelField ("Rotation speed:");
-		tumble.speed = EditorGUILayout.Slider(tumble.speed, 1, 20);
+		tumble.speed = EditorGUILayout.Slider(tumble.speed, 1, 30);
 		if (GUI.changed) {
 			EditorUtility.SetDirty(tumble);
 		}
