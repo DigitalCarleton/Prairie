@@ -5,24 +5,8 @@ using System.Collections.Generic;
 [AddComponentMenu("Prairie/Twine/Associated Twine Nodes")]
 public class AssociatedTwineNodes : PromptInteraction 
 {
+	// This list is updated through the AssociatedTwineNodesEditor:
 	public List<GameObject> associatedTwineNodeObjects = new List<GameObject>();
-	public List<int> selectedTwineNodeIndices;
-
-	public void UpdateTwineNodeObjectsFromIndices(TwineNode[] nodes)
-	{
-
-		if (this.associatedTwineNodeObjects != null) {
-			// Clear the list of twine nodes and re-add them based on the new indices:
-			this.associatedTwineNodeObjects.Clear ();
-		} else {
-			// Make sure it exists!
-			this.associatedTwineNodeObjects = new List<GameObject> ();
-		}
-		foreach (int index in this.selectedTwineNodeIndices) {
-			GameObject twineNodeObject = nodes [index].gameObject;
-			this.associatedTwineNodeObjects.Add (twineNodeObject);
-		}
-	}
 
 	void OnDrawGizmosSelected()
 	{
