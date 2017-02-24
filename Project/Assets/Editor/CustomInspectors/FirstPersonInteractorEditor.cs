@@ -24,8 +24,8 @@ public class FirstPersonInteractorEditor : Editor {
 		// Save:
 		if (GUI.changed) {
 			Undo.RecordObject(player, "Modify Player");
-			tumble.interactionRange = _interactionRange;
-			tumble.annotationsEnabled = _annotationsEnabled;
+			player.interactionRange = _interactionRange;
+			player.annotationsEnabled = _annotationsEnabled;
 		}
 
 		// Warnings:
