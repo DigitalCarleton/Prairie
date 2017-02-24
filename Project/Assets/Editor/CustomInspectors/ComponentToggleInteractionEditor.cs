@@ -19,7 +19,7 @@ public class ComponentToggleInteractionEditor : Editor {
 
 		// Save:
 		if (GUI.changed) {
-			Undo.RecordObject(componentToggle);
+			Undo.RecordObject(componentToggle, "Modify Component Toggle");
 			componentToggle.repeatable = _repeatable;
 			componentToggle.target = _targets;
 		}
