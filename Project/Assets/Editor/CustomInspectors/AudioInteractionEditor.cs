@@ -8,23 +8,41 @@ public class AudioInteractionEditor : Editor {
 	AudioInteraction audio;
 	bool customAudioSource;
 
-	public override void OnInspectorGUI() 
+	public void Awake()
 	{
 		this.audio = (AudioInteraction)target;
 
-		audio.repeatable = EditorGUILayout.Toggle ("Replayable?", audio.repeatable);
-		audio.audioClip = (AudioClip)EditorGUILayout.ObjectField ("Audio Clip", audio.audioClip, typeof(AudioClip), true);
+		// initialize synthesized property
+		this.customAudioSource = false;
+		if (this.audio.audioSource != null)
+		{
+			this.customAudioSource = true;
+		}
+	}
 
+	public override void OnInspectorGUI() 
+	{
+		// Configuration:
+		bool _repeatable = EditorGUILayout.Toggle ("Replayable?", audio.repeatable);
+		AudioClip _audioClip = (AudioClip)EditorGUILayout.ObjectField ("Audio Clip", audio.audioClip, typeof(AudioClip), true);
+
+		AudioSource _audioSource = null;
 		customAudioSource = EditorGUILayout.Toggle ("Different Audio Source?", customAudioSource);
 		if (customAudioSource) 
 		{
-			audio.audioSource = (AudioSource)EditorGUILayout.ObjectField ("Audio Source", audio.audioSource, typeof(AudioSource), true);
+			_audioSource = (AudioSource)EditorGUILayout.ObjectField ("Audio Source", audio.audioSource, typeof(AudioSource), true);
 		}
 
-		this.DrawWarnings ();
+		// Save:
 		if (GUI.changed) {
-			EditorUtility.SetDirty(audio);
+			Undo.RecordObject(audio, "Modify Audio Interaction");
+			audio.repeatable = _repeatable;
+			audio.audioClip = _audioClip;
+			audio.audioSource = _audioSource;
 		}
+
+		// Warnings (after properties have been updated):
+		this.DrawWarnings();
 	}
 
 	public void DrawWarnings()
