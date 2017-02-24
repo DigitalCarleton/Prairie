@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEditor;
 
@@ -20,7 +20,7 @@ public class TumbleEditor : Editor {
 		float _distance = EditorGUILayout.Slider(tumble.distance, 0, 10);
 
 		EditorGUILayout.LabelField ("Rotation speed:");
-		float _speed = EditorGUILayout.Slider(tumble.speed, 1, 30);
+		float _speed = EditorGUILayout.Slider(tumble.speed, 1, 100);
 		
 		// Save:
 		if (GUI.changed) {
