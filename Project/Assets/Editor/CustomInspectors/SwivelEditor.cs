@@ -7,12 +7,18 @@ public class SwivelEditor : Editor {
 
 	Swivel swivel;
 
+	public void Awake()
+	{
+		this.swivel = (Swivel) target;
+	}
+
 	public override void OnInspectorGUI()
 	{
-		swivel = (Swivel)target;
-		swivel.openFromLeft = EditorGUILayout.Toggle (new GUIContent("Open from left?", "Door opens from right by default, check this box to open it from the left."), swivel.openFromLeft);
+		bool _openFromLeft = EditorGUILayout.Toggle (new GUIContent("Open from left?", "Door opens from right by default, check this box to open it from the left."), swivel.openFromLeft);
+		
 		if (GUI.changed) {
-			EditorUtility.SetDirty(swivel);
+			Undo.RecordObject(swivel, "Modify Swivel");
+			swivel.openFromLeft = _openFromLeft;
 		}
 	}
 }

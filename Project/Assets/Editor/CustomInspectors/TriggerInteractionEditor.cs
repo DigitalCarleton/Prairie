@@ -6,19 +6,26 @@ public class TriggerInteractionEditor : Editor {
 
 	TriggerInteraction trigger;
 
+    public void Awake()
+    {
+        this.trigger = (TriggerInteraction) target;
+    }
+
 	public override void OnInspectorGUI ()
 	{
-		this.trigger = (TriggerInteraction)target;
-
 		// Principle Configuration:
-		trigger.repeatable = EditorGUILayout.Toggle ("Repeatable?", trigger.repeatable);
-		trigger.triggeredObjects = PrairieGUI.drawObjectList<GameObject> ("Trigger Objects:", trigger.triggeredObjects);
+		bool _repeatable = EditorGUILayout.Toggle ("Repeatable?", trigger.repeatable);
+		GameObject[] _triggeredObjects = PrairieGUI.drawObjectList<GameObject> ("Trigger Objects:", trigger.triggeredObjects);
 
-		// Warnings:
-		this.DrawWarnings();
+        // Save Changes:
 		if (GUI.changed) {
-			EditorUtility.SetDirty(trigger);
+			Undo.RecordObject(trigger, "Modify Trigger");
+            trigger.repeatable = _repeatable;
+            trigger.triggeredObjects = _triggeredObjects;
 		}
+
+        // Warnings (after properties have been updated):
+        this.DrawWarnings();
 	}
 
 	public void DrawWarnings()

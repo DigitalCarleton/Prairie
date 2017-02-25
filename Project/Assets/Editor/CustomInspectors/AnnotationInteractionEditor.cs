@@ -9,14 +9,22 @@ public class AnnotationInteractionEditor : Editor {
     bool showRichText = true;
     Annotation annotation;
 
+    public void Awake()
+    {
+        annotation = (Annotation)target;
+    }
 
     public override void OnInspectorGUI()
     {
-        annotation = (Annotation)target;
-
         // select type
         string[] typeOptions = new string[] { "Summary Annotation", "Area Annotation" };
-        annotation.annotationType= EditorGUILayout.Popup("Annotation Type", annotation.annotationType, typeOptions);
+        EditorGUI.BeginChangeCheck();
+        int _annotationType = EditorGUILayout.Popup("Annotation Type", annotation.annotationType, typeOptions);
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(annotation, "Change Annotation Type");
+            annotation.annotationType = _annotationType;
+        }
 
         // warnings
         if (annotation.annotationType == (int)AnnotationTypes.AREA)
@@ -38,9 +46,15 @@ public class AnnotationInteractionEditor : Editor {
         int previousType = annotation.importType;
 
         string[] importOptions = new string[] { "No Full Annotation", "Import Text File", "Write in Inspector" };
-        annotation.importType = EditorGUILayout.Popup("Import Method", annotation.importType, importOptions);
 
+        EditorGUI.BeginChangeCheck();
+        int _importType = EditorGUILayout.Popup("Import Method", annotation.importType, importOptions);
         //checks with user, then resets full annotation information
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(annotation, "Change Annotation Type");
+            annotation.importType = _importType;
+        }
         if (previousType != 0 && annotation.importType == (int)ImportTypes.NONE)
         {
             if (EditorUtility.DisplayDialog("Reset", "WARNING: Switching back to 'No Full Annotation' will cause any curent information to be lost...",
@@ -66,10 +80,6 @@ public class AnnotationInteractionEditor : Editor {
         {
             DisplayWriteInInspector();
         }
-
-        if (GUI.changed) {
-            EditorUtility.SetDirty(annotation);
-        }
     }
 
     void DisplaySetLargeSummary()
@@ -77,14 +87,28 @@ public class AnnotationInteractionEditor : Editor {
         GUIStyle textAreaStyle = new GUIStyle(GUI.skin.textArea);
         textAreaStyle.wordWrap = true;
         GUILayout.Label("Annotation Summary Text:");
-        annotation.summary = GUILayout.TextArea(annotation.summary, 250, textAreaStyle, GUILayout.Height(75),
+
+        EditorGUI.BeginChangeCheck();
+        string _summary = GUILayout.TextArea(annotation.summary, 250, textAreaStyle, GUILayout.Height(75),
             GUILayout.Width(EditorGUIUtility.currentViewWidth - 40), GUILayout.ExpandWidth(false));
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(annotation, "Change Annotation Summary");
+            annotation.summary = _summary;
+        }
     }
 
     void DisplaySetAreaInteractionSummary()
     {
         GUILayout.Label("Annotation Name:");
-        annotation.summary = GUILayout.TextField(annotation.summary, 40);
+        
+        EditorGUI.BeginChangeCheck();
+        string _summary = GUILayout.TextField(annotation.summary, 40);
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(annotation, "Change Area Annotation Name");
+            annotation.summary = _summary;
+        }
     }
 
     /// <summary>
@@ -130,6 +154,8 @@ public class AnnotationInteractionEditor : Editor {
 
             if (absolutePath.StartsWith(Application.dataPath))
             {
+                Undo.RecordObject(annotation, "Change Annotation Text File");
+
                 annotation.textFilePath = "Assets" + absolutePath.Substring(Application.dataPath.Length);
                 annotation.textFile = AssetDatabase.LoadAssetAtPath<TextAsset>(annotation.textFilePath);
                 if (annotation.textFile != null)
@@ -163,15 +189,27 @@ public class AnnotationInteractionEditor : Editor {
             textAreaStyle.richText = false;
         }
 
-        annotation.text = EditorGUILayout.TextArea(annotation.text, textAreaStyle, GUILayout.Height(100),
+        EditorGUI.BeginChangeCheck();
+        string _text = EditorGUILayout.TextArea(annotation.text, textAreaStyle, GUILayout.Height(100),
             GUILayout.Width(EditorGUIUtility.currentViewWidth - 40), GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(false));
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(annotation, "Change Annotation Content");
+            annotation.text = _text;
+        }
 
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
         SaveTextFileButton();
         GUILayout.EndHorizontal();
 
-        annotation.includeImages = EditorGUILayout.Toggle("Include Images:", annotation.includeImages);
+        EditorGUI.BeginChangeCheck();
+        bool _includeImages = EditorGUILayout.Toggle("Include Images:", annotation.includeImages);
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(annotation, "Change Annotation Images Folder");
+            annotation.includeImages = _includeImages;
+        }
 
         if (annotation.includeImages)
         {
@@ -198,6 +236,7 @@ public class AnnotationInteractionEditor : Editor {
 
             if (absolutePath.StartsWith(Application.dataPath))
             {
+                Undo.RecordObject(annotation, "Change Annotation Images Folder");
                 annotation.imagePath = "Assets" + absolutePath.Substring(Application.dataPath.Length) + Path.DirectorySeparatorChar;
             }
             else
@@ -225,10 +264,13 @@ public class AnnotationInteractionEditor : Editor {
                     {
                         File.WriteAllText(path, annotation.text);
 
+                        // We need to enlist an UNDO here, or else the changes to the annotation won't be saved.
+                        // We can undo the annotation's binding to the file, but not the actual file creation.
+                        Undo.RecordObject(annotation, "Save Annotation to File");
+
                         //Links annotation file to newly saved file
                         annotation.textFilePath = "Assets" + path.Substring(Application.dataPath.Length);
                         annotation.textFile = AssetDatabase.LoadAssetAtPath<TextAsset>(annotation.textFilePath);
-
                     }
                     catch (Exception e)
                     {

@@ -7,22 +7,29 @@ public class FirstPersonInteractorEditor : Editor {
 
 	FirstPersonInteractor player;
 
-	public override void OnInspectorGUI ()
+	public void Awake()
 	{
 		player = (FirstPersonInteractor)target;
+	}
 
+	public override void OnInspectorGUI ()
+	{
 		// Principle Configuration:
 		GUIContent rangeLabel = new GUIContent("Interaction Range", "The max distance a player can be from an object and interact with it.");
-		player.interactionRange = EditorGUILayout.FloatField(rangeLabel, player.interactionRange);
+		float _interactionRange = EditorGUILayout.FloatField(rangeLabel, player.interactionRange);
 		
 		GUIContent annotationsLabel = new GUIContent("Enable Annotations", "If disabled, historical annotations are not shown in game.");
-		player.annotationsEnabled = EditorGUILayout.Toggle(annotationsLabel, player.annotationsEnabled);
+		bool _annotationsEnabled = EditorGUILayout.Toggle(annotationsLabel, player.annotationsEnabled);
+
+		// Save:
+		if (GUI.changed) {
+			Undo.RecordObject(player, "Modify Player");
+			player.interactionRange = _interactionRange;
+			player.annotationsEnabled = _annotationsEnabled;
+		}
 
 		// Warnings:
 		this.DrawWarnings ();
-		if (GUI.changed) {
-			EditorUtility.SetDirty(player);
-		}
 	}
 
 	public void DrawWarnings()
