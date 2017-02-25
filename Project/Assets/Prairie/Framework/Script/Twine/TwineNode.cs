@@ -192,31 +192,4 @@ public class TwineNode : MonoBehaviour {
 			parent.GetComponent<TwineNode> ().Deactivate ();
 		}
 	}
-
-	// GIZMOS
-
-	void OnDrawGizmos()
-	{
-		Gizmos.color = Color.black;
-		foreach (GameObject child in this.children)
-		{
-			Gizmos.DrawLine(transform.position, child.transform.position);
-		}
-
-		Gizmos.color = Color.gray;
-
-		// TODO: draw text and such...
-		// 		 just mark position with a sphere for now...
-		Gizmos.DrawSphere(transform.position, 0.1f);
-	}
-
-	void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.cyan;
-		foreach (GameObject gameObject in objectsToTrigger)
-		{
-			// Draw cyan line(s) between the current Twine node and the object(s) it triggers
-			Gizmos.DrawLine(transform.position, gameObject.transform.position);
-		}
-	}
 }

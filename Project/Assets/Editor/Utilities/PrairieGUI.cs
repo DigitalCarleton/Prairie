@@ -149,12 +149,32 @@ public class PrairieGUI {
 			}
 			EditorGUILayout.EndHorizontal ();
 		}
-		if (GUILayout.Button(addRowContent, plusButtonWidth))
-		{
-			selectedIndices.Add (0);
+
+		if (nodes.Length != selectedIndices.Count) {
+			// Only show button if there are more nodes available to select:
+			if (GUILayout.Button (addRowContent, plusButtonWidth)) {
+				int firstAvailableIndex = GetFirstIndexNotInList (selectedIndices, nodes.Length - 1);
+				selectedIndices.Add (firstAvailableIndex);
+			}
 		}
 		EditorGUI.indentLevel -= 1;
 
 		return selectedIndices;
+	}
+
+	/// <summary>
+	/// Gets the first index that does not appear in a list of indices.
+	/// </summary>
+	/// <returns>The first index not in list.</returns>
+	/// <param name="indexList">Index list.</param>
+	/// <param name="highestPossibleIndex">Highest possible index.</param>
+	private static int GetFirstIndexNotInList(List<int> indexList, int highestPossibleIndex) {
+		for (int i = 0; i <= highestPossibleIndex; i++) {
+			if (!indexList.Contains (i)) {
+				return i;
+			}
+		}
+
+		return 0;
 	}
 }

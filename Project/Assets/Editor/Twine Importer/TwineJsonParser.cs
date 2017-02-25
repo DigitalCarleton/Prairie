@@ -60,9 +60,6 @@ public class TwineJsonParser {
 			}
 		}
 
-		// normalize the positions to one another
-		NormalizePositioning (parent);
-
 		// link nodes to their children
 		MatchChildren (twineNodesJsonByName, twineGameObjectsByName);
 
@@ -101,13 +98,6 @@ public class TwineJsonParser {
 		//	the decision tag:
 		twineNode.isDecisionNode = (twineNode.tags != null && twineNode.tags.Contains (PRAIRIE_DECISION_TAG));
 
-		// Relative Twine location --> Unity coordinates
-		JSONNode position = storyNode["position"];
-		float twineX = position["x"].AsFloat;	// `AsFloat` returns 0.0f on failure, which is acceptable
-		float twineY = position["y"].AsFloat;
-		// map Twine arrangement x and y to Unity x and z
-		nodeGameObject.transform.localPosition = new Vector3(twineX, 0, twineY);
-
 		// Start all twine nodes as deactivated at first:
 		twineNode.Deactivate();
 
@@ -145,60 +135,6 @@ public class TwineJsonParser {
 				twineNode.childrenNames [i] = linkName;
 			}
 		}
-	}
-
-	/// <summary>
-	/// Twine's coordinate system is different in scale and local root than Unity's.
-	/// Updates the Twine node's coordinates to sensible Unity values.
-	/// </summary>
-	/// <param name="parent">The top level story node.</param>
-	private static void NormalizePositioning(GameObject parent)
-	{
-		// find ranges of `x` and `z` values
-		float minX = float.MaxValue;
-		float maxX = float.MinValue;
-
-		float minZ = float.MaxValue;
-		float maxZ = float.MinValue;
-
-		foreach (Transform childTransform in parent.transform)
-		{
-			GameObject child = childTransform.gameObject;
-
-			float x = child.transform.localPosition.x;
-			float z = child.transform.localPosition.z;
-
-			// update min if less than
-			minX = x < minX ? x : minX;
-			minZ = z < minZ ? z : minZ;
-
-			// update max if greater than
-			maxX = x > maxX ? x : maxX;
-			maxZ = z > maxZ ? z : maxZ;
-		}
-
-		// anchor coordinate system to (0,0)
-		//
-		// such that a hypothetical object at (minX, minZ) will be at (0,0)
-		// and other objects will maintain their original distances to that object
-		foreach (Transform childTransform in parent.transform)
-		{
-			GameObject child = childTransform.gameObject;
-
-			float newX = child.transform.localPosition.x - minX;
-			float newZ = child.transform.localPosition.z - minZ;
-			float originalY = child.transform.localPosition.y;
-
-			child.transform.localPosition = new Vector3 (newX, originalY, newZ);
-		}
-
-		// adjust scale of parent (spacing between nodes) based on max size of Twine bounding box
-		float TWINE_TO_UNITY_SCALE_RATIO = 20.0f;
-
-		float maxTwineRange = Mathf.Max (maxX - minX, maxZ - minZ);
-		float adjustedScale = TWINE_TO_UNITY_SCALE_RATIO / maxTwineRange;
-
-		parent.transform.localScale = new Vector3 (adjustedScale, 1, adjustedScale);
 	}
 		
 	/// <summary>
