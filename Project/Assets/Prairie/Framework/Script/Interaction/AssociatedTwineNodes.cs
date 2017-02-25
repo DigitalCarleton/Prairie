@@ -24,15 +24,6 @@ public class AssociatedTwineNodes : PromptInteraction
 		}
 	}
 
-	void OnDrawGizmosSelected()
-	{
-		// Draw a green line between a Twine node and its subsequent Twine nodes
-		Gizmos.color = Color.green;
-		foreach (GameObject twineNodeObject in associatedTwineNodeObjects) {
-			Gizmos.DrawLine (transform.position, twineNodeObject.transform.position);
-		}
-	}
-
 	protected override void PerformAction () 
 	{
 		foreach (GameObject twineNodeObject in associatedTwineNodeObjects) {
