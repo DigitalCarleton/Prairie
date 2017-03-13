@@ -4,17 +4,17 @@ using System.Collections;
 [AddComponentMenu("Prairie/Interactions/Toggle Component")]
 public class ComponentToggleInteraction : PromptInteraction 
 {
-	public Behaviour[] target = new Behaviour[0];
+	public Behaviour[] targets = new Behaviour[0];
 
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
-		for (int i = 0; i < target.Length; i++)
+		for (int i = 0; i < targets.Length; i++)
 		{
 			// Draw red line(s) between the object and the objects whose Behaviours it toggles
-            if (target[i] != null)
+            if (targets[i] != null)
             {
-                Gizmos.DrawLine(transform.position, target[i].transform.position);
+                Gizmos.DrawLine(transform.position, targets[i].transform.position);
             }
 			
 		}
@@ -22,9 +22,9 @@ public class ComponentToggleInteraction : PromptInteraction
 
 	protected override void PerformAction ()
 	{
-		for (int i = 0; i < target.Length; i++)
+		for (int i = 0; i < targets.Length; i++)
 		{
-			target[i].enabled = !target[i].enabled;
+			targets[i].enabled = !targets[i].enabled;
 		}
 	}
 

@@ -144,7 +144,6 @@ public class FirstPersonInteractor : MonoBehaviour
 	{
 		GameObject inside = other.gameObject;
 		// automatically trigger area we're now inside of's interactions
-		List<Interaction> toTrigger = new List<Interaction>();
 		foreach (Interaction i in inside.GetComponents<Interaction> ())
 		{
 			if (!(i is Annotation))

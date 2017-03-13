@@ -117,7 +117,7 @@ public class TwineImporterUI : EditorWindow
 			//  that it has a "startnode" attribute. Valid Twison must 
 			//  have a startnode indicator!
 			return parsedJson["startnode"] != null;
-		} catch (Exception e) 
+		} catch 
 		{
 			return false;
 		}
