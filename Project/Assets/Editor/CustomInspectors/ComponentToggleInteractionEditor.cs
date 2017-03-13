@@ -15,13 +15,13 @@ public class ComponentToggleInteractionEditor : Editor {
 	{
 		// Configuration:
 		bool _repeatable = EditorGUILayout.Toggle ("Repeatable?", componentToggle.repeatable);
-		Behaviour[] _targets = PrairieGUI.drawObjectList<Behaviour> ("Behaviours To Toggle:", componentToggle.target);
+		Behaviour[] _targets = PrairieGUI.drawObjectList<Behaviour> ("Behaviours To Toggle:", componentToggle.targets);
 
 		// Save:
 		if (GUI.changed) {
 			Undo.RecordObject(componentToggle, "Modify Component Toggle");
 			componentToggle.repeatable = _repeatable;
-			componentToggle.target = _targets;
+			componentToggle.targets = _targets;
 		}
 
 		// Warnings (after properties have been updated):
@@ -30,7 +30,7 @@ public class ComponentToggleInteractionEditor : Editor {
 
 	public void DrawWarnings()
 	{
-		foreach (Behaviour behaviour in componentToggle.target) 
+		foreach (Behaviour behaviour in componentToggle.targets) 
 		{
 			if (behaviour == null) 
 			{
