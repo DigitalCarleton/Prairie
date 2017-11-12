@@ -246,12 +246,6 @@ public class FirstPersonInteractor : MonoBehaviour
 		}
 	}
 
-    public void SetFreeCursor(bool freeCursor)
-    {
-        MouseLook mouse = this.gameObject.GetComponent<MouseLook>();
-        mouse.SetCursorLock(!freeCursor);
-    }
-
 	// --- Gizmos ---
 
 	void OnDrawGizmosSelected() {
